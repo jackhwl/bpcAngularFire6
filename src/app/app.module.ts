@@ -4,11 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, PreloadAllModules } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AngularFireModule } from 'angularfire2';
-// // for auth
-import { AngularFireAuthModule } from 'angularfire2/auth';
-// // for database
-import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+// import { AngularFireModule } from 'angularfire2';
+// // // for auth
+// import { AngularFireAuthModule } from 'angularfire2/auth';
+// // // for database
+// import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -64,11 +66,11 @@ interface StoreType {
     BrowserModule,
     BrowserAnimationsModule,
     AngularFireModule,
-    AngularFireAuthModule,
+    //AngularFireAuthModule,
     FormsModule,
     HttpClientModule,
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireAuthModule,
+    //AngularFireAuthModule,
     AngularFireDatabaseModule,
     RouterModule.forRoot(ROUTES, {
       useHash: Boolean(history.pushState) === false,
@@ -88,6 +90,7 @@ interface StoreType {
   providers: [
     environment.ENV_PROVIDERS,
     APP_PROVIDERS,
+    //AngularFireDatabase,
     MenuService
   ]
 })
