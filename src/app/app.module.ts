@@ -4,10 +4,15 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, PreloadAllModules } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { AngularFireModule } from 'angularfire2';
+// // for auth
+import { AngularFireAuthModule } from 'angularfire2/auth';
+// // for database
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 /*
  * Platform and Environment providers/directives/pipes
  */
+import { firebaseConfig } from './firebase.auth';
 import { environment } from 'environments/environment';
 import { ROUTES } from './app.routes';
 // App is our top level component
@@ -19,9 +24,13 @@ import { AboutComponent } from './about';
 import { NoContentComponent } from './no-content';
 import { XLargeDirective } from './home/x-large';
 import { DevModuleModule } from './+dev-module';
+import { HeaderComponent } from './header';
 
 import '../styles/styles.scss';
 import '../styles/headings.css';
+
+
+import { MenuService } from './core/services';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -44,6 +53,7 @@ interface StoreType {
     AppComponent,
     AboutComponent,
     HomeComponent,
+    HeaderComponent,
     NoContentComponent,
     XLargeDirective
   ],
@@ -53,8 +63,13 @@ interface StoreType {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    AngularFireModule,
+    AngularFireAuthModule,
     FormsModule,
     HttpClientModule,
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireAuthModule,
+    AngularFireDatabaseModule,
     RouterModule.forRoot(ROUTES, {
       useHash: Boolean(history.pushState) === false,
       preloadingStrategy: PreloadAllModules
@@ -72,7 +87,8 @@ interface StoreType {
    */
   providers: [
     environment.ENV_PROVIDERS,
-    APP_PROVIDERS
+    APP_PROVIDERS,
+    MenuService
   ]
 })
 export class AppModule {}
