@@ -9,7 +9,7 @@ import { Menu, Misc } from '../models';
 // // for database
 // tslint:disable-next-line: max-line-length
 // import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+// import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs';
 // import { forkJoin } from "rxjs/observable/forkJoin";
@@ -36,7 +36,7 @@ export class MenuService {
       // this.content$ = this.db.object('content');
       // this.subMenu$ = this.db.object('subMenu');
       this.menu$ = db.list<Menu>('menu').valueChanges();
-      // // this.misc$ = this.db.doc<Misc>('misc').valueChanges();
+      this.misc$ = db.object<Misc>('misc').valueChanges();
         // //console.log('this.misc$=', this.misc$);
         // // this.content$ = this.db.doc<string>('content').valueChanges();
         // // this.subMenu$ = this.db.doc<Menu>('subMenu').valueChanges();

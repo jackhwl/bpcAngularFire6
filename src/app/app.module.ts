@@ -6,13 +6,8 @@ import { RouterModule, PreloadAllModules } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
+// import { AngularFirestoreModule } from '@angular/fire/firestore';
 
-// import { AngularFireModule } from 'angularfire2';
-// // // for auth
-// import { AngularFireAuthModule } from 'angularfire2/auth';
-// // // for database
-// import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -29,6 +24,7 @@ import { NoContentComponent } from './no-content';
 import { XLargeDirective } from './home/x-large';
 import { DevModuleModule } from './+dev-module';
 import { HeaderComponent } from './header';
+import { FooterComponent } from './footer';
 
 import '../styles/styles.scss';
 import '../styles/headings.css';
@@ -58,6 +54,7 @@ interface StoreType {
     AboutComponent,
     HomeComponent,
     HeaderComponent,
+    FooterComponent,
     NoContentComponent,
     XLargeDirective
   ],
@@ -67,12 +64,11 @@ interface StoreType {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AngularFireModule,
-    //AngularFireAuthModule,
     FormsModule,
     HttpClientModule,
+    AngularFireModule,
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFirestoreModule,
+    //AngularFirestoreModule,
     //AngularFireAuthModule,
     AngularFireDatabaseModule,
     RouterModule.forRoot(ROUTES, {
