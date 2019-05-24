@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
-import { Misc } from '../core/models';
+import { Menu, Misc } from '../core/models';
 import { MenuService } from '../core/services';
 // import { FirebaseObjectObservable } from 'angularfire2/database';
 import { Store } from '@ngrx/store';
@@ -16,16 +16,18 @@ import * as miscActions from './../actions/misc.actions';
 
 export class HeaderComponent implements OnInit {
   public misc$: Observable<Misc>;
+  public menu$: Observable<Menu[]>;
 
   constructor(private menuSVC: MenuService, private sanitizer: DomSanitizer
     // private userSVC: UserService,
   ) {
     this.misc$ = menuSVC.getMisc();
+    this.menu$ = menuSVC.getMenus();
   }
 
   public ngOnInit() {
-    this.getMisc();
-    console.log('misc$=', this.misc$);
+    //this.getMisc();
+    //console.log('misc$=', this.misc$);
   }
 
   public getMisc() {

@@ -8,8 +8,9 @@ import { Menu, Misc } from '../models';
 // import {AngularFireAuthModule} from 'angularfire2/auth';
 // // for database
 // tslint:disable-next-line: max-line-length
-import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
+// import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs';
 // import { forkJoin } from "rxjs/observable/forkJoin";
 import { FormGroup } from '@angular/forms';
@@ -19,22 +20,28 @@ import { FormGroup } from '@angular/forms';
 @Injectable()
 
 export class MenuService {
-    public topMenu: Menu[];
-    public subMenu: Menu[];
-    public currentMenu: Menu;
-    public currentSubMenu: Menu;
-    public content$: Observable<string>;
-    public misc$: Observable<Misc>;
-    public subMenu$: Observable<Menu>;
-    public menu$: Observable<Menu[]>;
-    public result: any;
+  public topMenu: Menu[];
+  public subMenu: Menu[];
+  public currentMenu: Menu;
+  public currentSubMenu: Menu;
+  public content$: Observable<string>;
+  public misc$: Observable<Misc>;
+  public subMenu$: Observable<Menu>;
+  public menu$: Observable<Menu[]>;
+  public result: any;
 
-    constructor(private db: AngularFirestore ) {
-        this.misc$ = this.db.doc<Misc>('misc').valueChanges();
-        //console.log('this.misc$=', this.misc$);
-        // this.content$ = this.db.doc<string>('content').valueChanges();
-        // this.subMenu$ = this.db.doc<Menu>('subMenu').valueChanges();
-        // this.menu$ = this.db.collection<Menu>('menu').valueChanges();
+
+    constructor(private db: AngularFireDatabase ) {
+      // this.misc$ = this.db.object('misc').valueChanges();
+      // this.content$ = this.db.object('content');
+      // this.subMenu$ = this.db.object('subMenu');
+      this.menu$ = db.list<Menu>('menu').valueChanges();
+      // // this.misc$ = this.db.doc<Misc>('misc').valueChanges();
+        // //console.log('this.misc$=', this.misc$);
+        // // this.content$ = this.db.doc<string>('content').valueChanges();
+        // // this.subMenu$ = this.db.doc<Menu>('subMenu').valueChanges();
+        //  this.menu$ = this.db.collection<Menu>('menu').valueChanges();
+        //  //console.log('this.menu$=', this.menu$);
     }
     // getNav(routeMenu: string, routeSubMenu: string = null){
     //     //const b1$ = this.db.list('menu', {query: {orderByChild: 'order'}})
@@ -150,11 +157,11 @@ export class MenuService {
         return this.misc$;
     }
 
-    // getMenus() {
-    //     // this.setTopNav('home');
-    //     // return Observable.of(this.topMenu);
-    //     return this.menu$;
-    // }
+    public getMenus() {
+        // this.setTopNav('home');
+        // return Observable.of(this.topMenu);
+        return this.menu$;
+    }
 
     // getTopNav(routeMenu: string, routeSubMenu: string = null){
     //     // if (!this.topMenu) {

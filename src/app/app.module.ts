@@ -6,6 +6,8 @@ import { RouterModule, PreloadAllModules } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+
 // import { AngularFireModule } from 'angularfire2';
 // // // for auth
 // import { AngularFireAuthModule } from 'angularfire2/auth';
@@ -70,6 +72,7 @@ interface StoreType {
     FormsModule,
     HttpClientModule,
     AngularFireModule.initializeApp(firebaseConfig),
+    AngularFirestoreModule,
     //AngularFireAuthModule,
     AngularFireDatabaseModule,
     RouterModule.forRoot(ROUTES, {
@@ -91,6 +94,7 @@ interface StoreType {
     environment.ENV_PROVIDERS,
     APP_PROVIDERS,
     //AngularFireDatabase,
+    //AngularFirestore,
     MenuService
   ]
 })
