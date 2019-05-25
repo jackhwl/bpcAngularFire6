@@ -1,0 +1,92 @@
+<aside class="sidebar sidebar-primary">
+  <section class="widget featured-content">
+    <div class="widget-wrap">
+      <h4 class="widget-title widgettitle">WELCOME TO OUTREACH</h4>
+      <article>
+        <div *ngFor="let blog of hightlights">
+          <a
+            class="alignnone"
+            aria-hidden="true"
+            (click)="changeRoute(blog)"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: false }"
+          >
+            <img
+              width="300"
+              height="150"
+              src="{{ blog.imgurl }}"
+              alt="{{ blog.title }}"
+              itemprop="image"
+            />
+          </a>
+          <header class="entry-header">
+            <h2 class="entry-title" itemprop="headline">
+              <a
+                (click)="changeRoute(blog)"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: false }"
+              >
+                {{ blog.title }}</a
+              >
+            </h2>
+            <p class="entry-meta">
+              <time
+                class="entry-time"
+                itemprop="datePublished"
+                datetime="{blog.modifiedDate}}"
+                >{{ blog.modifiedDate | date: "MMMM d, yyyy" }}</time
+              >
+              By
+              <span
+                class="entry-author"
+                itemprop="author"
+                itemscope
+                itemtype="https://schema.org/Person"
+                ><a
+                  class="entry-author-link"
+                  (click)="changeRoute(blog)"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: false }"
+                >
+                  <span class="entry-author-name" itemprop="name">{{
+                    blog.author
+                  }}</span></a
+                ></span
+              >
+              <!-- <span class="entry-comments-link"><a href="#" >Leave a Comment</a></span> -->
+            </p>
+          </header>
+          <div class="entry-content">
+            <p>
+              {{ blog.content.substring(0, 0) }}
+              <a
+                class="more-link"
+                (click)="changeRoute(blog)"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: false }"
+              >
+                Read More</a
+              >
+            </p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+  <section class="widget">
+    <div class="widget-wrap">
+      <h4 class="widget-title widgettitle">Recent Posts</h4>
+      <ul>
+        <li *ngFor="let blog of blogs">
+          <a
+            (click)="changeRoute(blog)"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: false }"
+          >
+            {{ blog.title }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+</aside>

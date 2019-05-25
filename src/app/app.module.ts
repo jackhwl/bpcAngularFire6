@@ -29,8 +29,8 @@ import { FooterComponent } from './footer';
 import '../styles/styles.scss';
 import '../styles/headings.css';
 
-
-import { MenuService } from './core/services';
+import { CoreModule } from './core/core.module';
+import { MenuService, BlogService } from './core/services';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -64,6 +64,7 @@ interface StoreType {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    CoreModule,
     FormsModule,
     HttpClientModule,
     AngularFireModule,
@@ -91,7 +92,8 @@ interface StoreType {
     APP_PROVIDERS,
     //AngularFireDatabase,
     //AngularFirestore,
-    MenuService
+    MenuService,
+    BlogService
   ]
 })
 export class AppModule {}
