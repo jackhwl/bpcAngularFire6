@@ -1,0 +1,29 @@
+<nav class="nav-primary">
+  <!-- <div class="wrap"> -->
+  <label for="show-menu" class="show-menu">Show Menu</label>
+  <input type="checkbox" id="show-menu" role="button">
+  <ul id="menu">
+    <li *ngFor="let menu of menuSVC.topMenu">
+      <a *ngIf="menu.items?.length<=0" (click)="changeRoute(menu)" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">{{menu.name}}</a>
+      <a *ngIf="menu.items?.length>0" href="#">{{menu.name}} ￬</a>
+      <ul class="hidden" *ngIf="menu.items?.length>0">
+        <li *ngFor="let subMenu of menu.items">
+            <a (click)="changeSubRoute(menu, subMenu)" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">
+              {{subMenu.name}}
+            </a>
+        </li>
+      </ul>
+    </li>
+    <li *ngIf="(authService.user$ | async)?.uid">
+      <a (click)="adminRoute()" [routerLink]=" ['./admin'] "  routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Admin</a>
+    </li>
+
+    <li *ngIf="(authService.user$ | async)?.uid">
+      {{(authService.user$ | async)?.email}}
+    </li>
+    <li *ngIf="(authService.user$ | async)?.uid">
+      <a (click)="logout()" [routerLink]=" ['./home'] "  routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Logout</a>
+    </li>
+  </ul>
+  <!-- </div> -->
+</nav>

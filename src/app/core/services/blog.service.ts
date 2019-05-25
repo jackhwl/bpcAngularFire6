@@ -22,7 +22,7 @@ export class BlogService {
     return this.hightlights;
   }
 
-  public setBlog() {
+  public setBlogs() {
     if (!this.blogs) {
         // let dbRef = this.menu$.$ref.orderByChild('order');
         const dbRef = this.db.list<Blog>('blogPosts').query.once('value');

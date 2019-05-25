@@ -1,39 +1,22 @@
-<div>
-  <h1 x-large class="sample-content">Your Content Here</h1>
-
-  <hr>
-
-  <div>
-    For hot module reloading run
-    <pre>npm run start:hmr</pre>
-  </div>
-
-  <hr>
-
-  <div>
-    <h4>Local State</h4>
-
-    <form (ngSubmit)="submitState(localState.value)" autocomplete="off">
-
-      <input
-        [value]="localState.value"
-        (input)="localState.value = $event.target.value"
-        placeholder="Submit Local State to App State"
-        autofocus>
-
-      <button>Submit Value</button>
-    </form>
-    <!--
-        <input type="text" [value]="localState.value" (input)="localState.value = $event.target.value" autofocus>
-        Rather than wiring up two-way data-binding ourselves with [value] and (input)
-        we can use Angular's [(ngModel)] syntax
-        <input type="text" name="textInput" [(ngModel)]="localState.value" autofocus>
-      -->
-
-    <pre>this.localState = {{ localState | json }}</pre>
-    <bc-header></bc-header>
-    <bc-footer></bc-footer>
+<div class="site-inner">
+  <div class="wrap">
+    <main class="content">
+      <div class="breadcrumb">
+        You are here:
+        <span class="breadcrumb-link-wrap"><a href="#"><span>{{menuSVC.currentMenu?.name}}</span></a></span>
+        <span>/</span>
+        {{menuSVC.currentSubMenu?.name}}
+      </div>
+      <article class="entry">
+        <header class="entry-header">
+          <h1 class="entry-title">{{menuSVC.currentSubMenu?.name}}</h1>
+        </header>
+        <div class="entry-content" [innerHTML]="sanitizer.bypassSecurityTrustHtml(menuSVC.currentMenu?.content || '')">
+        </div>
+        <div class="entry-content" [innerHTML]="sanitizer.bypassSecurityTrustHtml(menuSVC.currentSubMenu?.content || '')">
+        </div>
+      </article>
+    </main>
     <side-bar></side-bar>
   </div>
-
 </div>
