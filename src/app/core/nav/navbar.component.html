@@ -14,7 +14,7 @@
         </li>
       </ul>
     </li>
-    <!-- <li *ngIf="(authService.user$ | async)?.uid">
+    <li *ngIf="(authService.user$ | async)?.uid">
       <a (click)="adminRoute()" [routerLink]=" ['./admin'] "  routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Admin</a>
     </li>
 
@@ -23,7 +23,7 @@
     </li>
     <li *ngIf="(authService.user$ | async)?.uid">
       <a (click)="logout()" [routerLink]=" ['./home'] "  routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Logout</a>
-    </li> -->
+    </li>
   </ul>
   <!-- </div> -->
 </nav>

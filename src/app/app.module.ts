@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, PreloadAllModules } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 // import { AngularFirestoreModule } from '@angular/fire/firestore';
 
@@ -30,7 +31,7 @@ import '../styles/styles.scss';
 import '../styles/headings.css';
 
 import { CoreModule } from './core/core.module';
-import { MenuService, BlogService } from './core/services';
+import { MenuService, BlogService, AuthService } from './core/services';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -69,6 +70,7 @@ interface StoreType {
     HttpClientModule,
     AngularFireModule,
     AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireAuthModule,
     //AngularFirestoreModule,
     //AngularFireAuthModule,
     AngularFireDatabaseModule,
@@ -92,6 +94,7 @@ interface StoreType {
     APP_PROVIDERS,
     //AngularFireDatabase,
     //AngularFirestore,
+    AuthService,
     MenuService,
     BlogService
   ]

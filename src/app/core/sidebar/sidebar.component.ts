@@ -18,6 +18,10 @@ export class SideBarComponent implements OnInit {
     this.setBlogs();
   }
 
+  public getBlogs() {
+    return this.blogSVC.getBlogs();
+  }
+
   public setBlogs() {
     this.blogSVC.setBlogs().then(() => {
       this.blogs = this.blogSVC.getBlogs();

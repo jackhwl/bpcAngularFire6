@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuService } from '../services';
+import { MenuService, AuthService } from '../services';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { Menu } from '../models';
@@ -11,7 +11,7 @@ import { Menu } from '../models';
 export class NavComponent implements OnInit {
 
   constructor(
-    //private authService: AuthService,
+    private authService: AuthService,
     private menuSVC: MenuService,
     private router: Router
   ) {}
@@ -37,11 +37,11 @@ export class NavComponent implements OnInit {
     this.router.navigate(['./admin']);
   }
 
-  // logout() {
-  //   this.menuSVC.getContent(this.menuSVC.topMenu[0]);
-  //   this.menuSVC.getContent(this.menuSVC.topMenu[0].items[0]);
-  //   this.authService.logout();
-  // }
+  logout() {
+    this.menuSVC.getContent(this.menuSVC.topMenu[0]);
+    this.menuSVC.getContent(this.menuSVC.topMenu[0].items[0]);
+    this.authService.logout();
+  }
 
   changeSubRoute(menu, subMenu) {
     this.menuSVC.currentMenu = menu;
