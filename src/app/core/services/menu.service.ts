@@ -32,7 +32,7 @@ export class MenuService {
   constructor(private db: AngularFireDatabase) {
     // this.misc$ = this.db.object('misc').valueChanges();
     this.content$ = this.db.object<string>('content').valueChanges();
-    // this.subMenu$ = this.db.object('subMenu');
+    this.subMenu$ = this.db.object<Menu>('subMenu').valueChanges();
     this.menu$ = db.list<Menu>('menu').valueChanges();
     this.misc$ = db.object<Misc>('misc').valueChanges();
     // //console.log('this.misc$=', this.misc$);
@@ -97,30 +97,30 @@ export class MenuService {
           if (item.enable) { tmp.push(childSnapshot.val()); }
         });
         this.topMenu = Object.keys(tmp).map(key => tmp[key]);
-        // console.log(routeMenu);
-        // if (routeMenu.toLowerCase() === 'admin') {
-        //   this.topMenu.forEach(m => {
-        //     this.getSubNav(m, null, false);
-        //   });
-        // } else {
-        //   if (
-        //     routeMenu.toLowerCase() === 'home' &&
-        //     this.topMenu[0].name.toLowerCase() !== 'home'
-        //   ) {
-        //     routeMenu = this.topMenu[0].name.toLowerCase();
-        //   }
-        //   this.topMenu.forEach(m => {
-        //     if (
-        //       m.name.toLowerCase() ===
-        //       routeMenu.toLowerCase().replace(/-/g, ' ')
-        //     ) {
-        //       this.currentMenu = m;
-        //       this.getSubNav(m, routeSubMenu, true);
-        //     } else {
-        //       this.getSubNav(m, routeSubMenu, false);
-        //     }
-        //   });
-        // }
+        console.log(routeMenu);
+        if (routeMenu.toLowerCase() === 'admin') {
+          this.topMenu.forEach(m => {
+            this.getSubNav(m, null, false);
+          });
+        } else {
+          if (
+            routeMenu.toLowerCase() === 'home' &&
+            this.topMenu[0].name.toLowerCase() !== 'home'
+          ) {
+            routeMenu = this.topMenu[0].name.toLowerCase();
+          }
+          this.topMenu.forEach(m => {
+            if (
+              m.name.toLowerCase() ===
+              routeMenu.toLowerCase().replace(/-/g, ' ')
+            ) {
+              this.currentMenu = m;
+              this.getSubNav(m, routeSubMenu, true);
+            } else {
+              this.getSubNav(m, routeSubMenu, false);
+            }
+          });
+        }
       });
     }
   }
@@ -131,12 +131,8 @@ export class MenuService {
     withContent: boolean = true
   ) {
     if (!menu.items) {
-      let dbRef = this.subMenu$.$ref
-        .child(menu.id)
-        .child('items')
-        .orderByChild('order');
-      //let dbRef = this.subMenu$.$ref.child(menu.id).child('items').orderByChild('order');
-      dbRef.once('value').then(snapshot => {
+      const dbRef = this.db.object<Menu>(`subMenu/${menu.id}/items`).query.once('value');
+      dbRef.then(snapshot => {
         let tmp: string[] = [];
         snapshot.forEach(function(childSnapshot) {
           let item = childSnapshot.val();
@@ -162,10 +158,14 @@ export class MenuService {
 
   public getContent(menu: Menu) {
     if (menu && !menu.content) {
-      const contentRef = this.content$.$ref.child(menu.id);
-      contentRef.once('value').then((snapshot) => {
+      //const contentRef = this.content$.$ref.child(menu.id);
+      const contentRef = this.db.object<string>(`content/${menu.id}`).query.once('value');
+      //this.db.object<string>('content').query.once('value')
+      //contentRef.once('value').
+      contentRef.then((snapshot) => {
         const contents = snapshot.val();
         menu.content = contents.content;
+        console.log('aaa=', menu);
       });
     }
   }
