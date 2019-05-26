@@ -17,7 +17,7 @@ export class NavComponent implements OnInit {
   ) {}
 
   public ngOnInit() {
-
+    console.log('nav menu=');
   }
 
   public getTopMenu() {

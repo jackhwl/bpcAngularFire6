@@ -12,7 +12,7 @@ import { Menu, Misc } from '../models';
 // import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable, of } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { map, filter, switchMap } from 'rxjs/operators';
 
 // import { FirebaseListObservable } from 'angularfire2/database-deprecated';
 
@@ -42,50 +42,52 @@ export class MenuService {
     //  this.menu$ = this.db.collection<Menu>('menu').valueChanges();
     //  //console.log('this.menu$=', this.menu$);
   }
-  // public getNav(routeMenu: string, routeSubMenu: string = null) {
-  //   // const b1$ = this.db.list('menu', {query: {orderByChild: 'order'}})
-  //   // const nav$ = this.db.list('menu').map(keys => keys.map(key => key));
+  public getNav(routeMenu: string, routeSubMenu: string = null) {
+    // const b1$ = this.db.list('menu', {query: {orderByChild: 'order'}})
+    // const nav$ = this.db.list('menu').map(keys => keys.map(key => key));
 
-  //   const sub$ = this.db.list<Menu>('subMenu').valueChanges();
-  //   sub$.pipe(map((subMenuKeys) => subMenuKeys
-  //         .filter((subMenuKey) => subMenuKey.name.toLowerCase() === 'join us')
-  //         //.map( subMenu => ({id: subMenu.id, name: subMenu.name, items: subMenu.items})))
-  //         .map(subMenu => subMenu.items)
-  //     )
-  //     .switchMap(items =>
-  //       this.db
-  //         .list('menu', { query: { orderByChild: 'order' } })
-  //         //.filter(menu => menu.map(key=>key.enable))
-  //         .map(menu => menu.map(key => ({ name: key.name, item: items })))
-  //     ))
-  //     //                 //.map( key => key.map(a=>a))
+    const sub$ = this.db.list<Menu>('subMenu').valueChanges();
+    sub$.pipe(map((subMenuKeys) => subMenuKeys),
+          filter<Menu>((subMenuKey) => subMenuKey.name.toLowerCase() === 'join us'),
+          // .map( subMenu => ({id: subMenu.id, name: subMenu.name, items: subMenu.items})))
+          map((subMenu) => subMenu.items),
+          switchMap((items) =>
+            // this.db.list('menu', { query: { orderByChild: 'order' } })
+            this.db.list<Menu>('menu', (ref) => ref.orderByChild('order')).valueChanges()
+                // this.blog$ = this.db.list<Blog>('blogPosts',
+    //         (ref) => ref.orderByChild('order')).valueChanges();
+            // .filter(menu => menu.map(key=>key.enable))
+            .pipe(map((menu) => menu.map((key) => ({ name: key.name, item: items })))))
+          //do(console.log)
+      );
+      //                 //.map( key => key.map(a=>a))
 
-  //     // const nav$ = this.db.list('menu')
-  //     //             .map(keys => keys
-  //     //                 .map(key => key));
-  //     //let result;
-  //     // forkJoin([sub$, nav$]).subscribe(results=> {
-  //     //     results[0].items = results[1];
-  //     //     this.result = results[0];
+      // const nav$ = this.db.list('menu')
+      //             .map(keys => keys
+      //                 .map(key => key));
+      //let result;
+      // forkJoin([sub$, nav$]).subscribe(results=> {
+      //     results[0].items = results[1];
+      //     this.result = results[0];
 
-  //     // })
-  //     // console.log(this.result);
-  //     // , items: subNav$
-  //     //             .filter(nav=> nav.id === menu.id)
-  //     //             .map(item=>item.items)}))
-  //     //             // this.menu$
-  //     // .map(keys => keys
-  //     //     .map(key => ({name: key.name, id: key.id, items:
+      // })
+      // console.log(this.result);
+      // , items: subNav$
+      //             .filter(nav=> nav.id === menu.id)
+      //             .map(item=>item.items)}))
+      //             // this.menu$
+      // .map(keys => keys
+      //     .map(key => ({name: key.name, id: key.id, items:
 
-  //     // this.db.list('subMenu')
-  //     // .map(subMenuKeys => subMenuKeys
-  //     //     .filter(subMenuKey => subMenuKey.name.toLowerCase() === key.name.toLowerCase())
-  //     //     .map( subMenu => ({name: key.name, items: subMenu.items})
-  //     .do(console.log);
+      // this.db.list('subMenu')
+      // .map(subMenuKeys => subMenuKeys
+      //     .filter(subMenuKey => subMenuKey.name.toLowerCase() === key.name.toLowerCase())
+      //     .map( subMenu => ({name: key.name, items: subMenu.items})
 
-  //   sub$.subscribe();
-  //   //b$.subscribe();
-  // }
+
+    sub$.subscribe();
+    //b$.subscribe();
+  }
 
   public setTopNav(routeMenu: string, routeSubMenu: string = null) {
     if (!this.topMenu) {

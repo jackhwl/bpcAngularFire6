@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
     this.sanitizer = this.domSanitizer;
     console.log('home menu=', this.route.snapshot.params['menu']);
     this.menuSVC.setTopNav(this.route.snapshot.params['menu'], this.route.snapshot.params['sub']);
-    //this.menuSVC.getNav(this.route.snapshot.params['menu'], this.route.snapshot.params['sub']);
+    this.menuSVC.getNav(this.route.snapshot.params['menu'], this.route.snapshot.params['sub']);
     this.menuSVC.getMisc();
   }
 }
