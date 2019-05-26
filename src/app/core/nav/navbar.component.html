@@ -3,7 +3,7 @@
   <label for="show-menu" class="show-menu">Show Menu</label>
   <input type="checkbox" id="show-menu" role="button">
   <ul id="menu">
-    <li *ngFor="let menu of menuSVC.topMenu">
+    <li *ngFor="let menu of getTopMenu()">
       <a *ngIf="menu.items?.length<=0" (click)="changeRoute(menu)" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">{{menu.name}}</a>
       <a *ngIf="menu.items?.length>0" href="#">{{menu.name}} ￬</a>
       <ul class="hidden" *ngIf="menu.items?.length>0">

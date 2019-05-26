@@ -11,14 +11,14 @@ import { Menu, Misc } from '../models';
 // import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
 // import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
-import { FormGroup } from '@angular/forms';
 
 // import { FirebaseListObservable } from 'angularfire2/database-deprecated';
 
 @Injectable()
 export class MenuService {
+  //public topMenu1: Observable<Menu[]>;
   public topMenu: Menu[];
   public subMenu: Menu[];
   public currentMenu: Menu;
@@ -34,6 +34,7 @@ export class MenuService {
     this.content$ = this.db.object<string>('content').valueChanges();
     this.subMenu$ = this.db.object<Menu>('subMenu').valueChanges();
     this.menu$ = db.list<Menu>('menu').valueChanges();
+    //this.topMenu1 = db.list<Menu>('menu').valueChanges();
     this.misc$ = db.object<Misc>('misc').valueChanges();
     // //console.log('this.misc$=', this.misc$);
     // // this.content$ = this.db.doc<string>('content').valueChanges();
@@ -90,7 +91,7 @@ export class MenuService {
     if (!this.topMenu) {
       // const dbRef = this.db.list('menu', { query: { orderByChild: 'order' } })
       //  .$ref;
-      this.db.list<Menu>('menu').query.once('value').then((snapshot) => {
+      return this.db.list<Menu>('menu').query.once('value').then((snapshot) => {
         const tmp: string[] = [];
         snapshot.forEach(function(childSnapshot) {
           const item = childSnapshot.val();
@@ -121,6 +122,7 @@ export class MenuService {
             }
           });
         }
+        //this.topMenu1 = of(this.topMenu);
       });
     }
   }

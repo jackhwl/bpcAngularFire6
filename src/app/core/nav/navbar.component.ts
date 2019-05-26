@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuService } from '../services';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Menu } from '../models';
 
 @Component({
@@ -9,7 +9,7 @@ import { Menu } from '../models';
   templateUrl: './navbar.component.html'
 })
 export class NavComponent implements OnInit {
-  public menus$: Observable<Menu[]>;
+
   constructor(
     //private authService: AuthService,
     private menuSVC: MenuService,
@@ -17,11 +17,11 @@ export class NavComponent implements OnInit {
   ) {}
 
   public ngOnInit() {
-    this.getMenus();
+
   }
 
-  getMenus() {
-    this.menus$ = this.menuSVC.getMenus();
+  public getTopMenu() {
+    return this.menuSVC.topMenu;
   }
 
   changeRoute(menu) {
