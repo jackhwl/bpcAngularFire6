@@ -14,14 +14,14 @@
         </li>
       </ul>
     </li>
-    <li *ngIf="(authService.user$ | async)?.uid">
+    <li *ngIf="(getUser() | async)?.uid">
       <a (click)="adminRoute()" [routerLink]=" ['./admin'] "  routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Admin</a>
     </li>
 
-    <li *ngIf="(authService.user$ | async)?.uid">
-      {{(authService.user$ | async)?.email}}
+    <li *ngIf="(getUser() | async)?.uid">
+      {{(getUser() | async)?.email}}
     </li>
-    <li *ngIf="(authService.user$ | async)?.uid">
+    <li *ngIf="(getUser() | async)?.uid">
       <a (click)="logout()" [routerLink]=" ['./home'] "  routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Logout</a>
     </li>
   </ul>

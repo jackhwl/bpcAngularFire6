@@ -1,14 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MenuService, AuthService } from '../services';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { Menu } from '../models';
 
 @Component({
   selector: 'bc-nav-bar',
   templateUrl: './navbar.component.html'
 })
-export class NavComponent implements OnInit {
+export class NavComponent {
 
   constructor(
     private authService: AuthService,
@@ -16,34 +14,34 @@ export class NavComponent implements OnInit {
     private router: Router
   ) {}
 
-  public ngOnInit() {
-    console.log('nav menu=');
-  }
-
   public getTopMenu() {
     return this.menuSVC.topMenu;
   }
 
-  changeRoute(menu) {
+  public getUser() {
+    return this.authService.user$;
+  }
+
+  public changeRoute(menu) {
     this.menuSVC.currentMenu = menu;
     this.menuSVC.currentSubMenu = null;
     this.menuSVC.getContent(menu);
     this.router.navigate(['./', menu.name.replace(/ /g, '-')]);
   }
 
-  adminRoute() {
+  public adminRoute() {
     this.menuSVC.currentMenu = null;
     this.menuSVC.currentSubMenu = null;
     this.router.navigate(['./admin']);
   }
 
-  logout() {
+  public logout() {
     this.menuSVC.getContent(this.menuSVC.topMenu[0]);
     this.menuSVC.getContent(this.menuSVC.topMenu[0].items[0]);
     this.authService.logout();
   }
 
-  changeSubRoute(menu, subMenu) {
+  public changeSubRoute(menu, subMenu) {
     this.menuSVC.currentMenu = menu;
     this.menuSVC.currentSubMenu = subMenu;
     this.menuSVC.getContent(menu);
