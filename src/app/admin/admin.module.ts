@@ -7,14 +7,14 @@ import { QuillModule } from 'ngx-quill';
 
 import { AdminComponent } from './adminComponent/admin.component';
 import { AdminMenuComponent } from './adminMenu/admin-menu.component';
-// import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './login/login.component';
 // import { SignUpComponent } from './signUp/sign-up.component';
 
 import { UserService, AuthGuard, AuthService } from '../core/services';
 import { MenuAdminService } from './adminShared/menu-admin.service';
 // import { BlogAdminService } from './adminShared/blog-admin.service';
 
-// import { MenuListComponent } from './menuList/menu-list.component';
+import { MenuListComponent } from './menuList/menu-list.component';
 
 // import { MenuAdminComponent } from './menuAdmin/menu-admin.component';
 // import { MenuAddComponent } from './menuAdd/menu-add.component';
@@ -42,9 +42,9 @@ import { AdminRoutes } from './admin.routes';
     declarations: [
         AdminComponent,
         AdminMenuComponent,
-        // LoginComponent,
+        LoginComponent,
         // SignUpComponent,
-        // MenuListComponent,
+        MenuListComponent,
         // MenuAdminComponent,
         // MenuAddComponent,
         // MenuEditComponent,

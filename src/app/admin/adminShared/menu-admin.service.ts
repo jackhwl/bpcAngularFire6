@@ -237,16 +237,10 @@ export class MenuAdminService {
   // }
 
   public editMisc(type: string, content: string) {
-    let dbRef = this.db.object('misc/' + type + '/').$ref.update(
-      {
-        content: content
-      },
-      function(err) {
-        if (err) {
-          console.error('error:', err);
-        }
-      }
-    );
+    let dbRef = this.db.object(`misc/${type}`)
+    .update({
+        content
+      });
   }
 
   // setForm(menu: Menu, form: FormGroup) {

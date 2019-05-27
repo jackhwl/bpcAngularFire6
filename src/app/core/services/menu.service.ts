@@ -1,20 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Menu, Misc } from '../models';
-// import * as firebase from 'firebase';
-
-// import { AngularFire } from 'angularfire2';
-// import { AngularFire } from 'angularfire2';
-// // for auth
-// import {AngularFireAuthModule} from 'angularfire2/auth';
-// // for database
-// tslint:disable-next-line: max-line-length
-// import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
-// import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs';
 import { map, filter, switchMap } from 'rxjs/operators';
-
-// import { FirebaseListObservable } from 'angularfire2/database-deprecated';
 
 @Injectable()
 export class MenuService {
