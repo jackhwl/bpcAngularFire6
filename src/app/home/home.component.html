@@ -3,17 +3,17 @@
     <main class="content">
       <div class="breadcrumb">
         You are here:
-        <span class="breadcrumb-link-wrap"><a href="#"><span>{{menuSVC.currentMenu?.name}}</span></a></span>
+        <span class="breadcrumb-link-wrap"><a href="#"><span>{{currentMenu?.name}}</span></a></span>
         <span>/</span>
-        {{menuSVC.currentSubMenu?.name}}
+        {{currentSubMenu?.name}}
       </div>
       <article class="entry">
         <header class="entry-header">
-          <h1 class="entry-title">{{menuSVC.currentSubMenu?.name}}</h1>
+          <h1 class="entry-title">{{currentSubMenu?.name}}</h1>
         </header>
-        <div class="entry-content" [innerHTML]="sanitizer.bypassSecurityTrustHtml(menuSVC.currentMenu?.content || '')">
+        <div class="entry-content" [innerHTML]="sanitizer.bypassSecurityTrustHtml(currentMenu?.content || '')">
         </div>
-        <div class="entry-content" [innerHTML]="sanitizer.bypassSecurityTrustHtml(menuSVC.currentSubMenu?.content || '')">
+        <div class="entry-content" [innerHTML]="sanitizer.bypassSecurityTrustHtml(currentSubMenu?.content || '')">
         </div>
       </article>
     </main>

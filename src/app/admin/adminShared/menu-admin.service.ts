@@ -236,18 +236,18 @@ export class MenuAdminService {
   //   let contentRef = this.contents$.remove(deleteMenu.id);
   // }
 
-  // editMisc(type: string, content: string) {
-  //   let dbRef = this.db.object('misc/' + type + '/').$ref.update(
-  //     {
-  //       content: content
-  //     },
-  //     function(err) {
-  //       if (err) {
-  //         console.error('error:', err);
-  //       }
-  //     }
-  //   );
-  // }
+  public editMisc(type: string, content: string) {
+    let dbRef = this.db.object('misc/' + type + '/').$ref.update(
+      {
+        content: content
+      },
+      function(err) {
+        if (err) {
+          console.error('error:', err);
+        }
+      }
+    );
+  }
 
   // setForm(menu: Menu, form: FormGroup) {
   //   if (menu && !menu.content) {

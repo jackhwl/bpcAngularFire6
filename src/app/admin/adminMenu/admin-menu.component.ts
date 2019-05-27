@@ -80,17 +80,17 @@ export class AdminMenuComponent implements OnInit {
     this.headerChoice = mode;
   }
 
-  // public updateMisc() {
-  //   if (this.headerChoice) {
-  //     this.menuAdminSVC.editMisc(
-  //       this.headerChoice,
-  //       this.txtArea.style.display === 'none'
-  //         ? this.editorForm.controls.editContent.value
-  //         : this.txtArea.value
-  //     );
-  //   }
-  //   this.headerChoice = '';
-  // }
+  public updateMisc() {
+    if (this.headerChoice) {
+      this.menuAdminSVC.editMisc(
+        this.headerChoice,
+        this.txtArea.style.display === 'none'
+          ? this.editorForm.controls.editContent.value
+          : this.txtArea.value
+      );
+    }
+    this.headerChoice = '';
+  }
 
   public getMisc(): any {
     this.menuSVC.getMisc().subscribe((data) => (this.misc = data));

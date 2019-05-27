@@ -25,25 +25,7 @@ import { MenuAdminService } from './adminShared/menu-admin.service';
 // import { BlogAddComponent } from './blogAdd/blog-add.component';
 
 import { TruncatePipe } from './adminShared/trunc.pipe';
-
-const AdminRoutes: Routes = [
-    {
-        path: 'admin',
-        component: AdminComponent,
-        children: [
-            // { path: 'menu-list', component: MenuListComponent, canActivate: [AuthGuard] },
-            // { path: 'menu-list/:id', component: MenuListComponent, canActivate: [AuthGuard] },
-            // { path: 'blog-admin', component: BlogAdminComponent, canActivate: [AuthGuard] },
-            // { path: 'menu-admin', component: MenuAdminComponent, canActivate: [AuthGuard] },
-            // { path: 'sub-menu-admin', component: SubMenuAdminComponent, canActivate: [AuthGuard] },
-            // { path: 'menu-edit/:sub', component: MenuEditComponent, canActivate: [AuthGuard] },
-            // { path: 'login', component: LoginComponent },
-            // { path: 'signup', component: SignUpComponent },
-            // { path: 'menu/:id', component:　MenuEditComponent, canActivate: [AuthGuard] },
-            { path: '', component: AdminMenuComponent, canActivate: [AuthGuard] }
-        ]
-    }
-];
+import { AdminRoutes } from './admin.routes';
 
 @NgModule({
     imports: [

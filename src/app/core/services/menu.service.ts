@@ -18,7 +18,7 @@ import { map, filter, switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class MenuService {
-  //public topMenu1: Observable<Menu[]>;
+  // public topMenu1: Observable<Menu[]>;
   public topMenu: Menu[];
   public subMenu: Menu[];
   public currentMenu: Menu;
@@ -34,7 +34,7 @@ export class MenuService {
     this.content$ = this.db.object<string>('content').valueChanges();
     this.subMenu$ = this.db.object<Menu>('subMenu').valueChanges();
     this.menu$ = db.list<Menu>('menu').valueChanges();
-    //this.topMenu1 = db.list<Menu>('menu').valueChanges();
+    // this.topMenu1 = db.list<Menu>('menu').valueChanges();
     this.misc$ = db.object<Misc>('misc').valueChanges();
     // //console.log('this.misc$=', this.misc$);
     // // this.content$ = this.db.doc<string>('content').valueChanges();
