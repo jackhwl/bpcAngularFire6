@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Blog } from '../models';
-import { BlogService } from '../services';
+import { MenuService, BlogService } from '../services';
 
 @Component({
   selector: 'side-bar',
@@ -12,7 +12,15 @@ export class SideBarComponent implements OnInit {
   public hightlights: Blog[];
   public blogs: Blog[];
 
-  constructor(private blogSVC: BlogService, private router: Router) {}
+  constructor(private menuSVC: MenuService,
+              private blogSVC: BlogService,
+              private route: ActivatedRoute,
+              private router: Router) {
+    route.params.subscribe(() => {
+      console.log('sidebar menu=', this.route.snapshot.params['menu']);
+      this.menuSVC.setTopNav(this.route.snapshot.params['menu'], this.route.snapshot.params['sub']);
+    });
+  }
 
   public ngOnInit() {
     this.setBlogs();

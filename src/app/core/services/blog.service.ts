@@ -45,6 +45,8 @@ export class BlogService {
               this.hightlights = Object.keys(ontop).map((key) => ontop[key]);
               this.blogs = Object.keys(tmp).map((key) => tmp[key]);
             });
+    } else {
+      return Promise.resolve();
     }
 }
   // getPosts() {
