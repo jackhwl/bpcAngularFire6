@@ -26,6 +26,7 @@ import { XLargeDirective } from './home/x-large';
 import { DevModuleModule } from './+dev-module';
 import { HeaderComponent } from './header';
 import { FooterComponent } from './footer';
+import { BlogDetailComponent } from './blogDetail';
 
 import '../styles/styles.scss';
 import '../styles/headings.css';
@@ -56,6 +57,7 @@ interface StoreType {
     HomeComponent,
     HeaderComponent,
     FooterComponent,
+    BlogDetailComponent,
     NoContentComponent,
     XLargeDirective
   ],

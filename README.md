@@ -2,7 +2,36 @@ bpc website use angularFire2 4.0
 test publick key again
 use node 8.13 version to avoid sass issue(in node 10)
 template from:
+
 https://demo.studiopress.com/outreach/
+
+list query return Promise:
+this.db.list<Blog>('blogPosts', (ref) => ref.orderByChild('title').equalTo(blogTitle))
+        .query.once('value')
+        .then((snapshot) => {
+            const tmp = snapshot.val();
+            const transform = Object.keys(tmp).map((key) => tmp[key]);
+            const title = transform[0].title;
+
+            this.singlePost = {
+              title, content, imgTitle, img, ontop, author,
+              order, enable, createDate, modifiedDate
+            };
+        })
+
+list query return Observable:
+this.db.list<Blog>('blogPosts', (ref) => ref.orderByChild('title').equalTo(blogTitle))
+        .valueChanges()
+        .subscribe((snapshot) => {
+            const tmp = snapshot;
+            const transform = Object.keys(tmp).map((key) => tmp[key]);
+            const title = transform[0].title;
+
+            this.singlePost = {
+              title, content, imgTitle, img, ontop, author,
+              order, enable, createDate, modifiedDate
+            };
+        })
 
 [![taylor swift](https://img.shields.io/badge/secured%20by-taylor%20swift-brightgreen.svg)](https://twitter.com/SwiftOnSecurity)
 [![volkswagen status](https://auchenberg.github.io/volkswagen/volkswargen_ci.svg?v=1)](https://github.com/auchenberg/volkswagen)
