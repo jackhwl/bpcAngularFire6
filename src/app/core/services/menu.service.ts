@@ -11,7 +11,7 @@ import { Menu, Misc } from '../models';
 // import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
 // import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, filter, switchMap } from 'rxjs/operators';
 
 // import { FirebaseListObservable } from 'angularfire2/database-deprecated';

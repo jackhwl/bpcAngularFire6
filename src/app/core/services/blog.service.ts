@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Blog } from '../models';
 import { AngularFireDatabase } from '@angular/fire/database';
 
