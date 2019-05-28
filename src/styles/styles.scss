@@ -2,6 +2,10 @@
 /* This file is for setting global styles  */
 //@import 'variables';
 @import 'site';
+
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.snow.css';
+
 // nav {
 //   margin-top: 16px;
 // }

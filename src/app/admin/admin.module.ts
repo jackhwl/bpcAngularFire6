@@ -17,8 +17,8 @@ import { MenuAdminService } from './adminShared/menu-admin.service';
 import { MenuListComponent } from './menuList/menu-list.component';
 
 import { MenuAdminComponent } from './menuAdmin/menu-admin.component';
-// import { MenuAddComponent } from './menuAdd/menu-add.component';
-import { MenuEditComponent } from './menuEdit/menu-edit.component';
+import { MenuAddComponent } from './menuAdd/menu-add.component';
+// import { MenuEditComponent } from './menuEdit/menu-edit.component';
 // import { SubMenuAdminComponent } from './subMenuAdmin/sub-menu-admin.component';
 
 // import { BlogAdminComponent } from './blogAdmin/blog-admin.component';
@@ -46,8 +46,8 @@ import { AdminRoutes } from './admin.routes';
         // SignUpComponent,
         MenuListComponent,
         MenuAdminComponent,
-        // MenuAddComponent,
-        MenuEditComponent,
+        MenuAddComponent,
+        //MenuEditComponent,
         // SubMenuAdminComponent,
         // BlogAdminComponent,
         // BlogAddComponent,
