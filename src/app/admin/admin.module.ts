@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { QuillModule } from 'ngx-quill';
+import '../../styles/quill.scss';
 
 import { AdminComponent } from './adminComponent/admin.component';
 import { AdminMenuComponent } from './adminMenu/admin-menu.component';
