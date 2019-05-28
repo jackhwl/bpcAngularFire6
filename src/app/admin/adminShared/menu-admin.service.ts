@@ -197,26 +197,26 @@ export class MenuAdminService {
   }
 
   public editMisc(type: string, content: string) {
-    let dbRef = this.db.object(`misc/${type}`)
+    this.db.object(`misc/${type}`)
     .update({
         content
       });
   }
 
   setForm(menu: Menu, form: FormGroup) {
-    // if (menu && !menu.content) {
-    //   let contentRef = this.content$.$ref.child(menu.id);
-    //   contentRef.once('value').then(snapshot => {
-    //     let contents = snapshot.val();
-    //     menu.content = contents.content;
-    //     form.setValue({
-    //       name: menu.name,
-    //       order: menu.order,
-    //       content: menu.content,
-    //       enable: menu.enable
-    //     });
-    //   });
-    // }
+    if (menu && !menu.content) {
+      this.db.object<string>(`content/${menu.id}`).query
+      .once('value').then(snapshot => {
+        let contents = snapshot.val();
+        menu.content = contents.content;
+        form.setValue({
+          name: menu.name,
+          order: menu.order,
+          content: menu.content,
+          enable: menu.enable
+        });
+      });
+    }
   }
 
   public getEditorModules() {

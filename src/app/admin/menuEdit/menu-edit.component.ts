@@ -1,7 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UserService, MenuService } from '../../core/services';
 import { Router } from '@angular/router';
-import * as firebase from 'firebase';
 import { MenuAdminService } from '../adminShared/menu-admin.service';
 import { Menu } from '../../core/models';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -25,7 +23,7 @@ export class MenuEditComponent implements OnInit{
     txtArea: HTMLTextAreaElement;
     @Input() menuData: any;
     @Input() menu: Menu;
-    constructor( private menuAdminSVC: MenuAdminService, private router: Router, private fb: FormBuilder ){}
+    constructor(private menuAdminSVC: MenuAdminService, private fb: FormBuilder ) {}
 
     // fileLoad($event: any) {
     //     let myReader:FileReader = new FileReader();
