@@ -1,0 +1,58 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="small-12 medium-6 columns">
+            <h1>{{menuData.addMode?'Create a Menu':'Edit a Menu'}}</h1>
+        </div>
+    </div>
+
+    <form [formGroup]="editorForm">
+        <div class="row">
+            <div class="small-12 medium-6 columns">
+                <label>Menu Name
+                    <input type="text" formControlName="name" required >
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="small-12 columns">
+                <label>Menu Content
+                    <span [style.display]="menu.name=='Sermons'?'none':'Sermons'">
+                      <quill-editor [style]="editorStyle" [modules]="modules" (onContentChanged)="maxLength($event)"
+                      (onEditorCreated)="editorCreated($event)" formControlName="content"></quill-editor>
+                    </span>
+                    <textarea [style.display]="!(menu.name=='Sermons')?'none':'Sermons'" rows="15" cols="100" formControlName="content"></textarea>
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="small-12 medium-6 columns">
+                <label>Order
+                    <input type="number" formControlName="order"  required >
+                </label>
+            </div>
+            <div class="small-12 medium-6 columns">
+                <label>Enable
+                    <input type="radio" formControlName="enable" value="true"> True
+                    <input type="radio" formControlName="enable" value="false"> False
+<!--
+                    <input type="radio" name="enable" [(ngModel)]="menu.enable" [value]="true"> True
+                    <input type="radio" name="enable" [(ngModel)]="menu.enable" [value]="false"> False -->
+                </label>
+            </div>
+        </div>
+        <div class="row align-center">
+            <div class="small-12 columns">
+                <div class="expanded button-group">
+                    <button class="success button" type="button" [disabled]="!editorForm.valid"
+                        (click)="updateMenu()">Update Menu</button>
+                    <button class="cancel button" type="button" (click)="cancelEdit()">Cancel Edit</button>
+
+                    <!-- <button class="success button" type="button" [disabled]="!navName.valid"
+                        (click)="updateMenu(menu)">Update Menu</button>
+                    <button class="cancel button" type="button" (click)="cancel()">Cancel</button> -->
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
