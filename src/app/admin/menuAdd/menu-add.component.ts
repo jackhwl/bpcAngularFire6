@@ -39,7 +39,7 @@ export class MenuAddComponent implements OnInit {
     //     }
     // }
 
-    public ngOnInit(){
+    public ngOnInit() {
         // console.log('this.parentId=');
         // console.log(this.parentId);
         this.editorForm = this.fb.group({
@@ -72,7 +72,7 @@ export class MenuAddComponent implements OnInit {
             } else {
                 this.txtArea.value = this.editorForm.controls.content.value;
             }
-            this.txtArea.style.display = this.txtArea.style.display === 'none' ? '' : 'none'
+            this.txtArea.style.display = this.txtArea.style.display === 'none' ? '' : 'none';
         });
     }
 
@@ -86,7 +86,7 @@ export class MenuAddComponent implements OnInit {
 
     public createMenu() {
         if (this.editorForm.valid) {
-            if (this.editorForm.dirty){
+            if (this.editorForm.dirty) {
                 const menuItem = { ...this.menu, ...this.editorForm.value};
                 console.log('menuItem=', menuItem);
                 console.log('this.singleMenu=', this.menu);

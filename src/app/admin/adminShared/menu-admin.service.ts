@@ -107,7 +107,7 @@ export class MenuAdminService {
     });
   }
 
-  createSubMenu(parentId: string, menu: Menu) {
+  public createSubMenu(parentId: string, menu: Menu) {
     // let dbRef = this.db
     //   .object('subMenu/')
     //   .$ref.child(parentId)
@@ -128,7 +128,7 @@ export class MenuAdminService {
     // });
   }
 
-  editSubMenu(parentId: string, menu: Menu) {
+  public editSubMenu(parentId: string, menu: Menu) {
     // let dbRef = this.subMenu$.$ref
     //   .child(parentId)
     //   .child('items')
@@ -176,7 +176,7 @@ export class MenuAdminService {
     // //alert('menu updated');
   }
 
-  removeSubMenu(parentId: string, deleteMenu: Menu) {
+  public removeSubMenu(parentId: string, deleteMenu: Menu) {
     // let subMenuRef = this.db
     //   .object('subMenu/')
     //   .$ref.child(parentId)

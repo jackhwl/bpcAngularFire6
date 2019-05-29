@@ -4,7 +4,7 @@ import { AdminMenuComponent } from './adminMenu/admin-menu.component';
 import { LoginComponent } from './login/login.component';
 import { MenuAdminComponent } from './menuAdmin/menu-admin.component';
 import { MenuListComponent } from './menuList/menu-list.component';
-//import { MenuEditComponent } from './menuedit/menu-edit.component';
+import { MenuEditComponent } from './menuEdit/menu-edit.component';
 import { AuthGuard } from '../core/services';
 
 export const AdminRoutes: Routes = [
@@ -20,7 +20,7 @@ export const AdminRoutes: Routes = [
           // { path: 'menu-edit/:sub', component: MenuEditComponent, canActivate: [AuthGuard] },
           { path: 'login', component: LoginComponent },
           // { path: 'signup', component: SignUpComponent },
-          // { path: 'menu/:id', component:　MenuEditComponent, canActivate: [AuthGuard] },
+          { path: 'menu/:id', component:　MenuEditComponent, canActivate: [AuthGuard] },
           { path: '', component: AdminMenuComponent, canActivate: [AuthGuard] }
       ]
   }
