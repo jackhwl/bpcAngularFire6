@@ -9,23 +9,24 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
     templateUrl: '/menu-add.component.html'
 })
 
-export class MenuAddComponent implements OnInit{
-    editorForm: FormGroup;
-    name: string;
-    content: string;
-    order: number=0;
-    enable: boolean=false;
-    menu: Menu;
-    editorStyle = {
+export class MenuAddComponent implements OnInit {
+    public editorForm: FormGroup;
+    public name: string;
+    public content: string;
+    public order: number = 0;
+    public enable: boolean = false;
+    public menu: Menu;
+    public editorStyle = {
         height: '400px',
-        //width: '90vw',
+        // width: '90vw',
         backgroundColor: '#fff'
     };
-    modules: any;
-    txtArea: HTMLTextAreaElement;
-    @Input() parentId: string;
+    public modules: any;
+    public txtArea: HTMLTextAreaElement;
+    @Input() public parentId: string;
 
-    constructor( private menuAdminSVC: MenuAdminService, private router: Router, private fb: FormBuilder ){}
+    constructor( private menuAdminSVC: MenuAdminService,
+                 private router: Router, private fb: FormBuilder ) {}
 
     // fileLoad($event: any) {
     //     let myReader:FileReader = new FileReader();
@@ -38,7 +39,7 @@ export class MenuAddComponent implements OnInit{
     //     }
     // }
 
-    ngOnInit(){
+    public ngOnInit(){
         // console.log('this.parentId=');
         // console.log(this.parentId);
         this.editorForm = this.fb.group({
@@ -50,20 +51,24 @@ export class MenuAddComponent implements OnInit{
         this.modules = this.menuAdminSVC.getEditorModules();
     }
 
-    editorCreated(e) {
-        let quill = e;
+    public editorCreated(e) {
+        const quill = e;
         this.txtArea = document.createElement('textarea');
         this.txtArea.setAttribute('formControlName', 'content');
-        this.txtArea.style.cssText = "width: 100%;margin: 0px;background: rgb(29, 29, 29);box-sizing: border-box;color: rgb(204, 204, 204);font-size: 15px;outline: none;padding: 20px;line-height: 24px;font-family: Consolas, Menlo, Monaco, &quot;Courier New&quot;, monospace;position: absolute;top: 0;bottom: 0;border: none;display:none"
+        this.txtArea.style.cssText = `width: 100%;margin: 0px;background: rgb(29, 29, 29);
+        box-sizing: border-box;color: rgb(204, 204, 204);
+        font-size: 15px;outline: none;padding: 20px;line-height: 24px;
+        font-family: Consolas, Menlo, Monaco, &quot;Courier New&quot;, monospace;
+        position: absolute;top: 0;bottom: 0;border: none;display:none`;
 
-        let htmlEditor = quill.addContainer('ql-custom');
+        const htmlEditor = quill.addContainer('ql-custom');
         htmlEditor.appendChild(this.txtArea);
         this.txtArea.value = this.editorForm.controls.content.value;
-        let customButton = document.querySelector('.ql-showHtml') as HTMLButtonElement;
+        const customButton = document.querySelector('.ql-showHtml') as HTMLButtonElement;
         customButton.addEventListener('click', () => {
             if (this.txtArea.style.display === '') {
                 this.editorForm.controls.content.setValue(this.txtArea.value);
-                //quill.pasteHTML(html);
+                // quill.pasteHTML(html);
             } else {
                 this.txtArea.value = this.editorForm.controls.content.value;
             }
@@ -71,7 +76,7 @@ export class MenuAddComponent implements OnInit{
         });
     }
 
-    maxLength(e) {
+    public maxLength(e) {
         // console.log(e);
         // if(e.editor.getLength() > 10) {
         //     e.editor.deleteText(10, e.editor.getLength());
@@ -79,7 +84,7 @@ export class MenuAddComponent implements OnInit{
 
     }
 
-    createMenu() {
+    public createMenu() {
         if (this.editorForm.valid) {
             if (this.editorForm.dirty){
                 const menuItem = { ...this.menu, ...this.editorForm.value};
@@ -98,27 +103,15 @@ export class MenuAddComponent implements OnInit{
         } else {
             console.log('Please correct the validation errors.');
         }
-
-        // this.menu = {
-        //     name: this.name,
-        //     order: this.order,
-        //     enable: this.enable
-        // };
-        // this.menu.content = this.content;
-        // if (this.parentId) {
-        //     this.menuAdminSVC.createSubMenu(this.parentId, this.menu);
-        // } else {
-        //     this.menuAdminSVC.createMenu(this.menu);
-        // }
-        // this.router.navigate(['/admin']);
     }
-    onSaveComplete(): void {
+
+    public onSaveComplete(): void {
         // Reset the form to clear the flags
         console.log('onSaveComplete');
-        //this.editorForm.reset();
+        // this.editorForm.reset();
         this.router.navigate(['/admin']);
     }
-    cancel() {
+    public cancel() {
         this.router.navigate(['/admin']);
     }
 }

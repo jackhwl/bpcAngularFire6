@@ -38,34 +38,32 @@ export class MenuAdminService {
     ];
   }
 
-  createMenu(menu: Menu) {
-    // let dbRef = this.db.object('menu/').ref;
-    // let newMenu = dbRef.push();
-    // newMenu.set({
-    //   name: menu.name,
-    //   order: menu.order,
-    //   enable: menu.enable,
-    //   id: newMenu.key
-    // });
+  public createMenu(menu: Menu) {
+    const dbRef = this.db.list('menu');
+    const newMenu = dbRef.push('');
+    newMenu.set({
+      name: menu.name,
+      order: menu.order,
+      enable: menu.enable,
+      id: newMenu.key
+    });
 
-    // let subMenuRef = this.db.object('subMenu/').$ref;
-    // let newSubMenu = subMenuRef.child(newMenu.key);
-    // newSubMenu.set({
-    //   name: menu.name
-    // });
+    const newSubMenu = this.db.object(`subMenu/${newMenu.key}`);
+    newSubMenu.set({
+      name: menu.name
+    });
 
-    // let contentRef = this.db.object('content/').$ref;
-    // let content = contentRef.child(newMenu.key);
-    // if (menu.content) {
-    //   content.set({
-    //     name: menu.name,
-    //     content: menu.content
-    //   });
-    // } else {
-    //   content.set({
-    //     name: menu.name
-    //   });
-    // }
+    const content = this.db.object(`content/${newMenu.key}`);
+    if (menu.content) {
+      content.set({
+        name: menu.name,
+        content: menu.content
+      });
+    } else {
+      content.set({
+        name: menu.name
+      });
+    }
   }
 
   public editMenu(menu: Menu) {
@@ -81,7 +79,7 @@ export class MenuAdminService {
         name: menu.name
       });
 
-    const content = this.db.object(`content/{menu.id}`);
+    const content = this.db.object(`content/${menu.id}`);
     if (menu.content) {
       content.update({
         name: menu.name,
@@ -96,25 +94,17 @@ export class MenuAdminService {
 
   // created: FireBase.ServerValue.TIMESTAMP
 
-  removeMenu(deleteMenu: Menu) {
-    this.db.object(`menu/${deleteMenu.id}`)
-      .remove();
+  public removeMenu(deleteMenu: Menu) {
+    this.db.object(`menu/${deleteMenu.id}`).remove();
     const subMenuChildRef = this.db.list(`subMenu/${deleteMenu.id}/items`).query;
     subMenuChildRef.once('value').then((snapshot) => {
-      let tmp: string[] = [];
+      const tmp: string[] = [];
       snapshot.forEach(function(childSnapshot) {
-        let item = childSnapshot.val();
         tmp.push(childSnapshot.val());
       });
-      let menuItems = Object.keys(tmp).map(key => tmp[key]);
-      //menuItems.forEach(m => this.contents$.remove(m.id));
+      const menuItems = Object.keys(tmp).map((key) => tmp[key]);
+      menuItems.forEach((m) => this.db.object<string>(`content/${m.id}`).remove());
     });
-    // subMenuChildRef.remove();
-    // let subMenuRef = this.db
-    //   .object('subMenu/')
-    //   .$ref.child(deleteMenu.id)
-    //   .remove();
-    // this.contents$.remove(deleteMenu.id);
   }
 
   createSubMenu(parentId: string, menu: Menu) {
@@ -203,11 +193,11 @@ export class MenuAdminService {
       });
   }
 
-  setForm(menu: Menu, form: FormGroup) {
+  public setForm(menu: Menu, form: FormGroup) {
     if (menu && !menu.content) {
       this.db.object<string>(`content/${menu.id}`).query
-      .once('value').then(snapshot => {
-        let contents = snapshot.val();
+      .once('value').then((snapshot) => {
+        const contents = snapshot.val();
         menu.content = contents.content;
         form.setValue({
           name: menu.name,
