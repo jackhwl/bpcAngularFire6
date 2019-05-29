@@ -38,6 +38,42 @@ export class MenuAdminService {
     ];
   }
 
+  public getNav() {
+    return this.db.list<Menu>('menu', (ref) => ref.orderByChild('order')).valueChanges();
+    // ).query.once('value').then((snapshot) => {
+    //   const tmp: string[] = [];
+    //   snapshot.forEach(function(childSnapshot) {
+    //     const item = childSnapshot.val();
+    //     if (item.enable) { tmp.push(childSnapshot.val()); }
+    //   });
+    //   this.topMenu = Object.keys(tmp).map(key => tmp[key]);
+    // });
+    // const dbRef = firebase.database().ref('menu/').orderByChild('order');
+    // // dbRef.on('value', (snapshot) => {
+    // //     let tmp: string[] = snapshot.val();
+    // //     this.nav = Object.keys(tmp).map(key => tmp[key])
+    // // });
+    // dbRef.once('value')
+    //     .then((snapshot) => {
+    //         // let tmp: string[] = snapshot.val();
+    //         // console.log(tmp);
+    //         // this.nav = Object.keys(tmp).map(key => tmp[key])
+    //         const tmp: string[] = [];
+    //         snapshot.forEach(function(childSnapshot) {
+    //             tmp.push(childSnapshot.val());
+    //         });
+    //         this.nav = Object.keys(tmp).map((key) => tmp[key]);
+    // });
+    // // let key = this.nav[0].id;
+    // // let homeRef = dbRef.child(key);
+    // // homeRef.once('value')
+    // //     .then((snap) => {
+    // //         let tmp: string[] = snap.val();
+    // //         this.subNav = Object.keys(tmp).map(key => tmp[key])
+    // //     });
+
+  }
+
   public createMenu(menu: Menu) {
     const dbRef = this.db.list('menu');
     const newMenu = dbRef.push('');
