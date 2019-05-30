@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../core/services';
 import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as firebase from 'firebase';
 import { MenuAdminService } from '../adminShared/menu-admin.service';
 import { Menu } from '../../core/models/menu';
@@ -10,18 +11,28 @@ import { Menu } from '../../core/models/menu';
 })
 
 export class SubMenuAdminComponent implements OnInit {
+    public editorForm: FormGroup;
     public menuChoice: string = '';
     public formDisplay: boolean = true;
     public nav: Menu[];
     public subNav: Menu[];
     public selectedMenu: string = null;
+    public singleMenu: Menu;
     public subMenu: Menu;
     public parentId: string;
     public menuData: any = {menuChoice: '', parentId: '', subMenu: null};
+    public editorStyle = {
+        height: '400px',
+        // width: '90vw',
+        backgroundColor: '#fff'
+    };
+    public modules: any;
+    public txtArea: HTMLTextAreaElement;
 
     constructor(private userSVC: UserService,
                 private router: Router,
-                private menuAdminSVC: MenuAdminService) {}
+                private menuAdminSVC: MenuAdminService,
+                private fb: FormBuilder) {}
 
     public logout() {
         this.userSVC.logout();
@@ -34,6 +45,13 @@ export class SubMenuAdminComponent implements OnInit {
     // }
 
     public ngOnInit() {
+        this.editorForm = this.fb.group({
+            name: ['', Validators.required],
+            content: '',
+            order: ['10', Validators.required],
+            enable: ''
+        });
+        this.modules = this.menuAdminSVC.getEditorModules();
         this.setNav();
     }
 
@@ -69,14 +87,9 @@ export class SubMenuAdminComponent implements OnInit {
     }
 
     public editNav(menu: Menu) {
-        const dbRef = firebase.database().ref('content/').child(menu.id);
-        dbRef.once('value')
-            .then((snapshot) => {
-                if (snapshot.exists()){
-                    const contents = snapshot.val();
-                    menu.content = contents.content;
-                }
-        });
+        this.singleMenu = menu;
+        this.menuAdminSVC.setForm(this.singleMenu, this.editorForm);
+        this.formDisplay = false;
 
         this.menuChoice = 'editSub';
         this.subMenu = menu;
@@ -87,7 +100,7 @@ export class SubMenuAdminComponent implements OnInit {
         this.menuData.addMode = false;
     }
 
-    public deleteNav(menu: Menu){
+    public deleteNav(menu: Menu) {
         const verify = confirm(`Are you sure you want to delete this menu?`);
         if (verify === true) {
           this.parentId = this.selectedMenu;

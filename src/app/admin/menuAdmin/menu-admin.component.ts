@@ -52,7 +52,7 @@ export class MenuAdminComponent implements OnInit {
         this.editorForm = this.fb.group({
             name: ['', Validators.required],
             content: '',
-            order: ['', Validators.required],
+            order: ['10', Validators.required],
             enable: ''
         });
         this.modules = this.menuAdminSVC.getEditorModules();

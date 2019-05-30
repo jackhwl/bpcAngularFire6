@@ -69,9 +69,9 @@ export class MenuEditComponent implements OnInit {
 
     public updateMenu() {
         if (this.menuData.addMode) {
-            this.updateSubMenu(true);
+          this.updateSubMenu(true);
         } else {
-           this.updateSubMenu(false);
+          this.updateSubMenu(false);
         }
         this.menuData.menuChoice = '';
     }

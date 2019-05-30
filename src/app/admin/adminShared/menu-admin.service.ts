@@ -118,82 +118,52 @@ export class MenuAdminService {
   }
 
   public createSubMenu(parentId: string, menu: Menu) {
-    // let dbRef = this.db
-    //   .object('subMenu/')
-    //   .$ref.child(parentId)
-    //   .child('items');
-    // let newMenu = dbRef.push();
-    // newMenu.set({
-    //   name: menu.name,
-    //   order: menu.order,
-    //   enable: menu.enable,
-    //   id: newMenu.key
-    // });
+    const dbRef = this.db.list(`subMenu/${parentId}/items`);
+    const newMenu = dbRef.push('');
+    newMenu.set({
+      name: menu.name,
+      order: menu.order,
+      enable: menu.enable,
+      id: newMenu.key
+    });
 
-    // let contentRef = this.db.object('content/').$ref;
-    // let content = contentRef.child(newMenu.key);
-    // content.update({
-    //   name: menu.name,
-    //   content: menu.content
-    // });
+    const content = this.db.object(`content/${newMenu.key}`);
+    if (menu.content) {
+      content.set({
+        name: menu.name,
+        content: menu.content
+      });
+    } else {
+      content.set({
+        name: menu.name
+      });
+    }
   }
 
   public editSubMenu(parentId: string, menu: Menu) {
-    // let dbRef = this.subMenu$.$ref
-    //   .child(parentId)
-    //   .child('items')
-    //   .child(menu.id)
-    //   //let dbRef = firebase.database().ref('menu/').child(menu.id)
-    //   .update(
-    //     {
-    //       name: menu.name,
-    //       order: menu.order,
-    //       enable: menu.enable
-    //     },
-    //     function(err) {
-    //       if (err) {
-    //         console.error('error:', err);
-    //       }
-    //     }
-    //   );
+    this.db.object(`subMenu/${parentId}/items/${menu.id}`)
+      .update({
+          name: menu.name,
+          order: menu.order,
+          enable: menu.enable
+      });
 
-    // // let subMenuRef = firebase.database().ref('subMenu/');
-    // // let newSubMenu = subMenuRef.child(menu.id);
-    // // newSubMenu.update ({
-    // //     name: menu.name,
-    // // });
-
-    // let contentRef = this.db.object('content/').$ref.child(menu.id);
-    // //let content = contentRef.child(menu.id);
-    // if (menu.content) {
-    //   contentRef.update({
-    //     name: menu.name,
-    //     content: menu.content
-    //   });
-    // } else {
-    //   contentRef.update({
-    //     name: menu.name
-    //   });
-    // }
-
-    // // var updates = {};
-    // // updates['menu/' + menu.id] = {name: menu.name,order: menu.order};
-    // // updates['subMenu/' + menu.id] = {name: menu.name};
-    // // updates['content/' + menu.id] = {name: menu.name};
-
-    // // firebase.database().ref().update(updates);
-
-    // //alert('menu updated');
+    const content = this.db.object(`content/${menu.id}`);
+    if (menu.content) {
+      content.update({
+        name: menu.name,
+        content: menu.content
+      });
+    } else {
+      content.update({
+        name: menu.name
+      });
+    }
   }
 
   public removeSubMenu(parentId: string, deleteMenu: Menu) {
-    // let subMenuRef = this.db
-    //   .object('subMenu/')
-    //   .$ref.child(parentId)
-    //   .child('items')
-    //   .child(deleteMenu.id)
-    //   .remove();
-    // let contentRef = this.contents$.remove(deleteMenu.id);
+    this.db.object(`subMenu/${parentId}/items/${deleteMenu.id}`).remove();
+    this.db.object<string>(`content/${deleteMenu.id}`).remove();
   }
 
   public editMisc(type: string, content: string) {
