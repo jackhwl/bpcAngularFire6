@@ -6,7 +6,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
     selector: 'add-menu',
-    templateUrl: '/menu-add.component.html'
+    templateUrl: './menu-add.component.html'
 })
 
 export class MenuAddComponent implements OnInit {

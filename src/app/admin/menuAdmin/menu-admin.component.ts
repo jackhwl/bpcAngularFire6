@@ -6,7 +6,7 @@ import { UserService } from '../../core/services';
 import { Menu } from '../../core/models';
 
 @Component({
-    templateUrl: '/menu-admin.component.html',
+    templateUrl: './menu-admin.component.html',
     styleUrls: ['./menu-admin.component.css']
 })
 
@@ -37,7 +37,7 @@ export class MenuAdminComponent implements OnInit {
         this.router.navigate(['']);
     }
 
-    public chooseMode(mode: string, id: string) {
+    public chooseMode(mode: string, id: string = '') {
         this.menuChoice = mode;
         this.parentId = id;
     }

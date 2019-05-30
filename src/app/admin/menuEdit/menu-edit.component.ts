@@ -5,7 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
     selector: 'edit-menu',
-    templateUrl: '/menu-edit.component.html'
+    templateUrl: './menu-edit.component.html'
 })
 
 export class MenuEditComponent implements OnInit {
@@ -76,7 +76,7 @@ export class MenuEditComponent implements OnInit {
         this.menuData.menuChoice = '';
     }
 
-    public cancel() {
+    public cancelEdit() {
         this.menuData.menuChoice = '';
     }
 

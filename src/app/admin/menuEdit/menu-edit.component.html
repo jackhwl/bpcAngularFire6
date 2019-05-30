@@ -17,7 +17,7 @@
             <div class="small-12 columns">
                 <label>Menu Content
                     <span [style.display]="menu.name=='Sermons'?'none':'Sermons'">
-                      <quill-editor [style]="editorStyle" [modules]="modules" (onContentChanged)="maxLength($event)"
+                      <quill-editor [style]="editorStyle" [modules]="modules" (onContentChanged)="maxLength()"
                       (onEditorCreated)="editorCreated($event)" formControlName="content"></quill-editor>
                     </span>
                     <textarea [style.display]="!(menu.name=='Sermons')?'none':'Sermons'" rows="15" cols="100" formControlName="content"></textarea>

@@ -7,7 +7,7 @@ import { MenuAdminService } from '../adminShared/menu-admin.service';
 import { Menu } from '../../core/models/menu';
 
 @Component({
-    templateUrl: '/sub-menu-admin.component.html'
+    templateUrl: './sub-menu-admin.component.html'
 })
 
 export class SubMenuAdminComponent implements OnInit {
