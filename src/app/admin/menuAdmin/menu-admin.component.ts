@@ -111,9 +111,6 @@ export class MenuAdminComponent implements OnInit {
         if (this.editorForm.valid) {
             if (this.editorForm.dirty) {
                 const menuItem = { ...this.singleMenu, ...this.editorForm.value};
-                console.log('menuItem=', menuItem);
-                console.log('this.singleMenu=', this.singleMenu);
-                console.log('this.editorForm.value=', this.editorForm.value);
                 this.menuAdminSVC.editMenu(menuItem);
                 this.formDisplay = true;
                 this.setNav();
@@ -124,20 +121,13 @@ export class MenuAdminComponent implements OnInit {
         } else {
             console.log('Please correct the validation errors.');
         }
-        // this.singleMenu.name = this.editorForm.controls.editName.value;
-        // this.singleMenu.order = this.editorForm.controls.editOrder.value;
-        // this.singleMenu.enable = this.editorForm.controls.editEnable.value;
-        // this.singleMenu.content = this.editorForm.controls.editContent.value;
-        // this.menuAdminSVC.editMenu(this.menuItem);
     }
 
     public deleteNav(single: Menu) {
         const verify = confirm(`Are you sure you want to delete this menu?`);
         if (verify === true) {
             this.menuAdminSVC.removeMenu(single);
-            this.router.navigate(['/admin/']);
-        } else {
-            alert('Nothing deleted!');
+            this.router.navigate(['/admin/menu-admin']);
         }
     }
 

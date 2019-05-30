@@ -5,25 +5,25 @@ import * as firebase from 'firebase';
 import { MenuAdminService } from '../adminShared/menu-admin.service';
 import { Menu } from '../../core/models/menu';
 
-
 @Component({
-    templateUrl: '/sub-menu-admin.component.html',
-    styleUrls: ['./sub-menu-admin.component.css']
+    templateUrl: '/sub-menu-admin.component.html'
 })
 
 export class SubMenuAdminComponent implements OnInit {
-    menuChoice: string = '';
-    formDisplay: boolean = true;
-    nav: Menu[];
-    subNav: Menu[];
-    selectedMenu: string = null;
-    subMenu: Menu;
-    parentId: string;
-    menuData: any = {menuChoice: '', parentId: '', subMenu: null};
+    public menuChoice: string = '';
+    public formDisplay: boolean = true;
+    public nav: Menu[];
+    public subNav: Menu[];
+    public selectedMenu: string = null;
+    public subMenu: Menu;
+    public parentId: string;
+    public menuData: any = {menuChoice: '', parentId: '', subMenu: null};
 
-    constructor(private userSVC: UserService, private router: Router, private menuAdminSVC: MenuAdminService){}
+    constructor(private userSVC: UserService,
+                private router: Router,
+                private menuAdminSVC: MenuAdminService) {}
 
-    logout(){
+    public logout() {
         this.userSVC.logout();
         this.router.navigate(['']);
     }
@@ -33,48 +33,23 @@ export class SubMenuAdminComponent implements OnInit {
     //     this.parentId = id;
     // }
 
-    ngOnInit(){
-        //this.theUser = this.userSVC.loggedInUser;
-        //this.menuData.menuChoice = '';
-        this.getNav();
+    public ngOnInit() {
+        this.setNav();
     }
 
-    getNav(){
-        let dbRef = firebase.database().ref('menu/').orderByChild('order');
-        dbRef.once('value')
-            .then((snapshot) => {
-                let tmp: string[] = [];
-                snapshot.forEach(function(childSnapshot){
-                    tmp.push(childSnapshot.val());
-                })
-                this.nav = Object.keys(tmp).map(key => tmp[key]);
-        });
+    public setNav() {
+      this.menuAdminSVC.getNav().subscribe((menu) => this.nav = menu);
     }
 
-    onChange(id) {
-        this.getSubNav(id);
+    public onChange(id) {
+        this.setSubNav(id);
     }
 
-    getSubNav(parentId: string){
-        let dbRef = firebase.database().ref('subMenu/').child(parentId).child('items').orderByChild('order');
-        dbRef.on('value', (snapshot) => {
-            if (snapshot.exists()){
-                let tmp: string[] = snapshot.val();
-                this.subNav = Object.keys(tmp).map(key => tmp[key]);
-            } else {
-                this.subNav = [];
-            }
-        });
-        //         dbRef.once('value')
-        //     .then((snapshot) => {
-        //         let tmp: string[] = [];
-        //         snapshot.forEach(function(childSnapshot){
-        //             tmp.push(childSnapshot.val());
-        //         })
-        //         this.subNav = Object.keys(tmp).map(key => tmp[key]);
-        // });
+    public setSubNav(parentId: string) {
+      this.menuAdminSVC.getSubNav(parentId).subscribe((menu) => this.subNav = menu);
     }
-    addNav() {
+
+    public addNav() {
         this.menuChoice = 'editSub';
         this.parentId = this.selectedMenu;
         // this.subMenu = new Menu (
@@ -92,12 +67,13 @@ export class SubMenuAdminComponent implements OnInit {
         this.menuData.menuChoice = this.menuChoice;
         this.menuData.addMode = true;
     }
-    editNav(menu: Menu) {
-        let dbRef = firebase.database().ref('content/').child(menu.id);
+
+    public editNav(menu: Menu) {
+        const dbRef = firebase.database().ref('content/').child(menu.id);
         dbRef.once('value')
             .then((snapshot) => {
                 if (snapshot.exists()){
-                    let contents = snapshot.val();
+                    const contents = snapshot.val();
                     menu.content = contents.content;
                 }
         });
@@ -109,14 +85,13 @@ export class SubMenuAdminComponent implements OnInit {
         this.menuData.parentId =  this.parentId;
         this.menuData.menuChoice = this.menuChoice;
         this.menuData.addMode = false;
-
     }
 
-    deleteNav(menu: Menu){
-        let verify = confirm(`Are you sure you want to delete this menu?`);
-        if (verify == true) {
+    public deleteNav(menu: Menu){
+        const verify = confirm(`Are you sure you want to delete this menu?`);
+        if (verify === true) {
           this.parentId = this.selectedMenu;
-            this.menuAdminSVC.removeSubMenu(this.parentId, menu);
+          this.menuAdminSVC.removeSubMenu(this.parentId, menu);
         }
     }
 }
