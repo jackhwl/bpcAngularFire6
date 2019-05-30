@@ -20,7 +20,7 @@ import { MenuListComponent } from './menuList/menu-list.component';
 import { MenuAdminComponent } from './menuAdmin/menu-admin.component';
 import { MenuAddComponent } from './menuAdd/menu-add.component';
 import { MenuEditComponent } from './menuEdit/menu-edit.component';
-// import { SubMenuAdminComponent } from './subMenuAdmin/sub-menu-admin.component';
+import { SubMenuAdminComponent } from './subMenuAdmin/sub-menu-admin.component';
 
 // import { BlogAdminComponent } from './blogAdmin/blog-admin.component';
 // import { BlogAddComponent } from './blogAdd/blog-add.component';
@@ -49,7 +49,7 @@ import { AdminRoutes } from './admin.routes';
         MenuAdminComponent,
         MenuAddComponent,
         MenuEditComponent,
-        // SubMenuAdminComponent,
+        SubMenuAdminComponent,
         // BlogAdminComponent,
         // BlogAddComponent,
         TruncatePipe

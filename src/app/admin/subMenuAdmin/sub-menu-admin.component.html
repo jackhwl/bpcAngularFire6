@@ -1,0 +1,46 @@
+<div class="top-bar">
+    <!-- <div class="top-bar-title">BPC Admin area</div>
+
+    <div class="top-bar-left">
+        <ul class="menu">
+            <li class="admin-menu"><a [routerLink]="['/admin']">Back to Admin</a></li>
+        </ul>
+    </div> -->
+    <!-- <div *ngIf="theUser" class="top-bar-right">
+        <ul class="menu">
+            <li class="admin-menu"><a (click)="logout()">Logout</a></li>
+            <li class="admin-menu"><a> {{theUser}} Logged in</a></li>
+        </ul>
+    </div> -->
+</div>
+
+<div>
+    <div [ngSwitch]="menuData.menuChoice" class="admin-content">
+        <div *ngSwitchCase="'editSub'"><edit-menu [menuData]="menuData" [menu]="subMenu"></edit-menu></div>
+        <div *ngSwitchDefault>
+            <div *ngIf = "menuData.menuChoice==''" >
+                <select [(ngModel)]="selectedMenu" (change)="onChange($event.target.value)">
+                        <option [value]="null">Select Top Menu</option>
+                    <option *ngFor="let menu of nav" [value]="menu.id">{{menu.name}}</option>
+                </select>
+                <span *ngIf = "selectedMenu!==null"> <a class="button" (click)="addNav()">Add Sub Menu</a></span>
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Enable</th>
+                        <th>Order</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                    </tr>                    
+                    <tr *ngFor="let menu of subNav">
+                        <td>{{menu.name}}</td>
+                        <td>{{menu.enable}}</td>
+                        <td>{{menu.order}}</td>
+                        <td><button class="btn btn-link" (click)="editNav(menu)">Edit</button></td>
+                        <td><button class="btn btn-link" (click)="deleteNav(menu)">Delete</button></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
