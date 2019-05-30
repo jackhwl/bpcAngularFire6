@@ -100,8 +100,9 @@ export class MenuEditComponent implements OnInit {
 
     private onSaveComplete(): void {
       // Reset the form to clear the flags
-      console.log('onSaveComplete');
+      console.log('onSaveComplete111');
       this.editorForm.reset();
+      console.log('onSaveComplete222');
       // this.router.navigate(['/admin/menu-admin']);
     }
 }

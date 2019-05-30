@@ -178,7 +178,7 @@ export class MenuAdminService {
       this.db.object<string>(`content/${menu.id}`).query
       .once('value').then((snapshot) => {
         const contents = snapshot.val();
-        menu.content = contents.content;
+        menu.content = contents ? contents.content : null;
         form.setValue({
           name: menu.name,
           order: menu.order,
