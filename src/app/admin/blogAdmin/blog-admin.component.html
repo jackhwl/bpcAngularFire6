@@ -19,6 +19,10 @@
     <a class="btn btn-secondary" (click)="chooseMode('')" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Manage Blogs</a>
 
     <div *ngSwitchCase="'add'"><add-blog (saveComplete)="onSaveComplete()"></add-blog></div>
+    <div *ngSwitchCase="'edit'">
+            <div *ngIf='singlePost'>
+        <edit-blog (saveComplete)="onSaveComplete()" [thePost]="singlePost"></edit-blog></div>
+    </div>
     <div *ngSwitchDefault>
         <div *ngIf = "formDisplay" class="row">
                 <table>
@@ -63,88 +67,6 @@
                     </div>
                 </div> -->
 
-        </div>
-
-        <div *ngIf="!formDisplay" class="row">
-            <form [formGroup]="editorForm">
-                <div class="row">
-                    <div class="medium-12 columns"><h3>Edit Post</h3></div>
-                </div>
-                <div class="row">
-                    <div class="small-12 medium-6 columns">
-                        <label>Post Title
-                            <input type="text" formControlName="title" >
-                        </label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="small-12 medium-6 columns">
-                        <label>Post Author
-                            <input type="text" formControlName="author" >
-                        </label>
-                    </div>
-                </div>
-                <div class="row">
-                  <div class="small-12 medium-6 columns">
-                      <label>Post Image Link
-                          <input type="text" formControlName="imgurl" >
-                      </label>
-                  </div>
-              </div>
-              <div class="row">
-                <div class="small-12 medium-6 columns">
-                        <img src='{{singlePost.imgurl}}' >
-                </div>
-            </div>
-            <div class="row">
-                    <div class="small-12 medium-6 columns">
-                        <label>Post Content
-                            <quill-editor [style]="editorStyle" [modules]="modules"
-                            (onEditorCreated)="editorCreated($event)" formControlName="content"></quill-editor>
-
-                            <!-- <textarea rows="15" id="content" [(ngModel)]="singlePost.content"
-                                name="editContent" required #psContent="ngModel"></textarea> -->
-                        </label>
-                    </div>
-                    <!-- <div class="small-12 medium-6 columns">
-                        <img [src] = "singlePost.img" alt="Image preview...">
-                    </div> -->
-                </div>
-                <div class="row">
-                    <div class="small-12 medium-6 columns">
-                        <label>Order
-                            <input type="text" formControlName="order" >
-                        </label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="small-12 medium-6 columns">
-                        <label>Enable
-                            <input type="radio" formControlName="enable" [value]=true> True
-                            <input type="radio" formControlName="enable" [value]=false> False
-                        </label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="small-12 medium-6 columns">
-                        <label>Highlight
-                          <input type="radio" formControlName="ontop" [value]=true> True
-                          <input type="radio" formControlName="ontop" [value]=false> False
-                      </label>
-                    </div>
-                </div>
-
-                <div class="row align-center">
-                    <div class="small-12 columns">
-                        <div class="expanded button-group">
-                            <button class="success button" type="button" [disabled]="!editorForm.valid"
-                                (click)="updatePost()">Update Post</button>
-                            <button class="cancel button" type="button" (click)="cancelEdit()">Cancel Edit</button>
-                        </div>
-                    </div>
-                </div>
-
-            </form>
         </div>
     </div>
 </div>

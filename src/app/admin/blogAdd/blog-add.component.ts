@@ -1,7 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { BlogAdminService } from '../adminShared/blog-admin.service';
+import { BlogAdminService, QuillService } from '../adminShared';
 import { Blog } from '../../core/models';
 
 @Component({
@@ -27,7 +26,7 @@ export class BlogAddComponent implements OnInit {
     public txtArea: HTMLTextAreaElement;
 
     constructor(private blogAdminSVC: BlogAdminService,
-                private router: Router,
+                private quillSVC: QuillService,
                 private fb: FormBuilder) {}
 
     public ngOnInit() {
@@ -41,44 +40,16 @@ export class BlogAddComponent implements OnInit {
         ontop: false
         // enable: ''
       });
-      this.modules = this.blogAdminSVC.getEditorModules();
+      this.modules = this.quillSVC.getEditorModules();
     }
 
     public editorCreated(e) {
-      const quill = e;
-      this.txtArea = document.createElement('textarea');
-      this.txtArea.setAttribute('formControlName', 'content');
-      this.txtArea.style.cssText =
-      `width: 100%;margin: 0px;
-      background: rgb(29, 29, 29);
-      box-sizing: border-box;color: rgb(204, 204, 204);
-      font-size: 15px;outline: none;padding: 20px;
-      line-height: 24px;
-      font-family: Consolas, Menlo, Monaco, &quot;Courier New&quot;,
-      monospace;position: absolute;top: 0;bottom: 0;border: none;display:none`;
+      this.quillSVC.editorCreated(e, this.txtArea, this.editorForm);
+    }
 
-      const htmlEditor = quill.addContainer('ql-custom');
-      htmlEditor.appendChild(this.txtArea);
-      this.txtArea.value = this.editorForm.controls.content.value;
-      const customButton = document.querySelector('.ql-showHtml');
-      customButton.addEventListener('click', () => {
-          if (this.txtArea.style.display === '') {
-              this.editorForm.controls.content.setValue(this.txtArea.value);
-              // quill.pasteHTML(html);
-          } else {
-              this.txtArea.value = this.editorForm.controls.content.value;
-          }
-          this.txtArea.style.display = this.txtArea.style.display === 'none' ? '' : 'none';
-      });
-  }
-
-  public maxLength(e) {
-      // console.log(e);
-      // if(e.editor.getLength() > 10) {
-      //     e.editor.deleteText(10, e.editor.getLength());
-      // }
-
-  }
+    public maxLength(e) {
+      this.quillSVC.maxLength(e);
+    }
 
     public fileLoad($event: any) {
         const myReader: FileReader = new FileReader();

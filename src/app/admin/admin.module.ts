@@ -12,8 +12,7 @@ import { LoginComponent } from './login/login.component';
 // import { SignUpComponent } from './signUp/sign-up.component';
 
 import { UserService, AuthGuard, AuthService } from '../core/services';
-import { MenuAdminService } from './adminShared/menu-admin.service';
-import { BlogAdminService } from './adminShared/blog-admin.service';
+import { MenuAdminService, BlogAdminService, QuillService, TruncatePipe } from './adminShared';
 
 import { MenuListComponent } from './menuList/menu-list.component';
 
@@ -24,8 +23,8 @@ import { SubMenuAdminComponent } from './subMenuAdmin/sub-menu-admin.component';
 
 import { BlogAdminComponent } from './blogAdmin/blog-admin.component';
 import { BlogAddComponent } from './blogAdd/blog-add.component';
+import { BlogEditComponent } from './blogEdit/blog-edit.component';
 
-import { TruncatePipe } from './adminShared/trunc.pipe';
 import { AdminRoutes } from './admin.routes';
 
 @NgModule({
@@ -52,12 +51,14 @@ import { AdminRoutes } from './admin.routes';
         SubMenuAdminComponent,
         BlogAdminComponent,
         BlogAddComponent,
+        BlogEditComponent,
         TruncatePipe
     ],
     providers: [
         UserService,
         MenuAdminService,
         BlogAdminService,
+        QuillService,
         AuthGuard,
         AuthService
     ]
