@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { BlogAdminService, QuillService } from '../adminShared';
 import { Blog } from '../../core/models';
 
@@ -12,36 +12,24 @@ export class BlogEditComponent implements OnInit {
   @Input() public thePost: Blog;
   @Output() public saveComplete = new EventEmitter();
     public editorForm: FormGroup;
-    public imgTitle: string;
-    public imageSRC: string;
-    public postTitle: string;
-    public postAuthor: string;
-    public content: string;
+    // public imgTitle: string;
+    // public imageSRC: string;
+    // public postTitle: string;
+    // public postAuthor: string;
+    // public content: string;
     public post: Blog;
     public singlePost: Blog;
-    public editorStyle = {
-      height: '400px',
-      // width: '90vw',
-      backgroundColor: '#fff'
-    };
+    public editorStyle: any;
     public modules: any;
     public txtArea: HTMLTextAreaElement;
 
     constructor(private blogAdminSVC: BlogAdminService,
-                private quillSVC: QuillService,
-                private fb: FormBuilder) {}
+                private quillSVC: QuillService) {}
 
     public ngOnInit() {
         this.singlePost = this.thePost;
-        this.editorForm = this.fb.group({
-            title: ['', Validators.required],
-            author: '',
-            imgurl: '',
-            content: ['', Validators.required],
-            enable: false,
-            ontop: false,
-            order: 100
-        });
+        this.editorForm = this.blogAdminSVC.getFormInstance();
+
         this.editorForm.setValue({
             title: this.thePost.title,
             author: this.thePost.author ? this.thePost.author : '',
@@ -54,8 +42,9 @@ export class BlogEditComponent implements OnInit {
             order: this.thePost.order ? this.thePost.order : 100
           });
 
-        this.modules = this.quillSVC.getEditorModules();
-    }
+        this.modules = this.quillSVC.EditorModules;
+        this.editorStyle = this.quillSVC.EditorStyle;
+      }
 
     public editorCreated(e) {
       this.quillSVC.editorCreated(e, this.txtArea, this.editorForm);

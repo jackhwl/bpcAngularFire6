@@ -1,14 +1,27 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Blog } from '../../core/models';
 
 @Injectable()
 
 export class BlogAdminService {
-    constructor(private db: AngularFireDatabase) {}
+    constructor(private db: AngularFireDatabase, private fb: FormBuilder) {}
 
     public getPosts() {
         return this.db.list<Blog>('blogPosts').query.once('value');
+    }
+
+    public getFormInstance() {
+        return this.fb.group({
+            title: ['', Validators.required],
+            author: '',
+            imgurl: '',
+            content: ['', Validators.required],
+            enable: false,
+            ontop: false,
+            order: 100
+        });
     }
 
     public createPost(post: Blog) {
