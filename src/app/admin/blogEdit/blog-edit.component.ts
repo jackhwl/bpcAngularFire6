@@ -33,16 +33,14 @@ export class BlogEditComponent implements OnInit {
 
     public ngOnInit() {
         this.singlePost = this.thePost;
-        console.log('singlePost from edit=', this.singlePost);
         this.editorForm = this.fb.group({
             title: ['', Validators.required],
             author: '',
-            order: 100,
-            enable: false,
-            content: ['', Validators.required],
             imgurl: '',
-            ontop: false
-            // enable: ''
+            content: ['', Validators.required],
+            enable: false,
+            ontop: false,
+            order: 100
         });
         this.editorForm.setValue({
             title: this.thePost.title,
@@ -81,8 +79,6 @@ export class BlogEditComponent implements OnInit {
       } else {
           console.log('Please correct the validation errors.');
       }
-        // this.blogAdminSVC.editPost(single);
-        // this.formDisplay = true;
     }
 
     public onSaveComplete(): void {

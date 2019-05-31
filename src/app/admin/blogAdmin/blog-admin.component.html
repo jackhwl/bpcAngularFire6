@@ -1,11 +1,4 @@
 <div class="admin-content">
-    <!-- <div class="top-bar-left">
-        <ul class="menu">
-            <li class="admin-menu"><a (click)="chooseMode('add')">Add Post</a></li>
-            <li *ngIf = "menuChoice" class="admin-menu"><a (click)="chooseMode('')">Manage Blogs</a></li>
-            <li class="admin-menu"><a [routerLink]="['/admin']">Back to Admin</a></li>
-        </ul>
-    </div> -->
     <div *ngIf="theUser" class="top-bar-right">
         <ul class="menu">
             <li class="admin-menu"><a (click)="logout()">Logout</a></li>
@@ -19,54 +12,27 @@
     <a class="btn btn-secondary" (click)="chooseMode('')" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Manage Blogs</a>
 
     <div *ngSwitchCase="'add'"><add-blog (saveComplete)="onSaveComplete()"></add-blog></div>
-    <div *ngSwitchCase="'edit'">
-            <div *ngIf='singlePost'>
-        <edit-blog (saveComplete)="onSaveComplete()" [thePost]="singlePost"></edit-blog></div>
-    </div>
+    <div *ngSwitchCase="'edit'"><div *ngIf='singlePost'><edit-blog (saveComplete)="onSaveComplete()" [thePost]="singlePost"></edit-blog></div></div>
     <div *ngSwitchDefault>
-        <div *ngIf = "formDisplay" class="row">
-                <table>
-                    <tr>
-                        <th>Name</th>
-                        <th>Author</th>
-                        <th>Order</th>
-                        <th>Enable</th>
-                        <th>Highlight</th>
-                        <th>&nbsp;</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                    <tr *ngFor="let post of blogPosts">
-                        <td>{{post.title}}</td>
-                        <td>{{post.author}}</td>
-                        <!-- <td>{{post.content | truncate:20}}</td> -->
-                        <td>{{post.order}}</td>
-                        <td>{{post.enable}}</td>
-                        <td>{{post.ontop}}</td>
-                        <!-- <td><a class="button" (click)="chooseMode('addSub', menu.id)">Add Sub Menu</a></td> -->
-                        <td><button class="btn btn-link" (click)="editPost(post)">Edit</button></td>
-                        <td><button class="btn btn-link" (click)="deletePost(post)">Delete</button></td>
-                    </tr>
-                </table>
-
-                <!-- <div class="row spacer">
-                    <div class="media-object">
-                        <div *ngIf="posts.imgTitle" class="media-object-section">
-                            <div class="align-self-middle">
-                                <img class="mini-img" [src]="posts.img">
-                            </div>
-                        </div>
-                        <div class="media-object-section main-section">
-                            <h4>{{posts.title}}</h4>
-                            <p>{{posts.content | truncate:140}}</p>
-                            <div class="button-group align-center">
-                                <a class="button" (click)="editPost(posts)">Edit</a>
-                                <a class="button alert" (click)="deletePost(posts)">Delete</a>
-                            </div>
-                        </div>
-
-                    </div>
-                </div> -->
-
-        </div>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Author</th>
+                <th>Order</th>
+                <th>Enable</th>
+                <th>Highlight</th>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+            </tr>
+            <tr *ngFor="let post of blogPosts">
+                <td>{{post.title}}</td>
+                <td>{{post.author}}</td>
+                <td>{{post.order}}</td>
+                <td>{{post.enable}}</td>
+                <td>{{post.ontop}}</td>
+                <td><button class="btn btn-link" (click)="editPost(post)">Edit</button></td>
+                <td><button class="btn btn-link" (click)="deletePost(post)">Delete</button></td>
+            </tr>
+        </table>
     </div>
 </div>

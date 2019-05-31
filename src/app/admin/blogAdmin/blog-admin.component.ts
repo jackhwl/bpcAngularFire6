@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AngularFireDatabase } from '@angular/fire/database';
-import { BlogAdminService, QuillService } from '../adminShared';
+import { BlogAdminService } from '../adminShared';
 import { UserService } from '../../core/services';
 import { Blog } from '../../core/models';
 
@@ -12,82 +10,53 @@ import { Blog } from '../../core/models';
 })
 
 export class BlogAdminComponent implements OnInit {
-  public editorForm: FormGroup;
   public theUser: string;
   public menuChoice: string;
   public blogPosts: Blog[];
-  public formDisplay: boolean = true;
   public singlePost: Blog;
-  public editorStyle = {
-    height: '400px',
-    // width: '90vw',
-    backgroundColor: '#fff'
-  };
-  public modules: any;
-  public txtArea: HTMLTextAreaElement;
 
-    constructor(private db: AngularFireDatabase,
-                private userSVC: UserService,
-                private router: Router,
-                private blogAdminSVC: BlogAdminService,
-                private quillSVC: QuillService,
-                private fb: FormBuilder) {}
+  constructor(private userSVC: UserService,
+              private router: Router,
+              private blogAdminSVC: BlogAdminService) {}
 
-    public logout() {
-        this.userSVC.logout();
-        this.router.navigate(['']);
-    }
+  public ngOnInit() {
+    this.theUser = this.userSVC.loggedInUser;
+    this.setPosts();
+  }
 
-    public chooseMode(mode: string) {
-        this.menuChoice = mode;
-    }
+  public logout() {
+    this.userSVC.logout();
+    this.router.navigate(['']);
+  }
 
-    public ngOnInit() {
-      this.editorForm = this.fb.group({
-        title: ['', Validators.required],
-        imgurl: '',
-        author: '',
-        order: 100,
-        enable: false,
-        ontop: false,
-        content: ['', Validators.required],
-      });
-      this.modules = this.blogAdminSVC.getEditorModules();
-      this.theUser = this.userSVC.loggedInUser;
-      this.getPosts();
-    }
+  public chooseMode(mode: string) {
+      this.menuChoice = mode;
+  }
 
-    public getPosts() {
-        this.db.list('blogPosts').query.once('value')
-            .then((snapshot) => {
-                const tmp: string[] = snapshot.val();
-                this.blogPosts = Object.keys(tmp).map((key) => tmp[key]);
-            });
-    }
+  public setPosts() {
+      this.blogAdminSVC.getPosts()
+          .then((snapshot) => {
+              const tmp: string[] = snapshot.val();
+              this.blogPosts = Object.keys(tmp).map((key) => tmp[key]);
+          });
+  }
 
-    public editPost(thePost: Blog) {
-      console.log('singlePost1=', this.singlePost);
-      this.singlePost = thePost;
-      this.chooseMode('edit');
-      console.log('singlePost2=', this.singlePost);
-    }
+  public editPost(thePost: Blog) {
+    this.singlePost = thePost;
+    this.chooseMode('edit');
+  }
 
-    public deletePost(single: Blog) {
-        const verify = confirm(`Are you sure you want to delete this post?`);
-        if (verify === true) {
-            this.blogAdminSVC.removePost(single);
-            this.onSaveComplete();
-        } else {
-            alert('Nothing deleted!');
-        }
-    }
+  public deletePost(single: Blog) {
+      const confirmDelete = confirm(`Are you sure you want to delete this post?`);
+      if (confirmDelete) {
+          this.blogAdminSVC.removePost(single);
+          this.onSaveComplete();
+      }
+  }
 
-    public onSaveComplete(): void {
-      // Reset the form to clear the flags
-      this.editorForm.reset();
-      this.getPosts();
-      this.chooseMode('');
-      this.formDisplay = true;
-      this.router.navigate(['/admin/blog-admin']);
-    }
+  public onSaveComplete(): void {
+    this.setPosts();
+    this.chooseMode('');
+    this.router.navigate(['/admin/blog-admin']);
+  }
 }

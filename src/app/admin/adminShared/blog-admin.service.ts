@@ -7,6 +7,10 @@ import { Blog } from '../../core/models';
 export class BlogAdminService {
     constructor(private db: AngularFireDatabase) {}
 
+    public getPosts() {
+        return this.db.list<Blog>('blogPosts').query.once('value');
+    }
+
     public createPost(post: Blog) {
         if (post.img) {
         //   let storageRef = firebase.storage().ref();
