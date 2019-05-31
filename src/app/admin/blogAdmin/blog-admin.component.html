@@ -18,7 +18,7 @@
     <a class="btn btn-secondary" (click)="chooseMode('add')" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Add Post</a>
     <a class="btn btn-secondary" (click)="chooseMode('')" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Manage Blogs</a>
 
-    <div *ngSwitchCase="'add'"><add-blog></add-blog></div>
+    <div *ngSwitchCase="'add'"><add-blog (saveComplete)="onSaveComplete()"></add-blog></div>
     <div *ngSwitchDefault>
         <div *ngIf = "formDisplay" class="row">
                 <table>

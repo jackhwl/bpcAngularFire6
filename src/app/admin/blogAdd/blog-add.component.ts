@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BlogAdminService } from '../adminShared/blog-admin.service';
@@ -10,6 +10,7 @@ import { Blog } from '../../core/models';
 })
 
 export class BlogAddComponent implements OnInit {
+  @Output() public saveComplete = new EventEmitter();
     public editorForm: FormGroup;
     public imgTitle: string;
     public imageSRC: string;
@@ -94,26 +95,19 @@ export class BlogAddComponent implements OnInit {
       if (this.editorForm.valid) {
         if (this.editorForm.dirty) {
             const postItem = { ...this.post, ...this.editorForm.value};
-            console.log('postItem=', postItem);
-            // console.log('this.singleMenu=', this.menu);
-            // console.log('this.editorForm.value=', this.editorForm.value);
             this.blogAdminSVC.createPost(postItem);
-            this.onSaveComplete();
-        } else {
-            this.onSaveComplete();
         }
+        this.onSaveComplete();
       } else {
         console.log('Please correct the validation errors.');
       }
     }
 
     public cancel() {
-        this.router.navigate(['/blog-admin']);
+        this.onSaveComplete();
     }
 
     public onSaveComplete(): void {
-      // Reset the form to clear the flags
-      console.log('onSaveComplete');
-      this.router.navigate(['/admin/blog-admin']);
+      this.saveComplete.emit();
     }
   }

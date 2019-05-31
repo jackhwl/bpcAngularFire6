@@ -139,8 +139,11 @@ export class BlogAdminComponent implements OnInit {
 
     public onSaveComplete(): void {
       // Reset the form to clear the flags
+      console.log('back to parent onSaveComplete');
       this.editorForm.reset();
       this.getPosts();
+      this.chooseMode('');
+      this.formDisplay = true;
       this.router.navigate(['/admin/blog-admin']);
     }
 }
