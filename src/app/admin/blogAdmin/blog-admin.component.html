@@ -1,0 +1,150 @@
+<div class="admin-content">
+    <!-- <div class="top-bar-left">
+        <ul class="menu">
+            <li class="admin-menu"><a (click)="chooseMode('add')">Add Post</a></li>
+            <li *ngIf = "menuChoice" class="admin-menu"><a (click)="chooseMode('')">Manage Blogs</a></li>
+            <li class="admin-menu"><a [routerLink]="['/admin']">Back to Admin</a></li>
+        </ul>
+    </div> -->
+    <div *ngIf="theUser" class="top-bar-right">
+        <ul class="menu">
+            <li class="admin-menu"><a (click)="logout()">Logout</a></li>
+            <li class="admin-menu"><a> {{theUser}} Logged in</a></li>
+        </ul>
+    </div>
+</div>
+
+<div [ngSwitch]="menuChoice" class="admin-content">
+    <a class="btn btn-secondary" (click)="chooseMode('add')" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Add Post</a>
+    <a class="btn btn-secondary" (click)="chooseMode('')" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Manage Blogs</a>
+
+    <div *ngSwitchCase="'add'"><add-blog></add-blog></div>
+    <div *ngSwitchDefault>
+        <div *ngIf = "formDisplay" class="row">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Author</th>
+                        <th>Order</th>
+                        <th>Enable</th>
+                        <th>Highlight</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                    <tr *ngFor="let post of blogPosts">
+                        <td>{{post.title}}</td>
+                        <td>{{post.author}}</td>
+                        <!-- <td>{{post.content | truncate:20}}</td> -->
+                        <td>{{post.order}}</td>
+                        <td>{{post.enable}}</td>
+                        <td>{{post.ontop}}</td>
+                        <!-- <td><a class="button" (click)="chooseMode('addSub', menu.id)">Add Sub Menu</a></td> -->
+                        <td><button class="btn btn-link" (click)="editPost(post)">Edit</button></td>
+                        <td><button class="btn btn-link" (click)="deletePost(post)">Delete</button></td>
+                    </tr>
+                </table>
+
+                <!-- <div class="row spacer">
+                    <div class="media-object">
+                        <div *ngIf="posts.imgTitle" class="media-object-section">
+                            <div class="align-self-middle">
+                                <img class="mini-img" [src]="posts.img">
+                            </div>
+                        </div>
+                        <div class="media-object-section main-section">
+                            <h4>{{posts.title}}</h4>
+                            <p>{{posts.content | truncate:140}}</p>
+                            <div class="button-group align-center">
+                                <a class="button" (click)="editPost(posts)">Edit</a>
+                                <a class="button alert" (click)="deletePost(posts)">Delete</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div> -->
+
+        </div>
+
+        <div *ngIf="!formDisplay" class="row">
+            <form [formGroup]="editorForm">
+                <div class="row">
+                    <div class="medium-12 columns"><h3>Edit Post</h3></div>
+                </div>
+                <div class="row">
+                    <div class="small-12 medium-6 columns">
+                        <label>Post Title
+                            <input type="text" formControlName="title" >
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-12 medium-6 columns">
+                        <label>Post Author
+                            <input type="text" formControlName="author" >
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="small-12 medium-6 columns">
+                      <label>Post Image Link
+                          <input type="text" formControlName="imgurl" >
+                      </label>
+                  </div>
+              </div>
+              <div class="row">
+                <div class="small-12 medium-6 columns">
+                        <img src='{{singlePost.imgurl}}' >
+                </div>
+            </div>
+            <div class="row">
+                    <div class="small-12 medium-6 columns">
+                        <label>Post Content
+                            <quill-editor [style]="editorStyle" [modules]="modules"
+                            (onEditorCreated)="editorCreated($event)" formControlName="content"></quill-editor>
+
+                            <!-- <textarea rows="15" id="content" [(ngModel)]="singlePost.content"
+                                name="editContent" required #psContent="ngModel"></textarea> -->
+                        </label>
+                    </div>
+                    <!-- <div class="small-12 medium-6 columns">
+                        <img [src] = "singlePost.img" alt="Image preview...">
+                    </div> -->
+                </div>
+                <div class="row">
+                    <div class="small-12 medium-6 columns">
+                        <label>Order
+                            <input type="text" formControlName="order" >
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-12 medium-6 columns">
+                        <label>Enable
+                            <input type="radio" formControlName="enable" [value]=true> True
+                            <input type="radio" formControlName="enable" [value]=false> False
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-12 medium-6 columns">
+                        <label>Highlight
+                          <input type="radio" formControlName="ontop" [value]=true> True
+                          <input type="radio" formControlName="ontop" [value]=false> False
+                      </label>
+                    </div>
+                </div>
+
+                <div class="row align-center">
+                    <div class="small-12 columns">
+                        <div class="expanded button-group">
+                            <button class="success button" type="button" [disabled]="!editorForm.valid"
+                                (click)="updatePost()">Update Post</button>
+                            <button class="cancel button" type="button" (click)="cancelEdit()">Cancel Edit</button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

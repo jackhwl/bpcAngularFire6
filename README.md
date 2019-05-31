@@ -33,6 +33,20 @@ this.db.list<Blog>('blogPosts', (ref) => ref.orderByChild('title').equalTo(blogT
             };
         })
 
+CRUD
+            const dbRef = this.db.list('blogPosts');
+            const newPost = dbRef.push('');
+            newPost.set ({
+              title: post.title,
+              id: newPost.key
+          });
+        this.db.object(`blogPosts/${update.id}`)
+            .update({
+                title: update.title,
+                author: update.author
+            });
+        this.db.object(`blogPosts/${deletePost.id}`).remove();
+
 [![taylor swift](https://img.shields.io/badge/secured%20by-taylor%20swift-brightgreen.svg)](https://twitter.com/SwiftOnSecurity)
 [![volkswagen status](https://auchenberg.github.io/volkswagen/volkswargen_ci.svg?v=1)](https://github.com/auchenberg/volkswagen)
 [![Build Status](https://travis-ci.org/gdi2290/angular-starter.svg?branch=master)](https://travis-ci.org/gdi2290/angular-starter)

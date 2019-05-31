@@ -13,7 +13,7 @@ import { LoginComponent } from './login/login.component';
 
 import { UserService, AuthGuard, AuthService } from '../core/services';
 import { MenuAdminService } from './adminShared/menu-admin.service';
-// import { BlogAdminService } from './adminShared/blog-admin.service';
+import { BlogAdminService } from './adminShared/blog-admin.service';
 
 import { MenuListComponent } from './menuList/menu-list.component';
 
@@ -22,8 +22,8 @@ import { MenuAddComponent } from './menuAdd/menu-add.component';
 import { MenuEditComponent } from './menuEdit/menu-edit.component';
 import { SubMenuAdminComponent } from './subMenuAdmin/sub-menu-admin.component';
 
-// import { BlogAdminComponent } from './blogAdmin/blog-admin.component';
-// import { BlogAddComponent } from './blogAdd/blog-add.component';
+import { BlogAdminComponent } from './blogAdmin/blog-admin.component';
+import { BlogAddComponent } from './blogAdd/blog-add.component';
 
 import { TruncatePipe } from './adminShared/trunc.pipe';
 import { AdminRoutes } from './admin.routes';
@@ -50,14 +50,14 @@ import { AdminRoutes } from './admin.routes';
         MenuAddComponent,
         MenuEditComponent,
         SubMenuAdminComponent,
-        // BlogAdminComponent,
-        // BlogAddComponent,
+        BlogAdminComponent,
+        BlogAddComponent,
         TruncatePipe
     ],
     providers: [
         UserService,
         MenuAdminService,
-        // BlogAdminService,
+        BlogAdminService,
         AuthGuard,
         AuthService
     ]
