@@ -34,7 +34,7 @@ export class MenuAddComponent implements OnInit {
     // }
 
     public ngOnInit() {
-        this.parentId = this.route.snapshot.params['id'];
+        this.parentId = this.route.snapshot.params['parentId'];
         this.editorForm = this.menuAdminSVC.getFormInstance();
         this.modules = this.quillSVC.EditorModules;
         this.editorStyle = this.quillSVC.EditorStyle;
@@ -66,7 +66,11 @@ export class MenuAddComponent implements OnInit {
     }
 
     public onSaveComplete(): void {
-        this.router.navigate(['/admin/menu-admin']);
+        if (this.parentId) {
+            this.router.navigate([`/admin/sub-menu-admin/${this.parentId}`]);
+        } else {
+            this.router.navigate(['/admin/menu-admin']);
+        }
     }
     public cancel() {
         this.onSaveComplete();

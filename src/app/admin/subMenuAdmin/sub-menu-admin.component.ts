@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../core/services';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MenuAdminService } from '../adminShared';
 import { Menu } from '../../core/models/menu';
 
@@ -20,9 +20,11 @@ export class SubMenuAdminComponent implements OnInit {
 
     constructor(private userSVC: UserService,
                 private router: Router,
+                private route: ActivatedRoute,
                 private menuAdminSVC: MenuAdminService) {}
 
     public ngOnInit() {
+        this.parentId = this.route.snapshot.params['parentId'];
         this.setNav();
     }
 

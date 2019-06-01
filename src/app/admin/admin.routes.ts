@@ -17,10 +17,12 @@ export const AdminRoutes: Routes = [
       component: AdminComponent,
       children: [
           { path: 'menu-add', component: MenuAddComponent, canActivate: [AuthGuard] },
-          { path: 'menu-add/:id', component: MenuAddComponent, canActivate: [AuthGuard] },
+          { path: 'menu-add/:parentId', component: MenuAddComponent, canActivate: [AuthGuard] },
           { path: 'blog-admin', component: BlogAdminComponent, canActivate: [AuthGuard] },
           { path: 'menu-admin', component: MenuAdminComponent, canActivate: [AuthGuard] },
           { path: 'sub-menu-admin', component: SubMenuAdminComponent, canActivate: [AuthGuard] },
+          { path: 'sub-menu-admin/:parentId', component: SubMenuAdminComponent,
+                  canActivate: [AuthGuard] },
           { path: 'login', component: LoginComponent },
           // { path: 'signup', component: SignUpComponent },
           { path: 'menu/:id', component:　MenuEditComponent, canActivate: [AuthGuard] },
