@@ -8,10 +8,16 @@
 </div>
 
 <div [ngSwitch]="menuChoice" class="admin-content">
-    <a class="btn btn-secondary" (click)="chooseMode('add')" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Add Menu</a>
+    <a class="btn btn-secondary" routerLink="/admin/menu-add" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Add Menu</a>
     <a class="btn btn-secondary" (click)="chooseMode('')" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Manage Menu</a>
-    <div *ngSwitchCase="'add'"><add-menu (saveComplete)="onSaveComplete()"></add-menu></div>
-    <div *ngSwitchCase="'edit'"><div *ngIf='singleMenu'><edit-menu (saveComplete)="onSaveComplete()" [theMenu]="singleMenu"></edit-menu></div></div>
+    <div *ngSwitchCase="'add'">
+        <add-menu (saveComplete)="onSaveComplete()"></add-menu>
+    </div>
+    <div *ngSwitchCase="'edit'">
+        <div *ngIf='singleMenu'>
+            <edit-menu (saveComplete)="onSaveComplete()" [theMenu]="singleMenu"></edit-menu>
+        </div>
+    </div>
     <div *ngSwitchDefault>
         <table>
             <tr>

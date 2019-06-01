@@ -1,8 +1,9 @@
 export interface Menu {
-    name: string;
-    order: number;
-    enable: boolean;
     id?: string;
+    parentId?: string;
+    name: string;
     items?: Menu[];
     content?: string;
+    order: number;
+    enable: boolean;
 }

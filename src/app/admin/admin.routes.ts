@@ -5,6 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { MenuAdminComponent } from './menuAdmin/menu-admin.component';
 import { SubMenuAdminComponent } from './subMenuAdmin/sub-menu-admin.component';
 // import { MenuListComponent } from './menuList/menu-list.component';
+import { MenuAddComponent } from './menuAdd/menu-add.component';
 import { MenuEditComponent } from './menuEdit/menu-edit.component';
 import { BlogAdminComponent } from './blogAdmin/blog-admin.component';
 
@@ -15,8 +16,8 @@ export const AdminRoutes: Routes = [
       path: 'admin',
       component: AdminComponent,
       children: [
-          // { path: 'menu-list', component: MenuListComponent, canActivate: [AuthGuard] },
-          // { path: 'menu-list/:id', component: MenuListComponent, canActivate: [AuthGuard] },
+          { path: 'menu-add', component: MenuAddComponent, canActivate: [AuthGuard] },
+          { path: 'menu-add/:id', component: MenuAddComponent, canActivate: [AuthGuard] },
           { path: 'blog-admin', component: BlogAdminComponent, canActivate: [AuthGuard] },
           { path: 'menu-admin', component: MenuAdminComponent, canActivate: [AuthGuard] },
           { path: 'sub-menu-admin', component: SubMenuAdminComponent, canActivate: [AuthGuard] },

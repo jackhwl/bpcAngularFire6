@@ -1,5 +1,6 @@
-import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MenuAdminService, QuillService } from '../adminShared';
 import { Menu } from '../../core/models';
 
@@ -9,15 +10,16 @@ import { Menu } from '../../core/models';
 })
 
 export class MenuAddComponent implements OnInit {
-    @Input() public parentId: string;
-    @Output() public saveComplete = new EventEmitter();
     public editorForm: FormGroup;
     public menu: Menu;
     public editorStyle: any;
     public modules: any;
     public txtArea: HTMLTextAreaElement;
+    private parentId: string;
 
     constructor(private menuAdminSVC: MenuAdminService,
+                private route: ActivatedRoute,
+                private router: Router,
                 private quillSVC: QuillService) {}
 
     // fileLoad($event: any) {
@@ -32,6 +34,7 @@ export class MenuAddComponent implements OnInit {
     // }
 
     public ngOnInit() {
+        this.parentId = this.route.snapshot.params['id'];
         this.editorForm = this.menuAdminSVC.getFormInstance();
         this.modules = this.quillSVC.EditorModules;
         this.editorStyle = this.quillSVC.EditorStyle;
@@ -50,6 +53,7 @@ export class MenuAddComponent implements OnInit {
             if (this.editorForm.dirty) {
                 const menuItem = { ...this.menu, ...this.editorForm.value};
                 if (this.parentId) {
+                    console.log('this.parentId=', this.parentId);
                     this.menuAdminSVC.createSubMenu(this.parentId, menuItem);
                 } else {
                     this.menuAdminSVC.createMenu(menuItem);
@@ -62,7 +66,7 @@ export class MenuAddComponent implements OnInit {
     }
 
     public onSaveComplete(): void {
-        this.saveComplete.emit();
+        this.router.navigate(['/admin/menu-admin']);
     }
     public cancel() {
         this.onSaveComplete();
