@@ -11,11 +11,6 @@ import { Blog } from '../../core/models';
 export class BlogAddComponent implements OnInit {
   @Output() public saveComplete = new EventEmitter();
     public editorForm: FormGroup;
-    // public imgTitle: string;
-    // public imageSRC: string;
-    // public postTitle: string;
-    // public postAuthor: string;
-    // public content: string;
     public post: Blog;
     public editorStyle: any;
     public modules: any;
@@ -61,11 +56,11 @@ export class BlogAddComponent implements OnInit {
       }
     }
 
-    public cancel() {
-        this.onSaveComplete();
-    }
-
     public onSaveComplete(): void {
       this.saveComplete.emit();
     }
-  }
+
+    public cancel() {
+      this.onSaveComplete();
+    }
+}

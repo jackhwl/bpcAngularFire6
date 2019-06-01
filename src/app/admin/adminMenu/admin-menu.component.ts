@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
-import { MenuAdminService } from '../adminShared/menu-admin.service';
+import { MenuAdminService, QuillService } from '../adminShared';
 import { UserService, MenuService } from '../../core/services';
 import { Misc } from '../../core/models';
 
@@ -26,6 +26,7 @@ export class AdminMenuComponent implements OnInit {
   constructor(
     private menuAdminSVC: MenuAdminService,
     private menuSVC: MenuService,
+    private quillSVC: QuillService,
     private userSVC: UserService,
     private router: Router
   ) {}
@@ -36,7 +37,7 @@ export class AdminMenuComponent implements OnInit {
       sourceContent: new FormControl(),
       quillEditor: new FormControl()
     });
-    this.modules = this.menuAdminSVC.getEditorModules();
+    this.modules = this.quillSVC.EditorModules;
     this.menuSVC.setTopNav('admin', null);
     this.getMisc();
   }

@@ -8,10 +8,6 @@ import { Blog } from '../../core/models';
 export class BlogAdminService {
     constructor(private db: AngularFireDatabase, private fb: FormBuilder) {}
 
-    public getPosts() {
-        return this.db.list<Blog>('blogPosts').query.once('value');
-    }
-
     public getFormInstance() {
         return this.fb.group({
             title: ['', Validators.required],
@@ -22,6 +18,10 @@ export class BlogAdminService {
             ontop: false,
             order: 100
         });
+    }
+
+    public getPosts() {
+        return this.db.list<Blog>('blogPosts').query.once('value');
     }
 
     public createPost(post: Blog) {
@@ -67,7 +67,6 @@ export class BlogAdminService {
               modifiedDate: new Date(),
               id: newPost.key
           });
-
         }
     }
 
@@ -89,30 +88,4 @@ export class BlogAdminService {
         this.db.object(`blogPosts/${deletePost.id}`).remove();
     }
 
-    public getEditorModules() {
-      const modules = {
-          toolbar: [
-              ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-              ['blockquote', 'code-block'],
-
-              [{ header: 1 }, { header: 2 }],               // custom button values
-              [{ list: 'ordered'}, { list: 'bullet' }],
-              [{ script: 'sub'}, { script: 'super' }],      // superscript/subscript
-              [{ indent: '-1'}, { indent: '+1' }],          // outdent/indent
-              [{ direction: 'rtl' }],                         // text direction
-
-              [{ size: ['small', false, 'large', 'huge'] }],  // custom dropdown
-              [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-              [{ color: [] }, { background: [] }],          // dropdown with defaults from theme
-              [{ font: [] }],
-              [{ align: [] }],
-
-              ['clean'],                                         // remove formatting button
-              ['link', 'image', 'video'],
-              ['showHtml'] // https://codepen.io/anon/pen/ZyEjrQ
-          ]
-      };
-      return modules;
-  }
 }

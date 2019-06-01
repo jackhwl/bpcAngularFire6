@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Menu } from '../../core/models/menu';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 @Injectable()
@@ -11,7 +11,7 @@ export class MenuAdminService {
   public subMenu$: Observable<Menu>;
   public toolbar: any;
 
-  constructor(private db: AngularFireDatabase) {
+  constructor(private db: AngularFireDatabase, private fb: FormBuilder) {
     this.subMenu$ = this.db.object<Menu>('subMenu').valueChanges();
     this.content$ = this.db.object<string>('content').valueChanges();
     this.contents$ = this.db.list<string>('content').valueChanges();
@@ -36,6 +36,15 @@ export class MenuAdminService {
       ['link', 'image', 'video'],
       ['showHtml'] // https://codepen.io/anon/pen/ZyEjrQ
     ];
+  }
+
+  public getFormInstance() {
+    return this.fb.group({
+      name: ['', Validators.required],
+      content: '',
+      order: 8,
+      enable: 'false'
+    });
   }
 
   public getNav() {
@@ -187,32 +196,5 @@ export class MenuAdminService {
         });
       });
     }
-  }
-
-  public getEditorModules() {
-    const modules = {
-      toolbar: [
-        ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-        ['blockquote', 'code-block'],
-
-        [{ header: 1 }, { header: 2 }], // custom button values
-        [{ list: 'ordered' }, { list: 'bullet' }],
-        [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
-        [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
-        [{ direction: 'rtl' }], // text direction
-
-        [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
-        [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-        [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-        [{ font: [] }],
-        [{ align: [] }],
-
-        ['clean'], // remove formatting button
-        ['link', 'image', 'video'],
-        ['showHtml'] // https://codepen.io/anon/pen/ZyEjrQ
-      ]
-    };
-    return modules;
   }
 }

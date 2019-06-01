@@ -1,58 +1,62 @@
-<div class="container-fluid">
+
+<div class="row">
+    <div class="small-12 medium-6 columns">
+        <h1>Edit a Menu</h1>
+    </div>
+</div>
+
+<form [formGroup]="editorForm">
+    <div class="row">
+        <div class="medium-12 columns"><h3>Edit Menu</h3></div>
+    </div>
     <div class="row">
         <div class="small-12 medium-6 columns">
-            <h1>{{menuData.addMode?'Create a Menu':'Edit a Menu'}}</h1>
+            <label>Menu Name</label>
+                <input type="text" formControlName="name" 
+                [ngClass]="{'is-invalid': (editorForm.get('name').touched || editorForm.get('name').dirty) && !editorForm.get('name').valid }">
+                <span class="invalid-feedback">
+                    Please enter name
+                </span>
+        </div>
+    </div>        
+    <div class="row">
+        <div class="small-12 columns">
+            <label>Menu Content
+                <quill-editor [style]="editorStyle" [modules]="modules" (onContentChanged)="maxLength($event)"
+                (onEditorCreated)="editorCreated($event)" formControlName="content"></quill-editor>
+            </label>
         </div>
     </div>
-
-    <form [formGroup]="editorForm">
-        <div class="row">
+    <div class="row">
+        <div class="small-12 medium-6 columns">
+            <label>Menu Order </label>
+                <input type="number" formControlName="order" 
+                [ngClass]="{'is-invalid': (editorForm.get('order').touched || editorForm.get('order').dirty) && !editorForm.get('order').valid }">
+                <span class="invalid-feedback">
+                    Please enter order
+                </span>
+            
+        </div>
+        <div class="small-12 medium-6 columns">
+            <!-- <img [src] = "singleMenu.img" alt="Image preview..."> -->
+        </div>
+    </div>
+    <div class="row">
             <div class="small-12 medium-6 columns">
-                <label>Menu Name
-                    <input type="text" formControlName="name" required >
+                <label>Menu Enable
+                        <input type="radio" formControlName="enable" value="true"> True
+                        <input type="radio" formControlName="enable" value="false"> False
                 </label>
             </div>
         </div>
-        <div class="row">
-            <div class="small-12 columns">
-                <label>Menu Content
-                    <span [style.display]="menu.name=='Sermons'?'none':'Sermons'">
-                      <quill-editor [style]="editorStyle" [modules]="modules" (onContentChanged)="maxLength()"
-                      (onEditorCreated)="editorCreated($event)" formControlName="content"></quill-editor>
-                    </span>
-                    <textarea [style.display]="!(menu.name=='Sermons')?'none':'Sermons'" rows="15" cols="100" formControlName="content"></textarea>
-                </label>
+    <div class="row align-center">
+        <div class="small-12 columns">
+            <div class="expanded button-group">
+                <button class="success button" type="button" [disabled]="!editorForm.valid"
+                    (click)="updateMenu()">Update Menu</button>
+                <button class="cancel button" type="button" (click)="cancelEdit()">Cancel Edit</button>
             </div>
         </div>
-        <div class="row">
-            <div class="small-12 medium-6 columns">
-                <label>Order
-                    <input type="number" formControlName="order"  required >
-                </label>
-            </div>
-            <div class="small-12 medium-6 columns">
-                <label>Enable
-                    <input type="radio" formControlName="enable" value="true"> True
-                    <input type="radio" formControlName="enable" value="false"> False
-<!--
-                    <input type="radio" name="enable" [(ngModel)]="menu.enable" [value]="true"> True
-                    <input type="radio" name="enable" [(ngModel)]="menu.enable" [value]="false"> False -->
-                </label>
-            </div>
-        </div>
-        <div class="row align-center">
-            <div class="small-12 columns">
-                <div class="expanded button-group">
-                    <button class="success button" type="button" [disabled]="!editorForm.valid"
-                        (click)="updateMenu()">Update Menu</button>
-                    <button class="cancel button" type="button" (click)="cancelEdit()">Cancel Edit</button>
+    </div>
+</form>
 
-                    <!-- <button class="success button" type="button" [disabled]="!navName.valid"
-                        (click)="updateMenu(menu)">Update Menu</button>
-                    <button class="cancel button" type="button" (click)="cancel()">Cancel</button> -->
-                </div>
-            </div>
-        </div>
-
-    </form>
-</div>

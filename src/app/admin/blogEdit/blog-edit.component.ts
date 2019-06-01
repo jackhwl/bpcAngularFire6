@@ -12,12 +12,7 @@ export class BlogEditComponent implements OnInit {
   @Input() public thePost: Blog;
   @Output() public saveComplete = new EventEmitter();
     public editorForm: FormGroup;
-    // public imgTitle: string;
-    // public imageSRC: string;
-    // public postTitle: string;
-    // public postAuthor: string;
-    // public content: string;
-    public post: Blog;
+    // public post: Blog;
     public singlePost: Blog;
     public editorStyle: any;
     public modules: any;
