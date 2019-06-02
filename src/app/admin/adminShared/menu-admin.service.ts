@@ -29,36 +29,25 @@ export class MenuAdminService {
   public getNav() {
     return this.db.list<Menu>('menu', (ref) => ref.orderByChild('order')).valueChanges();
   }
-
-  public createMenu(menu: Menu) {
-    return menu.parentId ? this.createSubMenu(menu) : this.createRootMenu(menu);
-  }
-
-  public editMenu(menu: Menu) {
-    if (menu.parentId) {
-      console.log('edit sub menu');
-      this.editSubMenu(menu.parentId, menu);
-    } else {
-      console.log('edit root menu');
-      this.editRootMenu(menu);
-    }
-  }
-
-  public removeMenu(menu: Menu) {
-    if (menu.parentId) {
-      console.log('delete sub menu');
-      this.removeSubMenu(menu.parentId, menu);
-    } else {
-      console.log('delete root menu');
-      this.removeRootMenu(menu);
-    }
-  }
-  // created: FireBase.ServerValue.TIMESTAMP
-
   public getSubNav(parentId: string) {
     return this.db.list<Menu>(`subMenu/${parentId}/items`,
                               (ref) => ref.orderByChild('order'))
                   .valueChanges();
+  }
+  public getMenu(parentId: string, id: string) {
+    return parentId ?
+      this.db.object<Menu>(`subMenu/${parentId}/items/${id}`).query.once('value') :
+      this.db.object<Menu>(`menu/${id}`).query.once('value');
+  }
+
+  public createMenu(menu: Menu) {
+    return menu.parentId ? this.createSubMenu(menu) : this.createRootMenu(menu);
+  }
+  public editMenu(menu: Menu) {
+    return menu.parentId ? this.editSubMenu(menu) : this.editRootMenu(menu);
+  }
+  public removeMenu(menu: Menu) {
+    return menu.parentId ? this.removeSubMenu(menu) : this.removeRootMenu(menu);
   }
 
   public editMisc(type: string, content: string) {
@@ -77,56 +66,10 @@ export class MenuAdminService {
         form.setValue({
           name: menu.name,
           order: menu.order,
-          content: menu.content,
-          enable: menu.enable
+          content: menu.content ? menu.content : '',
+          enable: menu.enable,
+          parentId: menu.parentId ? menu.parentId : null
         });
-      });
-    }
-  }
-
-  private editRootMenu(menu: Menu) {
-    this.db.object(`menu/${menu.id}`)
-      .update({
-          name: menu.name,
-          order: menu.order,
-          enable: menu.enable
-      });
-
-    this.db.object(`subMenu/${menu.id}`)
-      .update({
-        name: menu.name
-      });
-
-    const content = this.db.object(`content/${menu.id}`);
-    if (menu.content) {
-      content.update({
-        name: menu.name,
-        content: menu.content
-      });
-    } else {
-      content.update({
-        name: menu.name
-      });
-    }
-  }
-
-  private editSubMenu(parentId: string, menu: Menu) {
-    this.db.object(`subMenu/${parentId}/items/${menu.id}`)
-      .update({
-          name: menu.name,
-          order: menu.order,
-          enable: menu.enable
-      });
-
-    const content = this.db.object(`content/${menu.id}`);
-    if (menu.content) {
-      content.update({
-        name: menu.name,
-        content: menu.content
-      });
-    } else {
-      content.update({
-        name: menu.name
       });
     }
   }
@@ -150,17 +93,7 @@ export class MenuAdminService {
       name: menu.name
     });
 
-    const content = this.db.object(`content/${newMenu.key}`);
-    if (menu.content) {
-      pContent = content.set({
-        name: menu.name,
-        content: menu.content
-      });
-    } else {
-      pContent = content.set({
-        name: menu.name
-      });
-    }
+    pContent = this.createMenuContent(newMenu.key, menu.name, menu.content);
 
     pArray.push(pMenu);
     pArray.push(pSubMenu);
@@ -168,7 +101,6 @@ export class MenuAdminService {
 
     return Promise.all(pArray);
   }
-
   private createSubMenu(menu: Menu) {
     const pArray = [];
     let pMenu: Promise<Menu>;
@@ -182,21 +114,61 @@ export class MenuAdminService {
       id: newMenu.key
     });
 
-    const content = this.db.object(`content/${newMenu.key}`);
-    if (menu.content) {
-      pContent = content.set({
-        name: menu.name,
-        content: menu.content
-      });
-    } else {
-      pContent = content.set({
-        name: menu.name
-      });
-    }
+    pContent = this.createMenuContent(newMenu.key, menu.name, menu.content);
 
     pArray.push(pMenu);
     pArray.push(pContent);
     return Promise.all(pArray);
+  }
+
+  private editRootMenu(menu: Menu) {
+    const pArray = [];
+
+    pArray.push(this.db.object(`menu/${menu.id}`)
+                       .update({
+                          name: menu.name,
+                          order: menu.order,
+                          enable: menu.enable
+                        }));
+
+    pArray.push(this.db.object(`subMenu/${menu.id}`)
+                        .update({
+                          name: menu.name
+                        }));
+
+    pArray.push(this.updateMenuContent(menu.id, menu.name, menu.content));
+
+    return Promise.all(pArray);
+  }
+  private editSubMenu(menu: Menu) {
+    const pArray = [];
+    pArray.push(this.db.object(`subMenu/${menu.parentId}/items/${menu.id}`)
+                      .update({
+                          name: menu.name,
+                          order: menu.order,
+                          enable: menu.enable
+                      }));
+
+    pArray.push(this.updateMenuContent(menu.id, menu.name, menu.content));
+
+    return Promise.all(pArray);
+  }
+
+  private createMenuContent(key: string, name: string, content: string) {
+    const contentObj = this.db.object(`content/${key}`);
+    if (content) {
+      return contentObj.set({name, content});
+    } else {
+      return contentObj.set({name});
+    }
+  }
+  private updateMenuContent(key: string, name: string, content: string) {
+    const contentObj = this.db.object(`content/${key}`);
+    if (content) {
+      return contentObj.update({name, content});
+    } else {
+      return contentObj.update({name});
+    }
   }
 
   private removeRootMenu(deleteMenu: Menu) {
@@ -209,12 +181,12 @@ export class MenuAdminService {
       });
       const menuItems = Object.keys(tmp).map((key) => tmp[key]);
       menuItems.forEach((m) => this.db.object<string>(`content/${m.id}`).remove());
+      this.db.object(`subMenu/${deleteMenu.id}`).remove();
+      this.db.object<string>(`content/${deleteMenu.id}`).remove();
     });
   }
-
-  private removeSubMenu(parentId: string, deleteMenu: Menu) {
-    this.db.object(`subMenu/${parentId}/items/${deleteMenu.id}`).remove();
+  private removeSubMenu(deleteMenu: Menu) {
+    this.db.object(`subMenu/${deleteMenu.parentId}/items/${deleteMenu.id}`).remove();
     this.db.object<string>(`content/${deleteMenu.id}`).remove();
   }
-
 }

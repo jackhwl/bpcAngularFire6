@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MenuAdminService, QuillService } from '../adminShared';
@@ -10,9 +10,6 @@ import { Menu } from '../../core/models';
 })
 
 export class MenuEditComponent implements OnInit {
-  @Input() public theMenu: Menu;
-  @Input() public menuData: string;
-  @Output() public saveComplete = new EventEmitter();
     public editorForm: FormGroup;
     public singleMenu: Menu;
     public editorStyle: any;
@@ -22,15 +19,22 @@ export class MenuEditComponent implements OnInit {
     public id: string;
     constructor(private menuAdminSVC: MenuAdminService,
                 private quillSVC: QuillService,
-                private route: ActivatedRoute
+                private route: ActivatedRoute,
+                private router: Router
                 ) {}
 
     public ngOnInit() {
       this.parentId = this.route.snapshot.params['parentId'];
       this.id = this.route.snapshot.params['id'];
-      this.singleMenu = this.theMenu;
       this.editorForm = this.menuAdminSVC.getFormInstance();
-      this.menuAdminSVC.setForm(this.singleMenu, this.editorForm);
+      this.menuAdminSVC.getMenu(this.parentId, this.id)
+        .then((m) => {
+          this.singleMenu = m.val();
+          this.singleMenu.parentId = this.parentId;
+          console.log('this.singleMenu=', this.singleMenu);
+          this.menuAdminSVC.setForm(this.singleMenu, this.editorForm);
+          console.log('dddd');
+        });
       this.modules = this.quillSVC.EditorModules;
       this.editorStyle = this.quillSVC.EditorStyle;
     }
@@ -51,7 +55,9 @@ export class MenuEditComponent implements OnInit {
       if (this.editorForm.valid) {
           if (this.editorForm.dirty) {
               const menuItem = { ...this.singleMenu, ...this.editorForm.value};
-              this.menuAdminSVC.editMenu(menuItem);
+              menuItem.parentId = this.parentId;
+              this.menuAdminSVC.editMenu(menuItem)
+                    .then(this.onSaveComplete.bind(this));
           }
           this.onSaveComplete();
         } else {
@@ -60,7 +66,11 @@ export class MenuEditComponent implements OnInit {
     }
 
     public onSaveComplete(): void {
-      this.saveComplete.emit();
+      if (this.parentId) {
+        this.router.navigate([`/admin/sub-menu-admin/${this.parentId}`]);
+      } else {
+        this.router.navigate(['/admin/menu-admin']);
+      }
     }
 
     // public updateMenu0() {

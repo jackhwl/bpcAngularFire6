@@ -14,44 +14,34 @@
     </div> -->
 </div>
 
-  <form [formGroup]="listForm">
-    <div [ngSwitch]="menuChoice" class="admin-content">
-        <div *ngSwitchCase="'edit'">
-            <div *ngIf='singleMenu'>
-                <edit-menu (saveComplete)="onSaveComplete()" [theMenu]="singleMenu"></edit-menu>
-            </div>
-        </div>
-        <div *ngSwitchDefault>
-            <select formControlName="selectedMenu" (change)="onChange($event.target.value)">
-                <option [value]="null">Select Top Menu</option>
-                <option *ngFor="let menu of nav" [value]="menu.id">{{menu.name}}</option>
-            </select>
-            <span *ngIf = "!selectedMenu || selectedMenu!=='null'">
-                <a class="btn btn-secondary" routerLink="/admin/menu-add/{{parentId}}" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Add Sub Menu</a>
-            </span>
-            <table>
-                <tr>
-                    <th>Name</th>
-                    <th>Enable</th>
-                    <th>Order</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                </tr>
-                <tr *ngFor="let menu of subNav">
-                    <td>
-                        <a class="btn btn-secondary"
-                          routerLink="/admin/menu-edit/{{parentId}}/{{menu.id}}"
-                          routerLinkActive="active"
-                          [routerLinkActiveOptions]= "{exact: true}">
-                          {{ menu.name.trim() === '' ? 'no name' : menu.name}}
-                        </a>
-                    </td>
-                    <td>{{menu.enable}}</td>
-                    <td>{{menu.order}}</td>
-                    <td><button class="btn btn-link" (click)="editNav(menu)">Edit</button></td>
-                    <td><button class="btn btn-link" (click)="deleteNav(menu)">Delete</button></td>
-                </tr>
-            </table>
-        </div>
-    </div>
+  <form [formGroup]="listForm" class="admin-content">
+
+    <select formControlName="selectedMenu" (change)="onChange($event.target.value)">
+        <option [value]="null">Select Top Menu</option>
+        <option *ngFor="let menu of nav" [value]="menu.id">{{menu.name}}</option>
+    </select>
+    <span *ngIf = "!selectedMenu || selectedMenu!=='null'">
+        <a class="btn btn-secondary" routerLink="/admin/menu-add/{{parentId}}" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Add Sub Menu</a>
+    </span>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Enable</th>
+            <th>Order</th>
+            <th>&nbsp;</th>
+        </tr>
+        <tr *ngFor="let menu of subNav">
+            <td>
+                <a class="btn btn-secondary"
+                  routerLink="/admin/menu-edit/{{parentId}}/{{menu.id}}"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]= "{exact: true}">
+                  {{ menu.name.trim() === '' ? 'no name' : menu.name}}
+                </a>
+            </td>
+            <td>{{menu.enable}}</td>
+            <td>{{menu.order}}</td>
+            <td><button class="btn btn-link" (click)="deleteNav(menu)">Delete</button></td>
+        </tr>
+    </table>
   </form>

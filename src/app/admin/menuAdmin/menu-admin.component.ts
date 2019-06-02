@@ -29,18 +29,9 @@ export class MenuAdminComponent implements OnInit {
         this.router.navigate(['']);
     }
 
-    public chooseMode(mode: string) {
-        this.menuChoice = mode;
-    }
-
     public setNav() {
       this.menuAdminSVC.getNav()
         .subscribe((menu) => this.nav = menu);
-    }
-
-    public editNav(theMenu: Menu) {
-        this.singleMenu = theMenu;
-        this.chooseMode('edit');
     }
 
     public deleteNav(single: Menu) {
@@ -53,7 +44,6 @@ export class MenuAdminComponent implements OnInit {
 
     public onSaveComplete(): void {
         this.setNav();
-        this.chooseMode('');
         this.router.navigate(['/admin/menu-admin']);
     }
 }
