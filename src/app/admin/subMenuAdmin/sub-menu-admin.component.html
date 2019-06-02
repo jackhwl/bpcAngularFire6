@@ -38,7 +38,14 @@
                     <th>&nbsp;</th>
                 </tr>
                 <tr *ngFor="let menu of subNav">
-                    <td>{{menu.name}}</td>
+                    <td>
+                        <a class="btn btn-secondary"
+                          routerLink="/admin/menu-edit/{{parentId}}/{{menu.id}}"
+                          routerLinkActive="active"
+                          [routerLinkActiveOptions]= "{exact: true}">
+                          {{ menu.name.trim() === '' ? 'no name' : menu.name}}
+                        </a>
+                    </td>
                     <td>{{menu.enable}}</td>
                     <td>{{menu.order}}</td>
                     <td><button class="btn btn-link" (click)="editNav(menu)">Edit</button></td>

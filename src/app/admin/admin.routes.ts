@@ -18,6 +18,9 @@ export const AdminRoutes: Routes = [
       children: [
           { path: 'menu-add', component: MenuAddComponent, canActivate: [AuthGuard] },
           { path: 'menu-add/:parentId', component: MenuAddComponent, canActivate: [AuthGuard] },
+          { path: 'menu-edit/:parentId', component: MenuEditComponent, canActivate: [AuthGuard] },
+          { path: 'menu-edit/:parentId/:id', component: MenuEditComponent,
+                  canActivate: [AuthGuard] },
           { path: 'blog-admin', component: BlogAdminComponent, canActivate: [AuthGuard] },
           { path: 'menu-admin', component: MenuAdminComponent, canActivate: [AuthGuard] },
           { path: 'sub-menu-admin', component: SubMenuAdminComponent, canActivate: [AuthGuard] },

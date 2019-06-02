@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MenuAdminService, QuillService } from '../adminShared';
 import { Menu } from '../../core/models';
 
@@ -17,15 +18,21 @@ export class MenuEditComponent implements OnInit {
     public editorStyle: any;
     public modules: any;
     public txtArea: HTMLTextAreaElement;
-    constructor(private menuAdminSVC: MenuAdminService, private quillSVC: QuillService ) {}
+    public parentId: string;
+    public id: string;
+    constructor(private menuAdminSVC: MenuAdminService,
+                private quillSVC: QuillService,
+                private route: ActivatedRoute
+                ) {}
 
     public ngOnInit() {
+      this.parentId = this.route.snapshot.params['parentId'];
+      this.id = this.route.snapshot.params['id'];
       this.singleMenu = this.theMenu;
       this.editorForm = this.menuAdminSVC.getFormInstance();
       this.menuAdminSVC.setForm(this.singleMenu, this.editorForm);
       this.modules = this.quillSVC.EditorModules;
       this.editorStyle = this.quillSVC.EditorStyle;
-
     }
 
     public editorCreated(e) {

@@ -21,7 +21,8 @@ export class MenuAdminService {
       name: ['', Validators.required],
       content: '',
       order: 8,
-      enable: 'false'
+      enable: 'false',
+      parentId: null
     });
   }
 
@@ -30,31 +31,7 @@ export class MenuAdminService {
   }
 
   public createMenu(menu: Menu) {
-    const dbRef = this.db.list('menu');
-    const newMenu = dbRef.push('');
-    newMenu.set({
-      name: menu.name,
-      order: menu.order,
-      enable: menu.enable,
-      id: newMenu.key
-    });
-
-    const newSubMenu = this.db.object(`subMenu/${newMenu.key}`);
-    newSubMenu.set({
-      name: menu.name
-    });
-
-    const content = this.db.object(`content/${newMenu.key}`);
-    if (menu.content) {
-      content.set({
-        name: menu.name,
-        content: menu.content
-      });
-    } else {
-      content.set({
-        name: menu.name
-      });
-    }
+    return menu.parentId ? this.createSubMenu(menu) : this.createRootMenu(menu);
   }
 
   public editMenu(menu: Menu) {
@@ -82,32 +59,6 @@ export class MenuAdminService {
     return this.db.list<Menu>(`subMenu/${parentId}/items`,
                               (ref) => ref.orderByChild('order'))
                   .valueChanges();
-  }
-
-  public createSubMenu(parentId: string, menu: Menu) {
-    let pMenu: Promise<Menu>;
-    let pContent: Promise<any>;
-    const dbRef = this.db.list(`subMenu/${parentId}/items`);
-    const newMenu = dbRef.push('');
-    pMenu = newMenu.set({
-      name: menu.name,
-      order: menu.order,
-      enable: menu.enable,
-      id: newMenu.key
-    });
-
-    const content = this.db.object(`content/${newMenu.key}`);
-    if (menu.content) {
-      pContent = content.set({
-        name: menu.name,
-        content: menu.content
-      });
-    } else {
-      pContent = content.set({
-        name: menu.name
-      });
-    }
-    return Promise.all([pMenu, pContent]);
   }
 
   public editMisc(type: string, content: string) {
@@ -180,6 +131,74 @@ export class MenuAdminService {
     }
   }
 
+  private createRootMenu(menu: Menu) {
+    const pArray = [];
+    let pMenu: Promise<Menu>;
+    let pSubMenu: Promise<any>;
+    let pContent: Promise<any>;
+    const dbRef = this.db.list('menu');
+    const newMenu = dbRef.push('');
+    pMenu = newMenu.set({
+      name: menu.name,
+      order: menu.order,
+      enable: menu.enable,
+      id: newMenu.key
+    });
+
+    const newSubMenu = this.db.object(`subMenu/${newMenu.key}`);
+    pSubMenu = newSubMenu.set({
+      name: menu.name
+    });
+
+    const content = this.db.object(`content/${newMenu.key}`);
+    if (menu.content) {
+      pContent = content.set({
+        name: menu.name,
+        content: menu.content
+      });
+    } else {
+      pContent = content.set({
+        name: menu.name
+      });
+    }
+
+    pArray.push(pMenu);
+    pArray.push(pSubMenu);
+    pArray.push(pContent);
+
+    return Promise.all(pArray);
+  }
+
+  private createSubMenu(menu: Menu) {
+    const pArray = [];
+    let pMenu: Promise<Menu>;
+    let pContent: Promise<any>;
+    const dbRef = this.db.list(`subMenu/${menu.parentId}/items`);
+    const newMenu = dbRef.push('');
+    pMenu = newMenu.set({
+      name: menu.name,
+      order: menu.order,
+      enable: menu.enable,
+      id: newMenu.key
+    });
+
+    const content = this.db.object(`content/${newMenu.key}`);
+    if (menu.content) {
+      pContent = content.set({
+        name: menu.name,
+        content: menu.content
+      });
+    } else {
+      pContent = content.set({
+        name: menu.name
+      });
+    }
+
+    pArray.push(pMenu);
+    pArray.push(pContent);
+    return Promise.all(pArray);
+  }
+
   private removeRootMenu(deleteMenu: Menu) {
     this.db.object(`menu/${deleteMenu.id}`).remove();
     const subMenuChildRef = this.db.list(`subMenu/${deleteMenu.id}/items`).query;
@@ -197,6 +216,5 @@ export class MenuAdminService {
     this.db.object(`subMenu/${parentId}/items/${deleteMenu.id}`).remove();
     this.db.object<string>(`content/${deleteMenu.id}`).remove();
   }
-
 
 }

@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { UserService } from '../../core/services';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { MenuAdminService } from '../adminShared';
+import { UserService } from '../../core/services';
 import { Menu } from '../../core/models/menu';
 
 @Component({
     templateUrl: './sub-menu-admin.component.html'
 })
 
-export class SubMenuAdminComponent implements OnInit {
+export class SubMenuAdminComponent implements OnInit, OnDestroy {
   public listForm: FormGroup;
   public menuChoice: string = '';
     public nav: Menu[];
@@ -19,6 +20,7 @@ export class SubMenuAdminComponent implements OnInit {
     public subMenu: Menu;
     public parentId: string;
     public menuData: any = {menuChoice: '', parentId: '', subMenu: null};
+    private subscription: Subscription;
 
     constructor(private userSVC: UserService,
                 private router: Router,
@@ -56,11 +58,11 @@ export class SubMenuAdminComponent implements OnInit {
     }
 
     public setSubNav() {
-      this.menuAdminSVC.getSubNav(this.parentId)
+      this.subscription = this.menuAdminSVC.getSubNav(this.parentId)
         .subscribe((menus) => {
             this.subNav = menus;
             console.log('set sub nav menus=', menus);
-            this.subNav.map((menu: Menu) => menu.parentId = this.parentId);
+            this.subNav.map((menu) => menu.parentId = this.parentId);
         });
     }
 
@@ -112,5 +114,9 @@ export class SubMenuAdminComponent implements OnInit {
         this.setNav();
         this.chooseMode('', this.parentId);
         this.router.navigate(['/admin/sub-menu-admin']);
+    }
+
+    public ngOnDestroy() {
+      this.subscription.unsubscribe();
     }
 }

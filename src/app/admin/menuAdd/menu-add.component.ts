@@ -15,7 +15,7 @@ export class MenuAddComponent implements OnInit {
     public editorStyle: any;
     public modules: any;
     public txtArea: HTMLTextAreaElement;
-    private parentId: string;
+    public parentId: string;
 
     constructor(private menuAdminSVC: MenuAdminService,
                 private route: ActivatedRoute,
@@ -52,18 +52,9 @@ export class MenuAddComponent implements OnInit {
         if (this.editorForm.valid) {
             if (this.editorForm.dirty) {
                 const menuItem = { ...this.menu, ...this.editorForm.value};
-                if (this.parentId) {
-                    console.log('this.parentId=', this.parentId);
-                    this.menuAdminSVC.createSubMenu(this.parentId, menuItem)
-                      .then((ma) => {
-                        console.log(ma);
-                         console.log(ma[0]);
-                         console.log(ma[1]);
-                        //this.onSaveComplete()
-                      });
-                } else {
-                    this.menuAdminSVC.createMenu(menuItem);
-                }
+                menuItem.parentId = this.parentId;
+                this.menuAdminSVC.createMenu(menuItem)
+                      .then(this.onSaveComplete.bind(this));
             }
         } else {
             console.log('Please correct the validation errors.');
@@ -72,12 +63,12 @@ export class MenuAddComponent implements OnInit {
 
     public onSaveComplete(): void {
         if (this.parentId) {
-          console.log('on parentid save');
-            //this.router.navigate([`/admin/sub-menu-admin/${this.parentId}`]);
+          this.router.navigate([`/admin/sub-menu-admin/${this.parentId}`]);
         } else {
-            this.router.navigate(['/admin/menu-admin']);
+          this.router.navigate(['/admin/menu-admin']);
         }
     }
+
     public cancel() {
         this.onSaveComplete();
     }
