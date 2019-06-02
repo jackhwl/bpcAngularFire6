@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { UserService } from '../../core/services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MenuAdminService } from '../adminShared';
@@ -9,7 +10,8 @@ import { Menu } from '../../core/models/menu';
 })
 
 export class SubMenuAdminComponent implements OnInit {
-    public menuChoice: string = '';
+  public listForm: FormGroup;
+  public menuChoice: string = '';
     public nav: Menu[];
     public subNav: Menu[];
     public selectedMenu: string = null;
@@ -21,11 +23,16 @@ export class SubMenuAdminComponent implements OnInit {
     constructor(private userSVC: UserService,
                 private router: Router,
                 private route: ActivatedRoute,
+                private fb: FormBuilder,
                 private menuAdminSVC: MenuAdminService) {}
 
     public ngOnInit() {
         this.parentId = this.route.snapshot.params['parentId'];
+        this.listForm = this.fb.group({
+          selectedMenu: [this.parentId]
+        });
         this.setNav();
+        this.setSubNav();
     }
 
     public logout() {
@@ -52,7 +59,8 @@ export class SubMenuAdminComponent implements OnInit {
       this.menuAdminSVC.getSubNav(this.parentId)
         .subscribe((menus) => {
             this.subNav = menus;
-            this.subNav.map((menu) => menu.parentId = this.parentId);
+            console.log('set sub nav menus=', menus);
+            this.subNav.map((menu: Menu) => menu.parentId = this.parentId);
         });
     }
 

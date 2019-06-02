@@ -85,9 +85,11 @@ export class MenuAdminService {
   }
 
   public createSubMenu(parentId: string, menu: Menu) {
+    let pMenu: Promise<Menu>;
+    let pContent: Promise<any>;
     const dbRef = this.db.list(`subMenu/${parentId}/items`);
     const newMenu = dbRef.push('');
-    newMenu.set({
+    pMenu = newMenu.set({
       name: menu.name,
       order: menu.order,
       enable: menu.enable,
@@ -96,15 +98,16 @@ export class MenuAdminService {
 
     const content = this.db.object(`content/${newMenu.key}`);
     if (menu.content) {
-      content.set({
+      pContent = content.set({
         name: menu.name,
         content: menu.content
       });
     } else {
-      content.set({
+      pContent = content.set({
         name: menu.name
       });
     }
+    return Promise.all([pMenu, pContent]);
   }
 
   public editMisc(type: string, content: string) {
