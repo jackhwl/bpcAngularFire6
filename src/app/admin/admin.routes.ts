@@ -6,6 +6,7 @@ import { SubMenuListComponent } from './subMenuList/sub-menu-list.component';
 import { MenuListComponent } from './menuList/menu-list.component';
 import { MenuAddComponent } from './menuAdd/menu-add.component';
 import { MenuEditComponent } from './menuEdit/menu-edit.component';
+import { MiscEditComponent } from './miscEdit/misc-edit.component';
 import { BlogAdminComponent } from './blogAdmin/blog-admin.component';
 
 import { AuthGuard } from '../core/services';
@@ -23,6 +24,7 @@ export const AdminRoutes: Routes = [{
       { path: 'sub-menu-list', component: SubMenuListComponent, canActivate: [AuthGuard] },
       { path: 'sub-menu-list/:parentId', component: SubMenuListComponent, canActivate: [AuthGuard]},
       { path: 'login', component: LoginComponent },
+      { path: 'misc-edit/:mode', component: MiscEditComponent, canActivate: [AuthGuard] },
       // { path: 'signup', component: SignUpComponent },
       // { path: 'menu/:id', component:　MenuEditComponent, canActivate: [AuthGuard] },
       { path: '', component: AdminMenuComponent, canActivate: [AuthGuard] }

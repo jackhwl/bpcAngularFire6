@@ -51,10 +51,10 @@ export class MenuAdminService {
   }
 
   public editMisc(type: string, content: string) {
-    this.db.object(`misc/${type}`)
-    .update({
-        content
-      });
+    return this.db.object(`misc/${type}`)
+                .update({
+                    content
+                  });
   }
 
   public setForm(menu: Menu, form: FormGroup) {

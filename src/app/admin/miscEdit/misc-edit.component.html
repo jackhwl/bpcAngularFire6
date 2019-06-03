@@ -1,0 +1,15 @@
+<div class="admin-content">
+    <form [formGroup]="editorForm">
+        <div>
+            Edit {{mode}}
+        </div>
+        <div>
+            <quill-editor [style]="editorStyle" [modules]="modules" (onContentChanged)="maxLength($event)"
+                (onEditorCreated)="editorCreated($event)" formControlName="content"></quill-editor>
+        </div>
+        <div>
+            <button type="button" (click)="updateMisc()">Update {{mode}}</button>
+            <button type="button" (click)="mode=''">Cancel Edit</button>
+        </div>
+    </form>
+</div>

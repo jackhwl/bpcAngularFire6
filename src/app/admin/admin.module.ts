@@ -15,11 +15,10 @@ import { UserService, AuthGuard, AuthService } from '../core/services';
 import { MenuAdminService, BlogAdminService, QuillService, TruncatePipe } from './adminShared';
 
 import { MenuListComponent } from './menuList/menu-list.component';
-
-import { MenuAdminComponent } from './menuAdmin/menu-admin.component';
+import { SubMenuListComponent } from './subMenuList/sub-menu-list.component';
 import { MenuAddComponent } from './menuAdd/menu-add.component';
 import { MenuEditComponent } from './menuEdit/menu-edit.component';
-import { SubMenuListComponent } from './subMenuList/sub-menu-list.component';
+import { MiscEditComponent } from './miscEdit/misc-edit.component';
 
 import { BlogAdminComponent } from './blogAdmin/blog-admin.component';
 import { BlogAddComponent } from './blogAdd/blog-add.component';
@@ -45,10 +44,10 @@ import { AdminRoutes } from './admin.routes';
         LoginComponent,
         // SignUpComponent,
         MenuListComponent,
-        MenuAdminComponent,
+        SubMenuListComponent,
         MenuAddComponent,
         MenuEditComponent,
-        SubMenuListComponent,
+        MiscEditComponent,
         BlogAdminComponent,
         BlogAddComponent,
         BlogEditComponent,
