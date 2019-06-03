@@ -63,9 +63,9 @@ export class MenuAddComponent implements OnInit {
 
     public onSaveComplete(): void {
         if (this.parentId) {
-          this.router.navigate([`/admin/sub-menu-admin/${this.parentId}`]);
+          this.router.navigate([`/admin/sub-menu-list/${this.parentId}`]);
         } else {
-          this.router.navigate(['/admin/menu-admin']);
+          this.router.navigate(['/admin/menu-list']);
         }
     }
 

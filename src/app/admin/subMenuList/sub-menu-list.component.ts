@@ -7,10 +7,10 @@ import { UserService } from '../../core/services';
 import { Menu } from '../../core/models/menu';
 
 @Component({
-    templateUrl: './sub-menu-admin.component.html'
+    templateUrl: './sub-menu-list.component.html'
 })
 
-export class SubMenuAdminComponent implements OnInit, OnDestroy {
+export class SubMenuListComponent implements OnInit, OnDestroy {
   public listForm: FormGroup;
     public nav: Menu[];
     public subNav: Menu[];
@@ -44,9 +44,9 @@ export class SubMenuAdminComponent implements OnInit, OnDestroy {
         .subscribe((menu) => this.nav = menu);
     }
 
-    public onChange(id) {
+    public onChange(id: string) {
         this.parentId = id;
-        this.setSubNav();
+        this.reload();
     }
 
     public setSubNav() {
@@ -61,13 +61,12 @@ export class SubMenuAdminComponent implements OnInit, OnDestroy {
         const confirmDelete = confirm(`Are you sure you want to delete this menu?`);
         if (confirmDelete) {
           this.menuAdminSVC.removeMenu(menu);
-          this.onSaveComplete();
+          this.reload();
         }
     }
 
-    public onSaveComplete(): void {
-        this.setNav();
-        this.router.navigate([`/admin/sub-menu-admin/${this.parentId}`]);
+    public reload(): void {
+        this.router.navigate([`/admin/sub-menu-list/${this.parentId}`]);
     }
 
     public ngOnDestroy() {

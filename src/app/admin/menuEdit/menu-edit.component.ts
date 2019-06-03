@@ -31,9 +31,7 @@ export class MenuEditComponent implements OnInit {
         .then((m) => {
           this.singleMenu = m.val();
           this.singleMenu.parentId = this.parentId;
-          console.log('this.singleMenu=', this.singleMenu);
           this.menuAdminSVC.setForm(this.singleMenu, this.editorForm);
-          console.log('dddd');
         });
       this.modules = this.quillSVC.EditorModules;
       this.editorStyle = this.quillSVC.EditorStyle;
@@ -67,9 +65,9 @@ export class MenuEditComponent implements OnInit {
 
     public onSaveComplete(): void {
       if (this.parentId) {
-        this.router.navigate([`/admin/sub-menu-admin/${this.parentId}`]);
+        this.router.navigate([`/admin/sub-menu-list/${this.parentId}`]);
       } else {
-        this.router.navigate(['/admin/menu-admin']);
+        this.router.navigate(['/admin/menu-list']);
       }
     }
 

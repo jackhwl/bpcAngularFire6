@@ -1,0 +1,47 @@
+<div class="top-bar">
+    <!-- <div class="top-bar-title">BPC Admin area</div>
+
+    <div class="top-bar-left">
+        <ul class="menu">
+            <li class="admin-menu"><a [routerLink]="['/admin']">Back to Admin</a></li>
+        </ul>
+    </div> -->
+    <!-- <div *ngIf="theUser" class="top-bar-right">
+        <ul class="menu">
+            <li class="admin-menu"><a (click)="logout()">Logout</a></li>
+            <li class="admin-menu"><a> {{theUser}} Logged in</a></li>
+        </ul>
+    </div> -->
+</div>
+
+  <form [formGroup]="listForm" class="admin-content">
+
+    <select formControlName="selectedMenu" (change)="onChange($event.target.value)">
+        <option [value]="null">Select Top Menu</option>
+        <option *ngFor="let menu of nav" [value]="menu.id">{{menu.name}}</option>
+    </select>
+    <div *ngIf="parentId">
+      <a class="btn btn-secondary" routerLink="/admin/menu-add/{{parentId}}" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Add Sub Menu</a>
+      <table>
+          <tr>
+              <th>Name</th>
+              <th>Enable</th>
+              <th>Order</th>
+              <th>&nbsp;</th>
+          </tr>
+          <tr *ngFor="let menu of subNav">
+              <td>
+                  <a class="btn btn-secondary"
+                    routerLink="/admin/menu-edit/{{parentId}}/{{menu.id}}"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]= "{exact: true}">
+                    {{ menu.name.trim() === '' ? 'no name' : menu.name}}
+                  </a>
+              </td>
+              <td>{{menu.enable}}</td>
+              <td>{{menu.order}}</td>
+              <td><button class="btn btn-link" (click)="deleteNav(menu)">Delete</button></td>
+          </tr>
+      </table>
+    </div>
+  </form>

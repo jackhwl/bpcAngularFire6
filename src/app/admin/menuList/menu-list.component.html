@@ -1,58 +1,33 @@
-<div [ngSwitch]="menuChoice" class="admin-content">
-    <a class="btn btn-secondary" (click)="chooseMode('add', null)" routerLinkActive="active"
-        [routerLinkActiveOptions]="{exact: true}">Add Menu</a>
-    <a class="btn btn-secondary" (click)="chooseMode('', null)" routerLinkActive="active"
-        [routerLinkActiveOptions]="{exact: true}">Manage Menu</a>
-    <div>
-        <select [(ngModel)]="selectedMenu" (change)="onChange($event.target.value)">
-            <option [value]="0">Top Menu</option>
-            <option *ngFor="let menu of rootNav" [value]="menu.id" [selected]="selected">{{menu.name}}</option>
-        </select>
+<div class="admin-content">
+    <div *ngIf="theUser" class="top-bar-right">
+        <ul class="menu">
+            <li class="admin-menu"><a (click)="logout()">Logout</a></li>
+            <li class="admin-menu"><a> {{theUser}} Logged in</a></li>
+        </ul>
     </div>
-    <div *ngSwitchDefault>
-        <div *ngIf="formDisplay" class="row">
-            <table>
-                <tr>
-                    <th>Name</th>
-                    <th>Enable</th>
-                    <th>Order</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                </tr>
-                <tr *ngFor="let menu of nav">
-                    <td>{{menu.name}}</td>
-                    <td>{{menu.enable}}</td>
-                    <td>{{menu.order}}</td>
-                    <!-- <td><a class="button" (click)="chooseMode('addSub', menu.id)">Add Sub Menu</a></td> -->
-                    <td><a [routerLink]="['/admin/menu-edit', menu.id]">Edit</a>
-                        <button class="btn btn-link" (click)="editNav(menu)">Edit</button></td>
-                    <td><button class="btn btn-link" (click)="deleteNav(menu)">Delete</button></td>
-                </tr>
-            </table>
-            <!-- <div class="row" *ngFor="let menu of nav">
-                    <div class="row spacer">
-                        <div class="media-object">
-                            <div class="media-object-section">
-                                <div class="align-self-middle">
-                                    <h4>{{menu.name}}</h4>
-                                </div>
-                            </div>
-                            <div class="media-object-section main-section">
-                                <div class="button-group align-center">
-                                    <a class="button" (click)="editNav(menu)">Edit</a>
-                                    <a class="button alert" (click)="deleteNav(menu)">Delete</a>
-                                </div>
-                            </div>
+</div>
 
-                        </div>
-                    </div>
-                </div> -->
-            <!-- <div>
-                <div *ngFor="let subMenu of subNav">
-                    <h4>{{subMenu.name}}</h4>
-                </div>
-            </div> -->
-
-        </div>
-    </div>
+<div class="admin-content">
+  <a class="btn btn-secondary" routerLink="/admin/menu-add" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Add Menu</a>
+  <table>
+      <tr>
+          <th>Name</th>
+          <th>Enable</th>
+          <th>Order</th>
+          <th>&nbsp;</th>
+      </tr>
+      <tr *ngFor="let menu of nav">
+          <td>
+            <a class="btn btn-secondary"
+              routerLink="/admin/menu-edit/{{menu.id}}"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]= "{exact: true}">
+              {{ menu.name.trim() === '' ? 'no name' : menu.name}}
+            </a>
+          </td>
+          <td>{{menu.enable}}</td>
+          <td>{{menu.order}}</td>
+          <td><button class="btn btn-link" (click)="deleteNav(menu)">Delete</button></td>
+      </tr>
+  </table>
 </div>
