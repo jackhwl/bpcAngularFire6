@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { Menu } from '../../core/models/menu';
+import { Menu, Misc } from '../../core/models';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
@@ -24,6 +24,10 @@ export class MenuAdminService {
       enable: 'false',
       parentId: null
     });
+  }
+
+  public getMisc() {
+    return this.db.object<Misc>('misc').query.once('value');
   }
 
   public getNav() {

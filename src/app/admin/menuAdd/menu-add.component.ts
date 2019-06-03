@@ -48,7 +48,11 @@ export class MenuAddComponent implements OnInit {
         this.quillSVC.maxLength(e);
     }
 
-    public createMenu() {
+    public cancel() {
+        this.onSaveComplete();
+    }
+
+    public create() {
         if (this.editorForm.valid) {
             if (this.editorForm.dirty) {
                 const menuItem = { ...this.menu, ...this.editorForm.value};
@@ -67,9 +71,5 @@ export class MenuAddComponent implements OnInit {
         } else {
           this.router.navigate(['/admin/menu-list']);
         }
-    }
-
-    public cancel() {
-        this.onSaveComplete();
     }
 }
