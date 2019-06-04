@@ -1,60 +1,82 @@
-<div class="row">
-    <div class="small-12 medium-6 columns">
+<div class="admin-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="small-12 medium-6 columns">
         <h1>Add a Post</h1>
+      </div>
     </div>
-</div>
 
-<form [formGroup]="editorForm">
-    <div class="row">
+    <form [formGroup]="editorForm">
+      <div class="row">
         <div class="small-12 medium-6 columns">
-            <label>Post Title
-                <input type="text" formControlName="title">
-            </label>
+          <label
+            >Post Title
+            <input type="text" formControlName="title" />
+          </label>
         </div>
-    </div>
-    <div class="row">
+      </div>
+      <div class="row">
         <div class="small-12 medium-6 columns">
-            <label>Post Author
-                <input type="text" formControlName="author">
-            </label>
+          <label
+            >Post Author
+            <input type="text" formControlName="author" />
+          </label>
         </div>
-    </div>
-    <div class="row">
+      </div>
+      <div class="row">
         <div class="small-12 medium-6 columns">
-            <label>Post Content
-                <quill-editor [style]="editorStyle" [modules]="modules" (onContentChanged)="maxLength($event)"
-                            (onEditorCreated)="editorCreated($event)" formControlName="content"></quill-editor>
-                <!-- <textarea rows="15" id="content" [(ngModel)]="content" name="content" required #psContent="ngModel"></textarea> -->
-            </label>
+          <label
+            >Post Content
+            <quill-editor
+              [style]="editorStyle"
+              [modules]="modules"
+              (onContentChanged)="maxLength($event)"
+              (onEditorCreated)="editorCreated($event)"
+              formControlName="content"
+            ></quill-editor>
+            <!-- <textarea rows="15" id="content" [(ngModel)]="content" name="content" required #psContent="ngModel"></textarea> -->
+          </label>
         </div>
         <!-- <div class="small-12 medium-6 columns">
             <input type="file" (change)="fileLoad($event)"><br>
             <img *ngIf="imageSRC" [src]="imageSRC" alt="Image preview...">
         </div> -->
-    </div>
-    <div class="row">
+      </div>
+      <div class="row">
         <div class="small-12 medium-6 columns">
-            <label>Order
-                <input type="text" formControlName="order" >
-            </label>
+          <label
+            >Order
+            <input type="text" formControlName="order" />
+          </label>
         </div>
-    </div>
-    <div class="row">
+      </div>
+      <div class="row">
         <div class="small-12 medium-6 columns">
-            <label>Enable
-                <input type="radio" formControlName="enable" [value]=true> True
-                <input type="radio" formControlName="enable" [value]=false> False
-            </label>
+          <label
+            >Enable
+            <input type="radio" formControlName="enable" [value]="true" /> True
+            <input type="radio" formControlName="enable" [value]="false" />
+            False
+          </label>
         </div>
-    </div>
-    <div class="row align-center">
+      </div>
+      <div class="row align-center">
         <div class="small-12 columns">
-            <div class="expanded button-group">
-                <button class="success button" type="button" [disabled]="!editorForm.valid"
-                    (click)="createPost()">Create Post </button>
-                <button class="cancel button" type="button" (click)="cancel()">Cancel</button>
-            </div>
+          <div class="expanded button-group">
+            <button
+              class="success button"
+              type="button"
+              [disabled]="!editorForm.valid"
+              (click)="create()"
+            >
+              Create Post
+            </button>
+            <button class="cancel button" type="button" (click)="cancel()">
+              Cancel
+            </button>
+          </div>
         </div>
-    </div>
-
-</form>
+      </div>
+    </form>
+  </div>
+</div>

@@ -9,7 +9,7 @@ import { MenuEditComponent } from './menuEdit/menu-edit.component';
 import { MiscEditComponent } from './miscEdit/misc-edit.component';
 import { BlogAddComponent } from './blogAdd/blog-add.component';
 import { BlogEditComponent } from './blogEdit/blog-edit.component';
-import { BlogAdminComponent } from './blogAdmin/blog-admin.component';
+import { BlogListComponent } from './blogList/blog-list.component';
 
 import { AuthGuard } from '../core/services';
 
@@ -23,7 +23,7 @@ export const AdminRoutes: Routes = [{
       { path: 'menu-edit/:parentId/:id', component: MenuEditComponent, canActivate: [AuthGuard] },
       { path: 'blog-add', component: BlogAddComponent, canActivate: [AuthGuard] },
       { path: 'blog-edit/:id', component: BlogEditComponent, canActivate: [AuthGuard] },
-      { path: 'blog-admin', component: BlogAdminComponent, canActivate: [AuthGuard] },
+      { path: 'blog-list', component: BlogListComponent, canActivate: [AuthGuard] },
       { path: 'menu-list', component: MenuListComponent, canActivate: [AuthGuard] },
       { path: 'sub-menu-list', component: SubMenuListComponent, canActivate: [AuthGuard] },
       { path: 'sub-menu-list/:parentId', component: SubMenuListComponent, canActivate: [AuthGuard]},

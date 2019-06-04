@@ -5,11 +5,11 @@ import { UserService } from '../../core/services';
 import { Blog } from '../../core/models';
 
 @Component({
-    templateUrl: './blog-admin.component.html',
-    styleUrls: ['./blog-admin.component.css']
+    templateUrl: './blog-list.component.html',
+    styleUrls: ['./blog-list.component.css']
 })
 
-export class BlogAdminComponent implements OnInit {
+export class BlogListComponent implements OnInit {
   public theUser: string;
   public menuChoice: string;
   public blogPosts: Blog[];
@@ -57,6 +57,6 @@ export class BlogAdminComponent implements OnInit {
   public onSaveComplete(): void {
     this.setPosts();
     this.chooseMode('');
-    this.router.navigate(['/admin/blog-admin']);
+    this.router.navigate(['/admin/blog-list']);
   }
 }

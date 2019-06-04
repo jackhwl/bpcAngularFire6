@@ -1,54 +1,12 @@
-<!-- <div class="top-bar">
-    <div class="top-bar-title">BPC Admin area</div>
-
-     <div class="top-bar-left">
-        <ul class="menu">
-            <li class="admin-menu"><a [routerLink]="['/admin/blog-admin']">Manage Blog</a></li>
-            <li class="admin-menu"><a [routerLink]="['/admin/menu-admin']">Manage Menu</a></li>
-            <li class="admin-menu"><a [routerLink]="['/admin/sub-menu-admin']">Manage Sub Menu</a></li>
-            <li class="admin-menu"><a href="#">Two</a></li>
-        </ul>
-    </div>
-    <div *ngIf="theUser" class="top-bar-right">
-        <ul class="menu">
-            <li class="admin-menu">
-                <a (click)="logout()">Logout</a>
-            </li>
-            <li class="admin-menu">
-                <a> {{theUser}} Logged in</a>
-            </li>
-        </ul>
-    </div>
-</div> -->
-<!-- <div class="btn-group">
-    <a class="btn btn-secondary" [routerLink]="['/admin/blog-admin']" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Manage Blog</a>
-</div> -->
 <div class="admin-content">
     <a [routerLink]="['/admin/menu-list']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Manage
         Menu</a>
     <a [routerLink]="['/admin/sub-menu-list']" routerLinkActive="active"
         [routerLinkActiveOptions]="{exact: true}">Manage Sub Menu</a>
-    <a (click)="chooseMode('header')" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Manage
+    <a [routerLink]="['/admin/misc-edit/header']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Manage
         Header</a>
-    <a (click)="chooseMode('footer')" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Manage
+    <a [routerLink]="['/admin/misc-edit/footer']"  routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Manage
         Footer</a>
-    <a [routerLink]="['/admin/blog-admin']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Manage
+    <a [routerLink]="['/admin/blog-list']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Manage
       Blog</a>
   </div>
-<div *ngIf="headerChoice" class="admin-content">
-    <form [formGroup]="editorForm">
-        <div>
-            Edit {{headerChoice}}
-        </div>
-        <div>
-            <quill-editor [style]="editorStyle" [modules]="modules" (onContentChanged)="maxLength($event)"
-                (onEditorCreated)="editorCreated($event)" formControlName="editContent"></quill-editor>
-            <!-- <textarea formControlName="sourceContent"></textarea> -->
-
-        </div>
-        <div>
-            <button type="button" (click)="updateMisc()">Update {{headerChoice}}</button>
-            <button type="button" (click)="headerChoice=''">Cancel Edit</button>
-        </div>
-    </form>
-</div>

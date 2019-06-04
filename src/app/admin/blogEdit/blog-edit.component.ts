@@ -60,6 +60,6 @@ export class BlogEditComponent implements OnInit {
     }
 
     public onSaveComplete(): void {
-      this.router.navigate(['/admin/blog-admin']);
+      this.router.navigate(['/admin/blog-list']);
     }
   }
