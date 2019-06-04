@@ -37,7 +37,7 @@ export class QuillService {
 
     public editorCreated(e, txtArea: HTMLTextAreaElement, editorForm: FormGroup) {
         const quill = e;
-        txtArea = document.createElement('textarea');
+        //txtArea = document.createElement('textarea');
         txtArea.setAttribute('formControlName', 'content');
         txtArea.style.cssText =
             `width: 100%;margin: 0px;

@@ -41,6 +41,7 @@ export class MiscEditComponent implements OnInit {
     }
 
     public editorCreated(e) {
+      this.txtArea = document.createElement('textarea');
       this.quillSVC.editorCreated(e, this.txtArea, this.editorForm);
     }
 
@@ -53,6 +54,7 @@ export class MiscEditComponent implements OnInit {
     }
 
     public update() {
+      console.log('this.txtArea.style.display=', this.txtArea.style.display);
       if (this.editorForm.valid) {
           if (this.editorForm.dirty) {
               this.menuAdminSVC.editMisc(
@@ -67,6 +69,6 @@ export class MiscEditComponent implements OnInit {
     }
 
     public onSaveComplete(): void {
-      this.router.navigate([`/admin/misc-edit/${this.mode}`]);
+      this.router.navigate(['/admin']);
     }
   }
