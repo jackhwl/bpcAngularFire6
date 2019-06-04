@@ -66,10 +66,11 @@ export class BlogAdminService {
         //       .catch((error) => {
         //           alert(`failed upload: ${error}`);
         //       });
+          return Promise.resolve();
         } else {
             const dbRef = this.db.list('blogPosts');
             const newPost = dbRef.push('');
-            newPost.set ({
+            return newPost.set ({
               title: post.title,
               author: post.author,
               imgurl: post.imgurl,

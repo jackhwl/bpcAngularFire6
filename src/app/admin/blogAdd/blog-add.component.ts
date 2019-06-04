@@ -1,5 +1,6 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { BlogAdminService, QuillService } from '../adminShared';
 import { Blog } from '../../core/models';
 
@@ -9,7 +10,6 @@ import { Blog } from '../../core/models';
 })
 
 export class BlogAddComponent implements OnInit {
-  @Output() public saveComplete = new EventEmitter();
     public editorForm: FormGroup;
     public post: Blog;
     public editorStyle: any;
@@ -17,6 +17,8 @@ export class BlogAddComponent implements OnInit {
     public txtArea: HTMLTextAreaElement;
 
     constructor(private blogAdminSVC: BlogAdminService,
+                private route: ActivatedRoute,
+                private router: Router,
                 private quillSVC: QuillService) {}
 
     public ngOnInit() {
@@ -33,34 +35,25 @@ export class BlogAddComponent implements OnInit {
       this.quillSVC.maxLength(e);
     }
 
-    // public fileLoad($event: any) {
-    //     const myReader: FileReader = new FileReader();
-    //     const file: File = $event.target.files[0];
-    //     this.imgTitle = file.name;
-    //     myReader.readAsDataURL(file);
+    public cancel() {
+      this.onSaveComplete();
+    }
 
-    //     myReader.onload = (e: any) => {
-    //         this.imageSRC = e.target.result;
-    //     };
-    // }
-
-    public createPost() {
+    public create() {
       if (this.editorForm.valid) {
         if (this.editorForm.dirty) {
             const postItem = { ...this.post, ...this.editorForm.value};
-            this.blogAdminSVC.createPost(postItem);
+            this.blogAdminSVC.createPost(postItem)
+                  .then(this.onSaveComplete.bind(this));
         }
-        this.onSaveComplete();
       } else {
         console.log('Please correct the validation errors.');
       }
     }
 
     public onSaveComplete(): void {
-      this.saveComplete.emit();
+      this.router.navigate(['/admin/blog-admin']);
     }
 
-    public cancel() {
-      this.onSaveComplete();
-    }
+
 }

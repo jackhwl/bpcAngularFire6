@@ -1,44 +1,55 @@
 <div class="admin-content">
-    <div *ngIf="theUser" class="top-bar-right">
-        <ul class="menu">
-            <li class="admin-menu"><a (click)="logout()">Logout</a></li>
-            <li class="admin-menu"><a> {{theUser}} Logged in</a></li>
-        </ul>
-    </div>
+  <div *ngIf="theUser" class="top-bar-right">
+    <ul class="menu">
+      <li class="admin-menu"><a (click)="logout()">Logout</a></li>
+      <li class="admin-menu">
+        <a> {{ theUser }} Logged in</a>
+      </li>
+    </ul>
+  </div>
 </div>
-
-<div [ngSwitch]="menuChoice" class="admin-content">
-    <a class="btn btn-secondary" (click)="chooseMode('add')" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Add Post</a>
-    <a class="btn btn-secondary" (click)="chooseMode('')" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Manage Blogs</a>
-
-    <div *ngSwitchCase="'add'"><add-blog (saveComplete)="onSaveComplete()"></add-blog></div>
-    <div *ngSwitchDefault>
-        <table>
-            <tr>
-                <th>Name</th>
-                <th>Author</th>
-                <th>Order</th>
-                <th>Enable</th>
-                <th>Highlight</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-            </tr>
-            <tr *ngFor="let post of blogPosts">
-                <td>
-                    <a class="btn btn-secondary"
-                        routerLink="/admin/blog-edit/{{post.id}}"
-                        routerLinkActive="active"
-                        [routerLinkActiveOptions]= "{exact: true}">
-                        {{ post.title.trim() === '' ? 'no title' : post.title}}
-                    </a>
-                </td>
-                <td>{{post.author}}</td>
-                <td>{{post.order}}</td>
-                <td>{{post.enable}}</td>
-                <td>{{post.ontop}}</td>
-                <td><button class="btn btn-link" (click)="editPost(post)">Edit</button></td>
-                <td><button class="btn btn-link" (click)="deletePost(post)">Delete</button></td>
-            </tr>
-        </table>
-    </div>
+<div class="admin-content">
+  <a
+    class="btn btn-secondary"
+    routerLink="/admin/blog-add"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+    >Add Post</a
+  >
+  <a
+    class="btn btn-secondary"
+    (click)="chooseMode('')"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+    >Manage Blogs</a
+  >
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Author</th>
+      <th>Order</th>
+      <th>Enable</th>
+      <th>Highlight</th>
+      <th>&nbsp;</th>
+    </tr>
+    <tr *ngFor="let post of blogPosts">
+      <td>
+        <a
+          class="btn btn-secondary"
+          routerLink="/admin/blog-edit/{{ post.id }}"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          {{ post.title.trim() === "" ? "no title" : post.title }}
+        </a>
+      </td>
+      <td>{{ post.author }}</td>
+      <td>{{ post.order }}</td>
+      <td>{{ post.enable }}</td>
+      <td>{{ post.ontop }}</td>
+      <td>
+        <button class="btn btn-link" (click)="deletePost(post)">Delete</button>
+      </td>
+    </tr>
+  </table>
 </div>
