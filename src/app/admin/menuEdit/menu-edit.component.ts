@@ -45,11 +45,11 @@ export class MenuEditComponent implements OnInit {
       this.quillSVC.maxLength(e);
     }
 
-    public cancelEdit() {
+    public cancel() {
       this.onSaveComplete();
     }
 
-    public updateMenu() {
+    public update() {
       if (this.editorForm.valid) {
           if (this.editorForm.dirty) {
               const menuItem = { ...this.singleMenu, ...this.editorForm.value};

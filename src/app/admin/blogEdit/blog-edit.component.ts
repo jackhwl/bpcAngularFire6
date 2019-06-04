@@ -1,5 +1,6 @@
-import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { BlogAdminService, QuillService } from '../adminShared';
 import { Blog } from '../../core/models';
 
@@ -9,37 +10,30 @@ import { Blog } from '../../core/models';
 })
 
 export class BlogEditComponent implements OnInit {
-  @Input() public thePost: Blog;
-  @Output() public saveComplete = new EventEmitter();
     public editorForm: FormGroup;
     // public post: Blog;
     public singlePost: Blog;
     public editorStyle: any;
     public modules: any;
     public txtArea: HTMLTextAreaElement;
+    public id: string;
 
     constructor(private blogAdminSVC: BlogAdminService,
-                private quillSVC: QuillService) {}
+                private quillSVC: QuillService,
+                private route: ActivatedRoute,
+                private router: Router) {}
 
     public ngOnInit() {
-        this.singlePost = this.thePost;
-        this.editorForm = this.blogAdminSVC.getFormInstance();
-
-        this.editorForm.setValue({
-            title: this.thePost.title,
-            author: this.thePost.author ? this.thePost.author : '',
-            imgurl: this.thePost.imgurl ? this.thePost.imgurl : '',
-            content: this.thePost.content,
-            enable: (this.thePost.enable === undefined || this.thePost.enable === null)
-                    ? true : this.thePost.enable,
-            ontop: (this.thePost.ontop === undefined || this.thePost.ontop === null)
-                    ? false : this.thePost.ontop,
-            order: this.thePost.order ? this.thePost.order : 100
-          });
-
-        this.modules = this.quillSVC.EditorModules;
-        this.editorStyle = this.quillSVC.EditorStyle;
-      }
+      this.id = this.route.snapshot.params['id'];
+      this.editorForm = this.blogAdminSVC.getFormInstance();
+      this.blogAdminSVC.getPost(this.id)
+        .then((b) => {
+          this.singlePost = b.val();
+          this.blogAdminSVC.setForm(this.singlePost, this.editorForm);
+        });
+      this.modules = this.quillSVC.EditorModules;
+      this.editorStyle = this.quillSVC.EditorStyle;
+    }
 
     public editorCreated(e) {
       this.quillSVC.editorCreated(e, this.txtArea, this.editorForm);
@@ -49,14 +43,14 @@ export class BlogEditComponent implements OnInit {
       this.quillSVC.maxLength(e);
     }
 
-    public cancelEdit() {
+    public cancel() {
         this.onSaveComplete();
     }
 
-    public updatePost() {
+    public update() {
       if (this.editorForm.valid) {
         if (this.editorForm.dirty) {
-            const postItem = { ...this.singlePost, ...this.editorForm.value};
+            const postItem = { ...this.singlePost, ...this.editorForm.value };
             this.blogAdminSVC.editPost(postItem);
         }
         this.onSaveComplete();
@@ -66,6 +60,6 @@ export class BlogEditComponent implements OnInit {
     }
 
     public onSaveComplete(): void {
-      this.saveComplete.emit();
+      this.router.navigate(['/admin/blog-admin']);
     }
   }

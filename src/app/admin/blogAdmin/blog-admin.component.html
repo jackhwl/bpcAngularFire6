@@ -12,7 +12,6 @@
     <a class="btn btn-secondary" (click)="chooseMode('')" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">Manage Blogs</a>
 
     <div *ngSwitchCase="'add'"><add-blog (saveComplete)="onSaveComplete()"></add-blog></div>
-    <div *ngSwitchCase="'edit'"><div *ngIf='singlePost'><edit-blog (saveComplete)="onSaveComplete()" [thePost]="singlePost"></edit-blog></div></div>
     <div *ngSwitchDefault>
         <table>
             <tr>
@@ -25,7 +24,14 @@
                 <th>&nbsp;</th>
             </tr>
             <tr *ngFor="let post of blogPosts">
-                <td>{{post.title}}</td>
+                <td>
+                    <a class="btn btn-secondary"
+                        routerLink="/admin/blog-edit/{{post.id}}"
+                        routerLinkActive="active"
+                        [routerLinkActiveOptions]= "{exact: true}">
+                        {{ post.title.trim() === '' ? 'no title' : post.title}}
+                    </a>
+                </td>
                 <td>{{post.author}}</td>
                 <td>{{post.order}}</td>
                 <td>{{post.enable}}</td>

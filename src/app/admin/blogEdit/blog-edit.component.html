@@ -1,79 +1,85 @@
-<div class="row">
-    <div class="small-12 medium-6 columns">
-        <h1>Edit Post</h1>
-    </div>
-</div>
-
-<form [formGroup]="editorForm">
-    <div class="row">
-        <div class="medium-12 columns"><h3>Edit Post</h3></div>
-    </div>
-    <div class="row">
-        <div class="small-12 medium-6 columns">
-            <label>Post Title
-                <input type="text" formControlName="title" >
-            </label>
-        </div>
-    </div>
-    <div class="row">
-        <div class="small-12 medium-6 columns">
-            <label>Post Author
-                <input type="text" formControlName="author" >
-            </label>
-        </div>
-    </div>
-    <div class="row">
-      <div class="small-12 medium-6 columns">
-          <label>Post Image Link
-              <input type="text" formControlName="imgurl" >
-          </label>
-      </div>
-  </div>
-  <div class="row">
-    <div class="small-12 medium-6 columns">
-            <img src='{{singlePost.imgurl}}' >
-    </div>
-</div>
-<div class="row">
-        <div class="small-12 medium-6 columns">
-            <label>Post Content
-                <quill-editor [style]="editorStyle" [modules]="modules" (onContentChanged)="maxLength($event)"
-                (onEditorCreated)="editorCreated($event)" formControlName="content"></quill-editor>
-            </label>
-        </div>
-    </div>
-    <div class="row">
-        <div class="small-12 medium-6 columns">
-            <label>Order
-                <input type="text" formControlName="order" >
-            </label>
-        </div>
-    </div>
-    <div class="row">
-        <div class="small-12 medium-6 columns">
-            <label>Enable
-                <input type="radio" formControlName="enable" [value]=true> True
-                <input type="radio" formControlName="enable" [value]=false> False
-            </label>
-        </div>
-    </div>
-    <div class="row">
-        <div class="small-12 medium-6 columns">
-            <label>Highlight
-              <input type="radio" formControlName="ontop" [value]=true> True
-              <input type="radio" formControlName="ontop" [value]=false> False
-          </label>
-        </div>
-    </div>
-
-    <div class="row align-center">
-        <div class="small-12 columns">
-            <div class="expanded button-group">
-                <button class="success button" type="button" [disabled]="!editorForm.valid"
-                    (click)="updatePost()">Update Post</button>
-                <button class="cancel button" type="button" (click)="cancelEdit()">Cancel Edit</button>
+<div class="admin-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="small-12 medium-6 columns">
+                <h1>Edit Post</h1>
             </div>
         </div>
-    </div>
 
-</form>
+        <form [formGroup]="editorForm">
+            <div class="row">
+                <div class="medium-12 columns">
+                    <h3>Edit Post</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 medium-6 columns">
+                    <label>Post Title
+                        <input type="text" formControlName="title">
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 medium-6 columns">
+                    <label>Post Author
+                        <input type="text" formControlName="author">
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 medium-6 columns">
+                    <label>Post Image Link
+                        <input type="text" formControlName="imgurl">
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 medium-6 columns">
+                    <img src='{{singlePost?.imgurl}}'>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 medium-6 columns">
+                    <label>Post Content
+                        <quill-editor [style]="editorStyle" [modules]="modules" (onContentChanged)="maxLength($event)"
+                            (onEditorCreated)="editorCreated($event)" formControlName="content"></quill-editor>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 medium-6 columns">
+                    <label>Order
+                        <input type="text" formControlName="order">
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 medium-6 columns">
+                    <label>Enable
+                        <input type="radio" formControlName="enable" [value]=true> True
+                        <input type="radio" formControlName="enable" [value]=false> False
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 medium-6 columns">
+                    <label>Highlight
+                        <input type="radio" formControlName="ontop" [value]=true> True
+                        <input type="radio" formControlName="ontop" [value]=false> False
+                    </label>
+                </div>
+            </div>
+
+            <div class="row align-center">
+                <div class="small-12 columns">
+                    <div class="expanded button-group">
+                        <button class="success button" type="button" [disabled]="!editorForm.valid"
+                            (click)="update()">Update Post</button>
+                        <button class="cancel button" type="button" (click)="cancel()">Cancel Edit</button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>

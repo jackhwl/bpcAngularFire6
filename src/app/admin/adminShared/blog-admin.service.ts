@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Blog } from '../../core/models';
 
 @Injectable()
@@ -22,6 +22,22 @@ export class BlogAdminService {
 
     public getPosts() {
         return this.db.list<Blog>('blogPosts').query.once('value');
+    }
+    public getPost(id: string) {
+        return this.db.object<Blog>(`blogPosts/${id}`).query.once('value');
+    }
+    public setForm(singlePost: Blog, form: FormGroup) {
+        form.setValue({
+            title: singlePost.title,
+            author: singlePost.author ? singlePost.author : '',
+            imgurl: singlePost.imgurl ? singlePost.imgurl : '',
+            content: singlePost.content,
+            enable: (singlePost.enable === undefined || singlePost.enable === null)
+                    ? true : singlePost.enable,
+            ontop: (singlePost.ontop === undefined || singlePost.ontop === null)
+                    ? false : singlePost.ontop,
+            order: singlePost.order ? singlePost.order : 100
+        });
     }
 
     public createPost(post: Blog) {
