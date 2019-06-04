@@ -54,10 +54,9 @@ export class MiscEditComponent implements OnInit {
     }
 
     public update() {
-      console.log('this.txtArea.style.display=', this.txtArea.style.display);
       if (this.editorForm.valid) {
           if (this.editorForm.dirty) {
-              this.menuAdminSVC.editMisc(
+            this.menuAdminSVC.editMisc(
                 this.mode,
                 this.editorForm.controls.content.value)
               .then(this.onSaveComplete.bind(this));

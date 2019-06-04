@@ -20,9 +20,7 @@ import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InternalStateType } from './app.service';
 import { HomeComponent } from './home';
-import { AboutComponent } from './about';
 import { NoContentComponent } from './no-content';
-import { XLargeDirective } from './home/x-large';
 import { DevModuleModule } from './+dev-module';
 import { HeaderComponent } from './header';
 import { FooterComponent } from './footer';
@@ -54,13 +52,11 @@ interface StoreType {
   bootstrap: [ AppComponent ],
   declarations: [
     AppComponent,
-    AboutComponent,
     HomeComponent,
     HeaderComponent,
     FooterComponent,
     BlogDetailComponent,
-    NoContentComponent,
-    XLargeDirective
+    NoContentComponent
   ],
   /**
    * Import Angular's modules.
@@ -75,8 +71,6 @@ interface StoreType {
     AngularFireModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
-    //AngularFirestoreModule,
-    //AngularFireAuthModule,
     AngularFireDatabaseModule,
     RouterModule.forRoot(ROUTES, {
       useHash: Boolean(history.pushState) === false,
@@ -96,8 +90,6 @@ interface StoreType {
   providers: [
     environment.ENV_PROVIDERS,
     APP_PROVIDERS,
-    //AngularFireDatabase,
-    //AngularFirestore,
     AuthService,
     MenuService,
     BlogService

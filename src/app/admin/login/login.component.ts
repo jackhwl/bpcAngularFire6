@@ -31,4 +31,8 @@ export class LoginComponent implements OnInit {
     cancel(){
         this.router.navigate(['']);
     }
+
+    public onSaveComplete(): void {
+        this.router.navigate(['/admin']);
+    }
 }

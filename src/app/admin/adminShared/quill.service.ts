@@ -37,7 +37,6 @@ export class QuillService {
 
     public editorCreated(e, txtArea: HTMLTextAreaElement, editorForm: FormGroup) {
         const quill = e;
-        //txtArea = document.createElement('textarea');
         txtArea.setAttribute('formControlName', 'content');
         txtArea.style.cssText =
             `width: 100%;margin: 0px;
@@ -55,6 +54,7 @@ export class QuillService {
         customButton.addEventListener('click', () => {
             if (txtArea.style.display === '') {
                 editorForm.controls.content.setValue(txtArea.value);
+                editorForm.controls.content.markAsDirty();
                 // quill.pasteHTML(html);
             } else {
                 txtArea.value = editorForm.controls.content.value;

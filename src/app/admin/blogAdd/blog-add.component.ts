@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { BlogAdminService, QuillService } from '../adminShared';
 import { Blog } from '../../core/models';
 
@@ -17,7 +17,6 @@ export class BlogAddComponent implements OnInit {
     public txtArea: HTMLTextAreaElement;
 
     constructor(private blogAdminSVC: BlogAdminService,
-                private route: ActivatedRoute,
                 private router: Router,
                 private quillSVC: QuillService) {}
 
@@ -28,11 +27,8 @@ export class BlogAddComponent implements OnInit {
     }
 
     public editorCreated(e) {
+      this.txtArea = document.createElement('textarea');
       this.quillSVC.editorCreated(e, this.txtArea, this.editorForm);
-    }
-
-    public maxLength(e) {
-      this.quillSVC.maxLength(e);
     }
 
     public cancel() {
@@ -54,6 +50,4 @@ export class BlogAddComponent implements OnInit {
     public onSaveComplete(): void {
       this.router.navigate(['/admin/blog-list']);
     }
-
-
 }

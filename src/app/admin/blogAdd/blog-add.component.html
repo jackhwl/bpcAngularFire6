@@ -9,51 +9,36 @@
     <form [formGroup]="editorForm">
       <div class="row">
         <div class="small-12 medium-6 columns">
-          <label
-            >Post Title
+          <label>Post Title
             <input type="text" formControlName="title" />
           </label>
         </div>
       </div>
       <div class="row">
         <div class="small-12 medium-6 columns">
-          <label
-            >Post Author
+          <label>Post Author
             <input type="text" formControlName="author" />
           </label>
         </div>
       </div>
       <div class="row">
         <div class="small-12 medium-6 columns">
-          <label
-            >Post Content
-            <quill-editor
-              [style]="editorStyle"
-              [modules]="modules"
-              (onContentChanged)="maxLength($event)"
-              (onEditorCreated)="editorCreated($event)"
-              formControlName="content"
-            ></quill-editor>
-            <!-- <textarea rows="15" id="content" [(ngModel)]="content" name="content" required #psContent="ngModel"></textarea> -->
+          <label>Post Content
+            <quill-editor [style]="editorStyle" [modules]="modules" (onEditorCreated)="editorCreated($event)"
+              formControlName="content"></quill-editor>
           </label>
         </div>
-        <!-- <div class="small-12 medium-6 columns">
-            <input type="file" (change)="fileLoad($event)"><br>
-            <img *ngIf="imageSRC" [src]="imageSRC" alt="Image preview...">
-        </div> -->
       </div>
       <div class="row">
         <div class="small-12 medium-6 columns">
-          <label
-            >Order
+          <label>Order
             <input type="text" formControlName="order" />
           </label>
         </div>
       </div>
       <div class="row">
         <div class="small-12 medium-6 columns">
-          <label
-            >Enable
+          <label>Enable
             <input type="radio" formControlName="enable" [value]="true" /> True
             <input type="radio" formControlName="enable" [value]="false" />
             False
@@ -63,12 +48,7 @@
       <div class="row align-center">
         <div class="small-12 columns">
           <div class="expanded button-group">
-            <button
-              class="success button"
-              type="button"
-              [disabled]="!editorForm.valid"
-              (click)="create()"
-            >
+            <button class="success button" type="button" [disabled]="!editorForm.valid" (click)="create()">
               Create Post
             </button>
             <button class="cancel button" type="button" (click)="cancel()">

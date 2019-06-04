@@ -9,20 +9,8 @@
   </div>
 </div>
 <div class="admin-content">
-  <a
-    class="btn btn-secondary"
-    routerLink="/admin/blog-add"
-    routerLinkActive="active"
-    [routerLinkActiveOptions]="{ exact: true }"
-    >Add Post</a
-  >
-  <a
-    class="btn btn-secondary"
-    (click)="chooseMode('')"
-    routerLinkActive="active"
-    [routerLinkActiveOptions]="{ exact: true }"
-    >Manage Blogs</a
-  >
+  <a class="btn btn-secondary" routerLink="/admin/blog-add" routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }">Add Post</a>
   <table>
     <tr>
       <th>Name</th>
@@ -34,12 +22,8 @@
     </tr>
     <tr *ngFor="let post of blogPosts">
       <td>
-        <a
-          class="btn btn-secondary"
-          routerLink="/admin/blog-edit/{{ post.id }}"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
+        <a class="btn btn-secondary" routerLink="/admin/blog-edit/{{ post.id }}" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
           {{ post.title.trim() === "" ? "no title" : post.title }}
         </a>
       </td>
@@ -48,7 +32,7 @@
       <td>{{ post.enable }}</td>
       <td>{{ post.ontop }}</td>
       <td>
-        <button class="btn btn-link" (click)="deletePost(post)">Delete</button>
+        <button class="btn btn-link" (click)="delete(post)">Delete</button>
       </td>
     </tr>
   </table>

@@ -36,11 +36,8 @@ export class BlogEditComponent implements OnInit {
     }
 
     public editorCreated(e) {
+      this.txtArea = document.createElement('textarea');
       this.quillSVC.editorCreated(e, this.txtArea, this.editorForm);
-    }
-
-    public maxLength(e) {
-      this.quillSVC.maxLength(e);
     }
 
     public cancel() {

@@ -11,9 +11,7 @@ import { Blog } from '../../core/models';
 
 export class BlogListComponent implements OnInit {
   public theUser: string;
-  public menuChoice: string;
   public blogPosts: Blog[];
-  public singlePost: Blog;
 
   constructor(private userSVC: UserService,
               private router: Router,
@@ -29,10 +27,6 @@ export class BlogListComponent implements OnInit {
     this.router.navigate(['']);
   }
 
-  public chooseMode(mode: string) {
-      this.menuChoice = mode;
-  }
-
   public setPosts() {
       this.blogAdminSVC.getPosts()
           .then((snapshot) => {
@@ -41,22 +35,15 @@ export class BlogListComponent implements OnInit {
           });
   }
 
-  public editPost(thePost: Blog) {
-    this.singlePost = thePost;
-    this.chooseMode('edit');
-  }
-
-  public deletePost(single: Blog) {
+  public delete(single: Blog) {
       const confirmDelete = confirm(`Are you sure you want to delete this post?`);
       if (confirmDelete) {
           this.blogAdminSVC.removePost(single);
-          this.onSaveComplete();
+          this.reload();
       }
   }
 
-  public onSaveComplete(): void {
-    this.setPosts();
-    this.chooseMode('');
+  public reload(): void {
     this.router.navigate(['/admin/blog-list']);
   }
 }
