@@ -23,15 +23,18 @@ export class SubMenuListComponent implements OnInit, OnDestroy {
                 private router: Router,
                 private route: ActivatedRoute,
                 private fb: FormBuilder,
-                private menuAdminSVC: MenuAdminService) {}
+                private menuAdminSVC: MenuAdminService) {
+      route.params.subscribe(() => {
+        this.parentId = this.route.snapshot.params['parentId'];
+        this.setSubNav();
+      });
+    }
 
     public ngOnInit() {
-        this.parentId = this.route.snapshot.params['parentId'];
         this.listForm = this.fb.group({
           selectedMenu: [this.parentId]
         });
         this.setNav();
-        this.setSubNav();
     }
 
     public logout() {
