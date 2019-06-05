@@ -10,13 +10,13 @@
             <div class="row">
                 <div class="small-12 medium-6 columns">
                     <label>Menu Name</label>
-                        <input type="text" formControlName="name" 
+                        <input type="text" formControlName="name"
                             [ngClass]="{'is-invalid': (editorForm.get('name').touched || editorForm.get('name').dirty) && !editorForm.get('name').valid }">
                         <span class="invalid-feedback">
                             Please enter name
                         </span>
                 </div>
-            </div>                
+            </div>
             <div class="row">
                 <div class="small-12 columns">
                     <label>Menu Content
@@ -40,8 +40,8 @@
             <div class="row">
                 <div class="small-12 medium-6 columns">
                     <label>Enable
-                        <input type="radio"  formControlName="enable" value="true"> True
-                        <input type="radio" formControlName="enable" value="false"> False
+                      <input type="radio" formControlName="enable" [value]=true> True
+                      <input type="radio" formControlName="enable" [value]=false> False
                     </label>
                 </div>
             </div>
@@ -54,7 +54,7 @@
                     </div>
                 </div>
             </div>
-                
+
         </form>
     </div>
 </div>

@@ -87,7 +87,7 @@ export class MenuService {
           const item = childSnapshot.val();
           if (item.enable) { tmp.push(childSnapshot.val()); }
         });
-        this.topMenu = Object.keys(tmp).map(key => tmp[key]);
+        this.topMenu = Object.keys(tmp).map(key => tmp[key]).filter((m) => m.enable);
         if (routeMenu && routeMenu.toLowerCase() === 'admin') {
           this.topMenu.forEach(m => {
             this.getSubNav(m, null, false);

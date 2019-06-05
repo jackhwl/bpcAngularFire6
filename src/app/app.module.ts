@@ -27,7 +27,7 @@ import { FooterComponent } from './footer';
 import { BlogDetailComponent } from './blogDetail';
 
 import '../styles/styles.scss';
-import '../styles/headings.css';
+// import '../styles/headings.css';
 
 import { AdminModule } from './admin/admin.module';
 import { CoreModule } from './core/core.module';

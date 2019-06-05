@@ -21,7 +21,7 @@ export class MenuAdminService {
       name: ['', Validators.required],
       content: '',
       order: 8,
-      enable: 'false',
+      enable: false,
       parentId: null
     });
   }

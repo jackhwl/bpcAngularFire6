@@ -13,10 +13,10 @@ export class AuthGuard implements CanActivate {
         return this.authService.user$
             .pipe(map((user) => {
                 if (user && user.uid) {
-                    console.log('user is logged in');
+                    // console.log('user is logged in');
                     return true;
                 } else {
-                    console.log('user not logged in');
+                    // console.log('user not logged in');
                     this.router.navigate(['/admin/login']);
                     return false;
                 }
