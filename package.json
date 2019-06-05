@@ -16,8 +16,10 @@
   "homepage": "https://github.com/gdi2290/angular-starter",
   "license": "MIT",
   "scripts": {
+    "build:aot:prod:sourcemap": "rimraf dist compiled && cross-env BUILD_AOT=1 SOURCE_MAP=1 npm run webpack -- --config config/webpack.prod.js --progress --profile --bail",
     "build:aot:prod": "rimraf dist compiled && cross-env BUILD_AOT=1 SOURCE_MAP=0 npm run webpack -- --config config/webpack.prod.js --progress --profile --bail",
     "build:aot": "npm run build:aot:prod",
+    "build:map": "npm run build:aot:prod:sourcemap",
     "build:aot:dev": "cross-env BUILD_AOT=1 npm run build:dev",
     "build:dev": "rimraf dist && npm run webpack -- --config config/webpack.dev.js --mode development --progress --profile --trace-deprecation",
     "build:docker": "npm run build:prod && docker build -t angular-webpack-starter:latest .",
