@@ -1,14 +1,4 @@
 <div class="admin-content">
-  <div *ngIf="theUser" class="top-bar-right">
-    <ul class="menu">
-      <li class="admin-menu"><a (click)="logout()">Logout</a></li>
-      <li class="admin-menu">
-        <a> {{ theUser }} Logged in</a>
-      </li>
-    </ul>
-  </div>
-</div>
-<div class="admin-content">
   <a class="btn btn-secondary" routerLink="/admin/blog-add" routerLinkActive="active"
     [routerLinkActiveOptions]="{ exact: true }">Add Post</a>
   <table>

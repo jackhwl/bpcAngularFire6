@@ -15,19 +15,26 @@ export class HomeComponent implements OnInit {
   public currentSubMenu: Menu;
   constructor(private menuSVC: MenuService,
               private route: ActivatedRoute,
-              private domSanitizer: DomSanitizer) {}
+              private domSanitizer: DomSanitizer) {
+      route.params.subscribe(() => {
+        const menuParam = this.route.snapshot.params['menu'];
+        const submenuParam = this.route.snapshot.params['sub'];
+
+        this.menuSVC.setTopNav(menuParam, submenuParam).then(() => {
+          this.currentMenu = this.menuSVC.currentMenu;
+          this.currentSubMenu = this.menuSVC.currentSubMenu;
+          // console.log(this.currentMenu);
+          // console.log('this.currentMenu.items=', this.currentMenu.items);
+          // if (submenuParam && !this.currentSubMenu) {
+          //   this.currentSubMenu = this.currentMenu.items.find((m) => m.name === submenuParam);
+          // }
+        });
+        this.menuSVC.getNav(menuParam, submenuParam);
+      });
+  }
 
   public ngOnInit() {
     this.sanitizer = this.domSanitizer;
-    const menuParam = this.route.snapshot.params['menu'];
-    const submenuParam = this.route.snapshot.params['sub'];
-    console.log('home menu=', menuParam);
-
-    this.menuSVC.setTopNav(menuParam, submenuParam).then(() => {
-      this.currentMenu = this.menuSVC.currentMenu;
-      this.currentSubMenu = this.menuSVC.currentSubMenu;
-    });
-    this.menuSVC.getNav(menuParam, submenuParam);
     this.menuSVC.getMisc();
   }
 

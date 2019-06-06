@@ -158,7 +158,6 @@ export class MenuService {
       contentRef.then((snapshot) => {
         const contents = snapshot.val();
         menu.content = contents.content;
-        console.log('aaa=', menu);
       });
     }
   }

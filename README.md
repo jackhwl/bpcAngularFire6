@@ -1,4 +1,8 @@
 bpc website use angularFire2 4.0
+npm run build:aot
+firebase serve
+firebase deploy
+
 test publick key again
 use node 8.13 version to avoid sass issue(in node 10)
 template from:
