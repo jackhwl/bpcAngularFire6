@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 })
 export class NavComponent {
 
+  public showNav: boolean = false;
   constructor(
     private authService: AuthService,
     private menuSVC: MenuService,
@@ -23,6 +24,7 @@ export class NavComponent {
   }
 
   public changeRoute(menu) {
+    this.showNav = false;
     this.menuSVC.currentMenu = menu;
     this.menuSVC.currentSubMenu = null;
     this.menuSVC.getContent(menu);
@@ -42,6 +44,7 @@ export class NavComponent {
   }
 
   public changeSubRoute(menu, subMenu) {
+    this.showNav = false;
     this.menuSVC.currentMenu = menu;
     this.menuSVC.currentSubMenu = subMenu;
     this.menuSVC.getContent(menu);

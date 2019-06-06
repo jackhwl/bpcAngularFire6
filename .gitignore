@@ -81,4 +81,6 @@ webpack-cache
 *.ngsummary.json
 *.shim.ngstyle.ts
 
+.firebase/
+
 /src/app/firebase.auth.ts
