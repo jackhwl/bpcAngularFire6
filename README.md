@@ -15,7 +15,7 @@ this.db.list<Blog>('blogPosts', (ref) => ref.orderByChild('title').equalTo(blogT
         .then((snapshot) => {
             const tmp = snapshot.val();
             const transform = Object.keys(tmp).map((key) => tmp[key]);
-            const title = transform[0].title;
+            const title = trSsansform[0].title;
 
             this.singlePost = {
               title, content, imgTitle, img, ontop, author,

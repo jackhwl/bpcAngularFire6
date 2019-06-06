@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit {
           //   this.currentSubMenu = this.currentMenu.items.find((m) => m.name === submenuParam);
           // }
         });
-        this.menuSVC.getNav(menuParam, submenuParam);
+        // this.menuSVC.getNav(menuParam, submenuParam);
       });
   }
 

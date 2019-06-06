@@ -492,18 +492,47 @@ input, select, textarea {
 }
 
 @media screen and (max-width : 860px){
+    .site-inner {
+      padding-top: 0;
+    }
+    .site-header {
+      min-height: 70px;
+    }
+    .site-header .wrap {
+      padding: 0;
+    }
     .wrap {
-        padding-left: 5%;
-        padding-right: 5%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .content {
+      padding: 0 5px;
+      border-radius: 0;
     }
     .sub-footer-left, .sub-footer-right {
         margin: 0;
         width: 100%;
     }
+    .site-footer {
+      padding: 0;
+    }
+    .widget {
+      margin-bottom: 5px;
+    }
 }
 
 @media screen and (max-width : 760px){
     /*Make dropdown links appear inline*/
+    .site-header {
+      min-height: 25px;
+    }
+    .title-area {
+      padding: 0;
+    }
+    .site-title {
+      font-size: 25px;
+      font-weight: 500;
+    }
     nav ul {
         position: static;
         display: none;
@@ -519,5 +548,14 @@ input, select, textarea {
     /*Display 'show menu' link*/
     .show-menu {
         display:block;
+    }
+    .entry, .breadcrumb, .content {
+      margin-bottom: 0;
+    }
+    .breadcrumb {
+      padding: 3px 5px;
+    }
+    .sidebar .widget, .widget {
+      padding: 5px;
     }
 }
