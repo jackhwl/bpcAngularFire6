@@ -56,6 +56,7 @@ a:active, a:hover {
 a {
     color: #6ab446;
     text-decoration: none;
+    cursor: pointer;
 }
 .wrap {
     margin: 0 auto;
@@ -112,11 +113,11 @@ nav ul {
 /*Create a horizontal list with spacing*/
 nav li {
     display:inline-block;
-    float: left;
+    //float: left;
     margin-right: 1px;
 }
 /*Style for menu links*/
-nav li a, nav li span {
+nav li a {
     display:block;
     min-width:140px;
     height: 50px;
@@ -128,7 +129,7 @@ nav li a, nav li span {
     text-decoration: none;
 }
 /*Hover state for top level links*/
-nav li:hover a, nav li:hover span {
+nav li:hover a {
     color: #000000;
     background: #ffffff;
 }
@@ -168,9 +169,7 @@ nav li ul li a:hover {
 nav ul li a:hover + .hidden, .hidden:hover {
     display: block;
 }
-nav ul li span:hover + .hidden, .hidden:hover {
-  display: block;
-}
+
 /*Style 'show menu' label button and hide it by default*/
 .show-menu {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -179,6 +178,7 @@ nav ul li span:hover + .hidden, .hidden:hover {
     text-align: center;
     padding: 10px 0;
     display: none;
+    cursor: pointer;
 }
 /*Hide checkbox*/
 input[type=checkbox]{
@@ -545,7 +545,7 @@ input, select, textarea {
         margin-bottom: 1px;
     }
     /*Make all menu links full width*/
-    nav ul li, nav li a, nav li span {
+    nav ul li, nav li a {
         width: 100%;
     }
     /*Display 'show menu' link*/
