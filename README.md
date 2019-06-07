@@ -9,6 +9,22 @@ template from:
 
 https://demo.studiopress.com/outreach/
 
+
+  public setTopMenu(routeMenu: string, routeSubMenu: string = null){
+    this.db.list<Menu>('menu').snapshotChanges().pipe(
+      map((actions) =>
+        // actions.map((a) => ({ key: a.key, ...a.payload.val() }))
+        actions.map((a) => a.payload.val() )
+       ),
+       map((m) => m.filter((m1) => m1.enable))
+      )
+
+    .subscribe((items) => {
+      console.log('data=', items);
+      // return items.map((item) => item.key);
+    });
+  }
+  
 list query return Promise:
 this.db.list<Blog>('blogPosts', (ref) => ref.orderByChild('title').equalTo(blogTitle))
         .query.once('value')
