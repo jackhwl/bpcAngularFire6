@@ -5,7 +5,7 @@
   <ul id="menu">
     <li *ngFor="let menu of getTopMenu()">
       <a *ngIf="menu.items?.length<=0" (click)="changeRoute(menu)" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">{{menu.name}}</a>
-      <a *ngIf="menu.items?.length>0" href="#">{{menu.name}} ￬</a>
+      <a *ngIf="menu.items?.length>0" href="javascript:void(0)">{{menu.name}}</a>
       <ul class="hidden" *ngIf="menu.items?.length>0">
         <li *ngFor="let subMenu of menu.items">
             <a (click)="changeSubRoute(menu, subMenu)" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">

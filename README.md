@@ -1,6 +1,6 @@
 bpc website use angularFire2 4.0
 npm run build:aot
-firebase serve
+firebase serve -o 0.0.0.0
 firebase deploy
 
 test publick key again

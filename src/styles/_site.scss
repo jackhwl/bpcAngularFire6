@@ -116,7 +116,7 @@ nav li {
     margin-right: 1px;
 }
 /*Style for menu links*/
-nav li a {
+nav li a, nav li span {
     display:block;
     min-width:140px;
     height: 50px;
@@ -128,7 +128,7 @@ nav li a {
     text-decoration: none;
 }
 /*Hover state for top level links*/
-nav li:hover a {
+nav li:hover a, nav li:hover span {
     color: #000000;
     background: #ffffff;
 }
@@ -167,6 +167,9 @@ nav li ul li a:hover {
 /*Display the dropdown on hover*/
 nav ul li a:hover + .hidden, .hidden:hover {
     display: block;
+}
+nav ul li span:hover + .hidden, .hidden:hover {
+  display: block;
 }
 /*Style 'show menu' label button and hide it by default*/
 .show-menu {
@@ -542,7 +545,7 @@ input, select, textarea {
         margin-bottom: 1px;
     }
     /*Make all menu links full width*/
-    nav ul li, nav li a {
+    nav ul li, nav li a, nav li span {
         width: 100%;
     }
     /*Display 'show menu' link*/
