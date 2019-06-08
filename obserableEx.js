@@ -1,3 +1,51 @@
+// Exercise 19: Reducing with an initial value
+// Sometimes when we reduce an array, we want the reduced value to be a different type than the items stored in the array. Let's say we have an array of videos and we want to reduce them to a single map where the key is the video id and the value is the video's title.
+function ex19() {
+	var videos = [
+		{
+			"id": 65432445,
+			"title": "The Chamber"
+		},
+		{
+			"id": 675465,
+			"title": "Fracture"
+		},
+		{
+			"id": 70111470,
+			"title": "Die Hard"
+		},
+		{
+			"id": 654356453,
+			"title": "Bad Boys"
+		}
+	];
+
+	// Expecting this output...
+	// [
+	//	 {
+	//		 "65432445": "The Chamber",
+	//		 "675465": "Fracture",
+	//		 "70111470": "Die Hard",
+	//		 "654356453": "Bad Boys"
+	//	 }
+	// ]
+	return videos.
+		reduce(function(accumulatedMap, video) {
+		var obj = {};
+
+		// ----- INSERT CODE TO ADD THE VIDEO TITLE TO THE ----
+		// ----- NEW MAP USING THE VIDEO ID AS THE KEY	 ----
+      obj[video.id]=video.title;
+		// Object.assign() takes all of the enumerable properties from
+		// the object listed in its second argument (obj) and assigns them
+		// to the object listed in its first argument (accumulatedMap).
+		return Object.assign(accumulatedMap, obj);
+		},
+		// Use an empty map as the initial value instead of the first item in
+		// the list.
+		{});
+}
+
 // Exercise 18: Retrieve url of the largest boxart
 // Let's try combining reduce() with map() to reduce multiple boxart objects to a single value: the url of the largest box art.
 function ex18() {
@@ -11,7 +59,7 @@ function ex18() {
 	// You should return an array containing only the URL of the largest box art. Remember that reduce always
 	// returns an array with one item.
 	return boxarts.
-    reduce((b1, b2) => b1.width * b1.height > b2.width * b2.height ? b1 : b2)
+    reduce((acc, curr) => acc.width * acc.height > curr.width * curr.height ? acc : curr)
     .map(b => b.url) // Complete this expression
 }
 
