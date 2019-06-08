@@ -1,3 +1,70 @@
+// Exercise 18: Retrieve url of the largest boxart
+// Let's try combining reduce() with map() to reduce multiple boxart objects to a single value: the url of the largest box art.
+function ex18() {
+	var boxarts = [
+			{ width: 200, height: 200, url: "http://cdn-0.nflximg.com/images/2891/Fracture200.jpg" },
+			{ width: 150, height: 200, url: "http://cdn-0.nflximg.com/images/2891/Fracture150.jpg" },
+			{ width: 300, height: 200, url: "http://cdn-0.nflximg.com/images/2891/Fracture300.jpg" },
+			{ width: 425, height: 150, url: "http://cdn-0.nflximg.com/images/2891/Fracture425.jpg" }
+		];
+
+	// You should return an array containing only the URL of the largest box art. Remember that reduce always
+	// returns an array with one item.
+	return boxarts.
+    reduce((b1, b2) => b1.width * b1.height > b2.width * b2.height ? b1 : b2)
+    .map(b => b.url) // Complete this expression
+}
+
+
+// Exercise 17: Retrieve the largest rating.
+// Let's use our new reduce function to isolate the largest value in an array of ratings.
+function ex17() {
+	var ratings = [2,3,1,4,5];
+
+	// You should return an array containing only the largest rating. Remember that reduce always
+	// returns an array with one item.
+	return ratings.
+    reduce((a,b)=>a>b?a:b)   // Complete this expression
+}
+
+// Exercise 16: Implement reduce()
+// Let's add a reduce() function to the Array type. Like map. Take note this is different from the reduce in ES5, which returns a value instead of an Array!
+// [1,2,3].reduce(function(accumulatedValue, currentValue) { return accumulatedValue + currentValue; }); === [6];
+// [1,2,3].reduce(function(accumulatedValue, currentValue) { return accumulatedValue + currentValue; }, 10); === [16];
+
+Array.prototype.reduce = function(combiner, initialValue) {
+	var counter,
+		accumulatedValue;
+
+	// If the array is empty, do nothing
+	if (this.length === 0) {
+		return this;
+	}
+	else {
+		// If the user didn't pass an initial value, use the first item.
+		if (arguments.length === 1) {
+			counter = 1;
+			accumulatedValue = this[0];
+		}
+		else if (arguments.length >= 2) {
+			counter = 0;
+			accumulatedValue = initialValue;
+		}
+		else {
+			throw "Invalid arguments.";
+		}
+
+		// Loop through the array, feeding the current value and the result of
+		// the previous computation back into the combiner function until
+		// we've exhausted the entire array and are left with only one value.
+		while(counter < this.length) {
+			accumulatedValue = combiner(accumulatedValue, this[counter])
+			counter++;
+		}
+
+		return [accumulatedValue];
+	}
+};
 
 // Exercise 14: Use concatMap() to retrieve id, title, and 150x200 box art url for every video
 // Let's repeat the exercise we just performed. However this time we'll simplify the code by replacing the map().concatAll() calls with concatMap().
