@@ -31,15 +31,22 @@ function ex19() {
 	// ]
 	return videos.
 		reduce(function(accumulatedMap, video) {
-		var obj = {};
+    // Method 1: use Object.create
+		// var obj = Object.create(accumulatedMap);
 
-		// ----- INSERT CODE TO ADD THE VIDEO TITLE TO THE ----
-		// ----- NEW MAP USING THE VIDEO ID AS THE KEY	 ----
-      obj[video.id]=video.title;
-		// Object.assign() takes all of the enumerable properties from
-		// the object listed in its second argument (obj) and assigns them
-		// to the object listed in its first argument (accumulatedMap).
-		return Object.assign(accumulatedMap, obj);
+		// // ----- INSERT CODE TO ADD THE VIDEO TITLE TO THE ----
+		// // ----- NEW MAP USING THE VIDEO ID AS THE KEY	 ----
+    //   obj[video.id]=video.title;
+		// // Object.assign() takes all of the enumerable properties from
+		// // the object listed in its second argument (obj) and assigns them
+		// // to the object listed in its first argument (accumulatedMap).
+    // return obj;
+
+    // Method 2: use Object.assign
+    var obj = {};
+    obj[video.id]= video.title;
+    return Object.assign(accumulatedMap, obj);
+
 		},
 		// Use an empty map as the initial value instead of the first item in
 		// the list.
