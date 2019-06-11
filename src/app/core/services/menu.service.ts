@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Menu, Misc } from '../models';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { map, filter, switchMap, mergeAll } from 'rxjs/operators';
 
 @Injectable()
@@ -79,9 +79,10 @@ export class MenuService {
 
   public setTopMenu(routeMenu: string, routeSubMenu: string = null) {
     // https://github.com/angular/angularfire2/blob/master/docs/version-5-upgrade.md#50
+
     const rootMenus0 = this.db.object<Menu>('menu').snapshotChanges().pipe(
       map((menu) => menu.payload.val() ),
-      filter((menu) => menu.enable),
+      //filter((menu) => menu.enable),
       //sort((m1, m2) => m1.order > m2.order ? 1 : -1)),
 
     );
@@ -95,14 +96,13 @@ export class MenuService {
         // menus.map((menu) => ({ key: menu.key, ...menu.payload.val() }))
       map((menus) => menus.filter((menu) => menu.enable)
                           .sort((m1, m2) => m1.order > m2.order ? 1 : -1)),
-      mergeAll()
+      //mergeAll()
     );
-
     rootMenus.subscribe((menus) => {
-      console.log('observable menus=', menus);
+      console.log('observable rootMenus=', menus);
+      // .map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
       // return items.map((item) => item.key);
     });
-
     const subMenus = this.db.list<Menu>('subMenu').snapshotChanges().pipe(
       map((menus) => menus.map((menu) => ({key: menu.key, ...menu.payload.val()}) )),
       // menus.map((menu) => ({ key: menu.key, ...menu.payload.val() }))
@@ -119,8 +119,16 @@ export class MenuService {
       //map((ms) => ms.map((m) => m.payload.val())),
       //map(m=> m.filter(m1=>m1.enable))
       map((ms) => ms.filter((m) => m.items.length > 0)),
-      mergeAll()
+      //mergeAll()
     );
+
+    // forkJoin(rootMenus, subMenus).subscribe((menus, submenus) => {
+    //   menus.map(menu=> menu.items = submenus.filter((s) => s.id === menu.id).items)
+    //   console.log('menus888=', menus);
+    //   // return items.map((item) => item.key);
+    //   }
+    // );
+
 
     subMenus.subscribe((menus) => {
       console.log('observable submenus=', menus);
@@ -128,15 +136,46 @@ export class MenuService {
       // return items.map((item) => item.key);
     });
 
-    rootMenus.pipe(
-      map((rootMenu) => subMenus.pipe(filter((sm) => sm.id === rootMenu.id)))
-    )
+    rootMenus
+    // .pipe(
+    //   switchMap((rootMenu) => this.getSubMenu(rootMenu.id))
+    // )
     .subscribe((menus) => {
         console.log('observable finalmenus=', menus);
-        //.map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
+        // .map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
         // return items.map((item) => item.key);
       });
 
+    this.getSubMenu('-L5Lm4A3J8Sjw-fPmxXX')
+    .subscribe((menus) => {
+      console.log('observable getSubMenu=', menus);
+      //.map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
+      // return items.map((item) => item.key);
+    });
+  }
+
+  public getSubMenu(parentId: string) {
+    return this.db.object<Menu>(`subMenu/${parentId}`).snapshotChanges().pipe(
+      map((menu) => ({key: menu.key, ...menu.payload.val()}) ),
+      map((menu) => Object.values(menu.items)
+                      .filter((ma) => ma.enable)
+                      .sort((m1, m2) => m1.order > m2.order ? 1 : -1)),
+                    //})
+      // menus.map((menu) => ({ key: menu.key, ...menu.payload.val() }))
+      //map((menu) => menu.items),
+      //filter((menu) => menu.enable)
+      // map((ms) => ms.map((m) => ({name: m.name, items: m.items})))
+      // map((menu) => menu.items
+      //                             .sort((m1, m2) => m1.order > m2.order ? 1 : -1)
+      //                           })
+      //           )),
+      //map((menus) => menus.map((menu) => menu.sort((a, b) => a.order > b.order ? 1 : 0)))
+
+      //map((ms) => ms.map((m) => m.payload.val())),
+      //map(m=> m.filter(m1=>m1.enable))
+      // map((ms) => ms.filter((m) => m.items.length > 0)),
+      //mergeAll()
+    );
   }
 
   public setTopNav(routeMenu: string, routeSubMenu: string = null) {
