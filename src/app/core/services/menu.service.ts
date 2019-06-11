@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Menu, Misc } from '../models';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, forkJoin, combineLatest } from 'rxjs';
 import { map, filter, switchMap, mergeAll } from 'rxjs/operators';
 
 @Injectable()
@@ -122,13 +122,22 @@ export class MenuService {
       //mergeAll()
     );
 
-    // forkJoin(rootMenus, subMenus).subscribe((menus, submenus) => {
-    //   menus.map(menu=> menu.items = submenus.filter((s) => s.id === menu.id).items)
-    //   console.log('menus888=', menus);
-    //   // return items.map((item) => item.key);
-    //   }
-    // );
+    combineLatest(rootMenus, subMenus).pipe(
+      map(([menus, submenus]) => menus.map((menu) => {submenus
+                                        .filter((s) => s.id === menu.id)
+                                        .map((s) => menu.items = s.items);
+                                      return menu;
+                                      }
 
+      ))
+      // return items.map((item) => item.key);
+
+    )
+    .subscribe((menus) => {
+      console.log('observable combineLatest=', menus);
+      //.map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
+      // return items.map((item) => item.key);
+    });
 
     subMenus.subscribe((menus) => {
       console.log('observable submenus=', menus);
