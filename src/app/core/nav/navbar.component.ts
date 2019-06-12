@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MenuService, AuthService } from '../services';
 import { Router } from '@angular/router';
+import { Menu } from '../models';
 
 @Component({
   selector: 'bc-nav-bar',
@@ -9,15 +10,18 @@ import { Router } from '@angular/router';
 export class NavComponent {
 
   public showNav: boolean = false;
+  public navBar: Menu[];
   constructor(
     private authService: AuthService,
     private menuSVC: MenuService,
     private router: Router
-  ) {}
-
-  public getTopMenu() {
-    return this.menuSVC.topMenu;
+  ) {
+    this.menuSVC.getNavBar().subscribe((menus) => this.navBar = menus);
   }
+
+  // public getTopMenu() {
+  //   return this.menuSVC.topMenu;
+  // }
 
   public getUser() {
     return this.authService.user$;

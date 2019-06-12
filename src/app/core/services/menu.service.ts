@@ -96,7 +96,7 @@ export class MenuService {
     // b$.subscribe();
   }
 
-  public setNavBar(routeMenu: string, routeSubMenu: string = null) {
+  public getNavBar() {
     // https://github.com/angular/angularfire2/blob/master/docs/version-5-upgrade.md#50
 
     const enabledRootMenu$ = this.rootMenu$.pipe(
@@ -112,7 +112,7 @@ export class MenuService {
           }))
     ));
 
-    combineLatest(enabledRootMenu$, enabledSubMenu$).pipe(
+    return combineLatest(enabledRootMenu$, enabledSubMenu$).pipe(
       map(([menus, submenus]) =>
               menus.map((menu) => { submenus.filter((s) => s.id === menu.id)
                             .map((s) => menu.items = s.items);
@@ -122,13 +122,13 @@ export class MenuService {
       map((ms) => { ms.filter((m) => !m.items)
                       .map((m) => m.items = []);
                     return ms; })
-    )
-    .subscribe((menus) => {
-      this.navBar = menus;
-      console.log('observable combineLatest=', menus);
-      // .map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
-      // return items.map((item) => item.key);
-    });
+    );
+    // .subscribe((menus) => {
+    //   this.navBar = menus;
+    //   console.log('observable combineLatest=', menus);
+    //   // .map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
+    //   // return items.map((item) => item.key);
+    // });
 
     // subMenus.subscribe((menus) => {
     //   console.log('observable submenus=', menus);
