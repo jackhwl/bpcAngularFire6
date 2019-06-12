@@ -13,17 +13,37 @@ export class MenuService {
   public currentSubMenu: Menu;
   public content$: Observable<string>;
   public misc$: Observable<Misc>;
-  public subMenu$: Observable<Menu>;
   public menu$: Observable<Menu[]>;
+  public navBar: Menu[];
+  public rootMenu$: Observable<Menu[]>;
+  public subMenu$: Observable<Array<{ id: string, items: Menu[] }>>;
   public result: any;
 
   constructor(private db: AngularFireDatabase) {
     // this.misc$ = this.db.object('misc').valueChanges();
     this.content$ = this.db.object<string>('content').valueChanges();
-    this.subMenu$ = this.db.object<Menu>('subMenu').valueChanges();
+    // this.subMenu$ = this.db.object<Menu>('subMenu').valueChanges();
     this.menu$ = db.list<Menu>('menu').valueChanges();
     // this.topMenu1 = db.list<Menu>('menu').valueChanges();
     this.misc$ = db.object<Misc>('misc').valueChanges();
+    this.rootMenu$ = this.db.list<Menu>('menu').snapshotChanges().pipe(
+      map((menus) => menus.map((menu) => menu.payload.val() )),
+      map((menus) => menus
+            // .filter((menu) => menu.enable)
+            .sort((m1, m2) => m1.order > m2.order ? 1 : -1))
+    );
+    this.subMenu$ = this.db.list<Menu>('subMenu').snapshotChanges().pipe(
+      map((menus) => menus.map((menu) => ({key: menu.key, ...menu.payload.val()}) )),
+      map((menus) => menus.filter((menu) => menu.items)),
+      map((menus) => menus.map((menu) =>
+                      ({id: menu.key, items: Object.values(menu.items)
+                        // .filter((ma) => ma.enable)
+                        .sort((m1, m2) => m1.order > m2.order ? 1 : -1)
+                      })
+      )),
+      map((ms) => ms.filter((m) => m.items.length > 0)),
+      // mergeAll()
+    );
     // //console.log('this.misc$=', this.misc$);
     // // this.content$ = this.db.doc<string>('content').valueChanges();
     // // this.subMenu$ = this.db.doc<Menu>('subMenu').valueChanges();
@@ -46,14 +66,14 @@ export class MenuService {
     //         (ref) => ref.orderByChild('order')).valueChanges();
             // .filter(menu => menu.map(key=>key.enable))
             .pipe(map((menu) => menu.map((key) => ({ name: key.name, item: items })))))
-          //do(console.log)
+          // do(console.log)
       );
       //                 //.map( key => key.map(a=>a))
 
       // const nav$ = this.db.list('menu')
       //             .map(keys => keys
       //                 .map(key => key));
-      //let result;
+      // let result;
       // forkJoin([sub$, nav$]).subscribe(results=> {
       //     results[0].items = results[1];
       //     this.result = results[0];
@@ -72,63 +92,41 @@ export class MenuService {
       //     .filter(subMenuKey => subMenuKey.name.toLowerCase() === key.name.toLowerCase())
       //     .map( subMenu => ({name: key.name, items: subMenu.items})
 
-
     sub$.subscribe();
-    //b$.subscribe();
+    // b$.subscribe();
   }
 
-  public setTopMenu(routeMenu: string, routeSubMenu: string = null) {
+  public setNavBar(routeMenu: string, routeSubMenu: string = null) {
     // https://github.com/angular/angularfire2/blob/master/docs/version-5-upgrade.md#50
 
-    const rootMenus0 = this.db.object<Menu>('menu').snapshotChanges().pipe(
-      map((menu) => menu.payload.val() ),
-      //filter((menu) => menu.enable),
-      //sort((m1, m2) => m1.order > m2.order ? 1 : -1)),
+    const enabledRootMenu$ = this.rootMenu$.pipe(
+      map((menus) => menus
+          .filter((menu) => menu.enable)
+    ));
+    const enabledSubMenu$ = this.subMenu$.pipe(
+      map((menus) => menus
+          .map((menu) => ({
+              id: menu.id,
+              items: menu.items
+                .filter((m) => m.enable)
+          }))
+    ));
 
-    );
-
-    rootMenus0.subscribe((menus) => {
-      console.log('observable menus0=', menus);
-      // return items.map((item) => item.key);
-    });
-    const rootMenus = this.db.list<Menu>('menu').snapshotChanges().pipe(
-      map((menus) => menus.map((menu) => menu.payload.val() )),
-        // menus.map((menu) => ({ key: menu.key, ...menu.payload.val() }))
-      map((menus) => menus.filter((menu) => menu.enable)
-                          .sort((m1, m2) => m1.order > m2.order ? 1 : -1)),
-      //mergeAll()
-    );
-    // rootMenus.subscribe((menus) => {
-    //   console.log('observable rootMenus=', menus);
-    //   // .map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
-    //   // return items.map((item) => item.key);
-    // });
-    const subMenus = this.db.list<Menu>('subMenu').snapshotChanges().pipe(
-      map((menus) => menus.map((menu) => ({key: menu.key, ...menu.payload.val()}) )),
-      map((menus) => menus.filter((menu) => menu.items)),
-      map((menus) => menus.map((menu) =>
-                      ({id: menu.key, items: Object.values(menu.items)
-                        .filter((ma) => ma.enable)
-                        .sort((m1, m2) => m1.order > m2.order ? 1 : -1)
-                      })
-      )),
-      map((ms) => ms.filter((m) => m.items.length > 0)),
-      //mergeAll()
-    );
-
-    combineLatest(rootMenus, subMenus).pipe(
+    combineLatest(enabledRootMenu$, enabledSubMenu$).pipe(
       map(([menus, submenus]) =>
               menus.map((menu) => { submenus.filter((s) => s.id === menu.id)
                             .map((s) => menu.items = s.items);
                                     return menu;
                   })
-    ),
-    map((ms) => { ms.filter((m) => !m.items)
-                    .map((m) => m.items = []);
-                  return ms; }))
+      ),
+      map((ms) => { ms.filter((m) => !m.items)
+                      .map((m) => m.items = []);
+                    return ms; })
+    )
     .subscribe((menus) => {
+      this.navBar = menus;
       console.log('observable combineLatest=', menus);
-      //.map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
+      // .map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
       // return items.map((item) => item.key);
     });
 
@@ -162,21 +160,21 @@ export class MenuService {
       map((menu) => Object.values(menu.items)
                       .filter((ma) => ma.enable)
                       .sort((m1, m2) => m1.order > m2.order ? 1 : -1)),
-                    //})
+                    // })
       // menus.map((menu) => ({ key: menu.key, ...menu.payload.val() }))
-      //map((menu) => menu.items),
-      //filter((menu) => menu.enable)
+      // map((menu) => menu.items),
+      // filter((menu) => menu.enable)
       // map((ms) => ms.map((m) => ({name: m.name, items: m.items})))
       // map((menu) => menu.items
       //                             .sort((m1, m2) => m1.order > m2.order ? 1 : -1)
       //                           })
       //           )),
-      //map((menus) => menus.map((menu) => menu.sort((a, b) => a.order > b.order ? 1 : 0)))
+      // map((menus) => menus.map((menu) => menu.sort((a, b) => a.order > b.order ? 1 : 0)))
 
-      //map((ms) => ms.map((m) => m.payload.val())),
-      //map(m=> m.filter(m1=>m1.enable))
+      // map((ms) => ms.map((m) => m.payload.val())),
+      // map(m=> m.filter(m1=>m1.enable))
       // map((ms) => ms.filter((m) => m.items.length > 0)),
-      //mergeAll()
+      // mergeAll()
     );
   }
 
@@ -215,7 +213,7 @@ export class MenuService {
             }
           });
         }
-        //this.topMenu1 = of(this.topMenu);
+        // this.topMenu1 = of(this.topMenu);
       });
     } else {
       return Promise.resolve();
@@ -230,10 +228,10 @@ export class MenuService {
     if (!menu.items) {
       const dbRef = this.db.object<Menu>(`subMenu/${menu.id}/items`).query.once('value');
       dbRef.then((snapshot) => {
-        let tmp: string[] = [];
+        const tmp: string[] = [];
         snapshot.forEach(function(childSnapshot) {
-          let item = childSnapshot.val();
-          if (item.enable) tmp.push(childSnapshot.val());
+          const item = childSnapshot.val();
+          if (item.enable) { tmp.push(childSnapshot.val()); }
         });
         menu.items = Object.keys(tmp).map((key) => tmp[key]);
         this.subMenu = menu.items;
@@ -255,10 +253,10 @@ export class MenuService {
 
   public getContent(menu: Menu) {
     if (menu && !menu.content) {
-      //const contentRef = this.content$.$ref.child(menu.id);
+      // const contentRef = this.content$.$ref.child(menu.id);
       const contentRef = this.db.object<string>(`content/${menu.id}`).query.once('value');
-      //this.db.object<string>('content').query.once('value')
-      //contentRef.once('value').
+      // this.db.object<string>('content').query.once('value')
+      // contentRef.once('value').
       contentRef.then((snapshot) => {
         const contents = snapshot.val();
         menu.content = contents.content;
