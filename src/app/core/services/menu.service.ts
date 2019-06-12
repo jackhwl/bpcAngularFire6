@@ -98,69 +98,62 @@ export class MenuService {
                           .sort((m1, m2) => m1.order > m2.order ? 1 : -1)),
       //mergeAll()
     );
-    rootMenus.subscribe((menus) => {
-      console.log('observable rootMenus=', menus);
-      // .map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
-      // return items.map((item) => item.key);
-    });
+    // rootMenus.subscribe((menus) => {
+    //   console.log('observable rootMenus=', menus);
+    //   // .map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
+    //   // return items.map((item) => item.key);
+    // });
     const subMenus = this.db.list<Menu>('subMenu').snapshotChanges().pipe(
       map((menus) => menus.map((menu) => ({key: menu.key, ...menu.payload.val()}) )),
-      // menus.map((menu) => ({ key: menu.key, ...menu.payload.val() }))
       map((menus) => menus.filter((menu) => menu.items)),
-      // map((ms) => ms.map((m) => ({name: m.name, items: m.items})))
       map((menus) => menus.map((menu) =>
-                                ({id: menu.key, items: Object.values(menu.items)
-                                  .filter((ma) => ma.enable)
-                                  .sort((m1, m2) => m1.order > m2.order ? 1 : -1)
-                                })
-                )),
-      //map((menus) => menus.map((menu) => menu.sort((a, b) => a.order > b.order ? 1 : 0)))
-
-      //map((ms) => ms.map((m) => m.payload.val())),
-      //map(m=> m.filter(m1=>m1.enable))
+                      ({id: menu.key, items: Object.values(menu.items)
+                        .filter((ma) => ma.enable)
+                        .sort((m1, m2) => m1.order > m2.order ? 1 : -1)
+                      })
+      )),
       map((ms) => ms.filter((m) => m.items.length > 0)),
       //mergeAll()
     );
 
     combineLatest(rootMenus, subMenus).pipe(
-      map(([menus, submenus]) => menus.map((menu) => {submenus
-                                        .filter((s) => s.id === menu.id)
-                                        .map((s) => menu.items = s.items);
-                                      return menu;
-                                      }
-
-      ))
-      // return items.map((item) => item.key);
-
-    )
+      map(([menus, submenus]) =>
+              menus.map((menu) => { submenus.filter((s) => s.id === menu.id)
+                            .map((s) => menu.items = s.items);
+                                    return menu;
+                  })
+    ),
+    map((ms) => { ms.filter((m) => !m.items)
+                    .map((m) => m.items = []);
+                  return ms; }))
     .subscribe((menus) => {
       console.log('observable combineLatest=', menus);
       //.map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
       // return items.map((item) => item.key);
     });
 
-    subMenus.subscribe((menus) => {
-      console.log('observable submenus=', menus);
-      //.map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
-      // return items.map((item) => item.key);
-    });
+    // subMenus.subscribe((menus) => {
+    //   console.log('observable submenus=', menus);
+    //   //.map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
+    //   // return items.map((item) => item.key);
+    // });
 
-    rootMenus
-    // .pipe(
-    //   switchMap((rootMenu) => this.getSubMenu(rootMenu.id))
-    // )
-    .subscribe((menus) => {
-        console.log('observable finalmenus=', menus);
-        // .map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
-        // return items.map((item) => item.key);
-      });
+    // rootMenus
+    // // .pipe(
+    // //   switchMap((rootMenu) => this.getSubMenu(rootMenu.id))
+    // // )
+    // .subscribe((menus) => {
+    //     console.log('observable finalmenus=', menus);
+    //     // .map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
+    //     // return items.map((item) => item.key);
+    //   });
 
-    this.getSubMenu('-L5Lm4A3J8Sjw-fPmxXX')
-    .subscribe((menus) => {
-      console.log('observable getSubMenu=', menus);
-      //.map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
-      // return items.map((item) => item.key);
-    });
+    // this.getSubMenu('-L5Lm4A3J8Sjw-fPmxXX')
+    // .subscribe((menus) => {
+    //   console.log('observable getSubMenu=', menus);
+    //   //.map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
+    //   // return items.map((item) => item.key);
+    // });
   }
 
   public getSubMenu(parentId: string) {
