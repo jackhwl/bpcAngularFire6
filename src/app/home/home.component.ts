@@ -34,6 +34,7 @@ export class HomeComponent implements OnInit {
   }
 
   public ngOnInit() {
+    //this.menuSVC.setNavBar(null, null);
     this.sanitizer = this.domSanitizer;
     this.menuSVC.getMisc();
   }

@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
-import { MenuService, AuthService } from '../services';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
+import { MenuService, AuthService } from '../services';
 import { Menu } from '../models';
 
 @Component({
   selector: 'bc-nav-bar',
   templateUrl: './navbar.component.html'
 })
-export class NavComponent {
+export class NavComponent implements OnInit {
 
   public showNav: boolean = false;
   public navBar: Menu[];
@@ -15,13 +16,13 @@ export class NavComponent {
     private authService: AuthService,
     private menuSVC: MenuService,
     private router: Router
-  ) {
-    this.menuSVC.getNavBar().subscribe((menus) => this.navBar = menus);
-  }
+  ) {}
 
-  // public getTopMenu() {
-  //   return this.menuSVC.topMenu;
-  // }
+  public ngOnInit(): void {
+    this.menuSVC.getNavBar()
+      .pipe(take(1))
+      .subscribe((menus) => this.navBar = menus);
+  }
 
   public getUser() {
     return this.authService.user$;
