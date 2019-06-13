@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Menu, Misc } from '../models';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { Observable, forkJoin, combineLatest } from 'rxjs';
-import { map, filter, switchMap, mergeAll } from 'rxjs/operators';
+import { Observable, forkJoin, combineLatest, empty } from 'rxjs';
+import { map, filter, take, switchMap, mergeAll } from 'rxjs/operators';
+import { routes } from 'app/+dev-module/dev-module.routes';
 
 @Injectable()
 export class MenuService {
@@ -96,7 +97,7 @@ export class MenuService {
     // b$.subscribe();
   }
 
-  public getNavBar() {
+  public getNavBar$() {
     // https://github.com/angular/angularfire2/blob/master/docs/version-5-upgrade.md#50
 
     const enabledRootMenu$ = this.rootMenu$.pipe(
@@ -153,7 +154,21 @@ export class MenuService {
     //   // return items.map((item) => item.key);
     // });
   }
-
+  public setNavContent(routeMenu: string, routeSubMenu: string = null) {
+    return this.navBar
+      .filter((menu) =>
+        menu.name.toLowerCase().replace(/ /g, '-') === routeMenu.toLowerCase())
+      .map((menu) => {
+        this.getContent$(menu);
+        menu.items
+          .filter((sm) =>
+            sm.name.toLowerCase().replace(/ /g, '-') === routeSubMenu.toLowerCase())
+          .map((sm) =>
+          this.getContent$(sm))
+      });
+    //console.log('thisnavBar = ', this.navBar);
+    //this.navBar = Object.assign(this.navBar, this.currentMenu);
+  }
   public getSubMenu(parentId: string) {
     return this.db.object<Menu>(`subMenu/${parentId}`).snapshotChanges().pipe(
       map((menu) => ({key: menu.key, ...menu.payload.val()}) ),
@@ -248,6 +263,14 @@ export class MenuService {
       });
     } else {
       this.subMenu = menu.items;
+    }
+  }
+
+  public getContent$(menu: Menu) {
+    if (menu && !menu.content) {
+      return this.db.object<string>(`content/${menu.id}`).valueChanges;
+    } else {
+      return empty();
     }
   }
 

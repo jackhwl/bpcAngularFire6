@@ -19,9 +19,12 @@ export class NavComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    this.menuSVC.getNavBar()
+    this.menuSVC.getNavBar$()
       .pipe(take(1))
-      .subscribe((menus) => this.navBar = menus);
+      .subscribe((menus) => {
+        this.navBar = menus;
+        this.menuSVC.navBar = this.navBar;
+      });
   }
 
   public getUser() {
@@ -29,10 +32,10 @@ export class NavComponent implements OnInit {
   }
 
   public changeRoute(menu) {
-    this.showNav = false;
-    this.menuSVC.currentMenu = menu;
-    this.menuSVC.currentSubMenu = null;
-    this.menuSVC.getContent(menu);
+    // this.showNav = false;
+    // this.menuSVC.currentMenu = menu;
+    // this.menuSVC.currentSubMenu = null;
+    // this.menuSVC.getContent(menu);
     this.router.navigate(['./', menu.name.replace(/ /g, '-')]);
   }
 
