@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { MenuService, AuthService } from '../services';
@@ -9,7 +9,7 @@ import { Menu } from '../models';
   templateUrl: './navbar.component.html'
 })
 export class NavComponent implements OnInit {
-
+  @Output() public onNavbarReady: EventEmitter<string> = new EventEmitter();
   public showNav: boolean = false;
   public navBar: Menu[];
   constructor(
@@ -24,7 +24,7 @@ export class NavComponent implements OnInit {
       .subscribe((menus) => {
         this.navBar = menus;
         this.menuSVC.navBar = this.navBar;
-        // emit to home component
+        this.onNavbarReady.emit('navbar ready');
       });
   }
 

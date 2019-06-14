@@ -34,6 +34,10 @@ export class AppComponent implements OnInit {
     //console.log('Initial App State', this.appState.state);
   }
 
+  public navbarReady(data: string) {
+    console.log('nav ready from header : ', data);
+  }
+
 }
 
 /**
