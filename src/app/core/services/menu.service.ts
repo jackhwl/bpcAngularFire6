@@ -154,6 +154,19 @@ export class MenuService {
     //   // return items.map((item) => item.key);
     // });
   }
+  public setRootContent(routeMenu: string) {
+    return this.navBar
+      .filter((menu) =>
+        menu.name.toLowerCase().replace(/ /g, '-') === routeMenu.toLowerCase())
+      .map((menu) => {
+        console.log('thisnavBar = ', this.navBar);
+        //this.navBar = Object.assign(this.navBar, this.currentMenu);
+
+        this.getContent$(menu);
+      });
+    //console.log('thisnavBar = ', this.navBar);
+    //this.navBar = Object.assign(this.navBar, this.currentMenu);
+  }
   public setNavContent(routeMenu: string, routeSubMenu: string = null) {
     return this.navBar
       .filter((menu) =>

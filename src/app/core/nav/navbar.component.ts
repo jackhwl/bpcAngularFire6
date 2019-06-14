@@ -24,6 +24,7 @@ export class NavComponent implements OnInit {
       .subscribe((menus) => {
         this.navBar = menus;
         this.menuSVC.navBar = this.navBar;
+        // emit to home component
       });
   }
 

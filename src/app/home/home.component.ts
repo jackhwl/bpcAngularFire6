@@ -3,6 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { MenuService } from '../core/services';
 import { Menu } from '../core/models';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'home',
@@ -20,15 +21,15 @@ export class HomeComponent implements OnInit {
         const menuParam = this.route.snapshot.params['menu'];
         const submenuParam = this.route.snapshot.params['sub'];
 
-        this.menuSVC.setNavContent(menuParam, submenuParam).then(() => {
-          this.currentMenu = this.menuSVC.currentMenu;
-          this.currentSubMenu = this.menuSVC.currentSubMenu;
-          // console.log(this.currentMenu);
-          // console.log('this.currentMenu.items=', this.currentMenu.items);
-          // if (submenuParam && !this.currentSubMenu) {
-          //   this.currentSubMenu = this.currentMenu.items.find((m) => m.name === submenuParam);
-          // }
-        });
+        // this.menuSVC.setNavContent(menuParam, submenuParam).pipe(.take(1).subscribe((menu) => {
+        //   this.currentMenu = this.menuSVC.currentMenu;
+        //   this.currentSubMenu = this.menuSVC.currentSubMenu;
+        //   // console.log(this.currentMenu);
+        //   // console.log('this.currentMenu.items=', this.currentMenu.items);
+        //   // if (submenuParam && !this.currentSubMenu) {
+        //   //   this.currentSubMenu = this.currentMenu.items.find((m) => m.name === submenuParam);
+        //   // }
+        // });
         // this.menuSVC.getNav(menuParam, submenuParam);
       });
   }
