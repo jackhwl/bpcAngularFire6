@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
                   this.currentMenu.content = contentObj.content;
                   this.menuSVC.navBar = Object.assign([], this.menuSVC.navBar, [this.currentMenu]);
               });
-              // this.currentSubMenu = this.menuSVC.getCurrentMenu(menuParam);
+              this.currentSubMenu = this.menuSVC.getCurrentSubMenu(this.currentMenu, submenuParam);
               //   .subscribe((c) =>
               //     console.log('RootContent=', c)
               // );

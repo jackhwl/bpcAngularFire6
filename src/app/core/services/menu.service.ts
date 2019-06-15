@@ -160,10 +160,16 @@ export class MenuService {
     // });
   }
 
+  public getMenu(menus: Menu[], menuName: string) {
+    return this.currentMenu = Object.assign({}, menus.find((menu) =>
+              menu.name.toLowerCase().replace(/ /g, '-') === menuName.toLowerCase())
+            || menus[0]);
+  }
   public getCurrentMenu(routeMenu: string) {
-    return Object.assign(this.currentMenu, this.navBar.find((menu) =>
-              menu.name.toLowerCase().replace(/ /g, '-') === routeMenu.toLowerCase())
-            || this.navBar[0]);
+    return this.currentMenu = this.getMenu(this.navBar, routeMenu);
+  }
+  public getCurrentSubMenu(currentMenu: Menu, routeSubMenu: string) {
+    return this.currentSubMenu = this.getMenu(currentMenu.items, routeSubMenu);
   }
 
   public setNavContent(routeMenu: string, routeSubMenu: string = null) {

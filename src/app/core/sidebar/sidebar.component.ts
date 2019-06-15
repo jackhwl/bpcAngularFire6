@@ -17,7 +17,7 @@ export class SideBarComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router) {
     route.params.subscribe(() => {
-      this.menuSVC.setTopNav(this.route.snapshot.params['menu'], this.route.snapshot.params['sub']);
+      // this.menuSVC.setTopNav(this.route.snapshot.params['menu'], this.route.snapshot.params['sub']);
     });
   }
 
