@@ -3,6 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { MenuService } from '../core/services';
 import { Menu } from '../core/models';
+import { Observable, forkJoin, combineLatest, empty, BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -23,7 +24,17 @@ export class HomeComponent implements OnInit {
 
         this.menuSVC.navBarReady.subscribe((navBarReady) => {
             if (navBarReady) {
-              this.menuSVC.setRootContent(menuParam);
+              this.currentMenu = this.menuSVC.getCurrentMenu(menuParam);
+              this.menuSVC.getContent$(this.currentMenu)
+                .pipe(take(1))
+                .subscribe((contentObj) => {
+                  this.currentMenu.content = contentObj.content;
+                  this.menuSVC.navBar = Object.assign([], this.menuSVC.navBar, [this.currentMenu]);
+              });
+              // this.currentSubMenu = this.menuSVC.getCurrentMenu(menuParam);
+              //   .subscribe((c) =>
+              //     console.log('RootContent=', c)
+              // );
               // this.menuSVC.getNav(menuParam, submenuParam);
             }
           }

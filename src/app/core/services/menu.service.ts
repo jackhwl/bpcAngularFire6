@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Menu, Misc } from '../models';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable, forkJoin, combineLatest, empty, BehaviorSubject } from 'rxjs';
-import { map, filter, take, switchMap, mergeAll } from 'rxjs/operators';
+import { map, concatMap, filter, take, switchMap, mergeAll } from 'rxjs/operators';
 import { routes } from 'app/+dev-module/dev-module.routes';
 
 @Injectable()
@@ -159,19 +159,13 @@ export class MenuService {
     //   // return items.map((item) => item.key);
     // });
   }
-  public setRootContent(routeMenu: string) {
-    return this.navBar
-      .filter((menu) =>
-        menu.name.toLowerCase().replace(/ /g, '-') === routeMenu.toLowerCase())
-      .map((menu) => {
-        console.log('thisnavBar = ', this.navBar);
-        //this.navBar = Object.assign(this.navBar, this.currentMenu);
 
-        this.getContent$(menu);
-      });
-    //console.log('thisnavBar = ', this.navBar);
-    //this.navBar = Object.assign(this.navBar, this.currentMenu);
+  public getCurrentMenu(routeMenu: string) {
+    return Object.assign(this.currentMenu, this.navBar.find((menu) =>
+              menu.name.toLowerCase().replace(/ /g, '-') === routeMenu.toLowerCase())
+            || this.navBar[0]);
   }
+
   public setNavContent(routeMenu: string, routeSubMenu: string = null) {
     return this.navBar
       .filter((menu) =>
@@ -286,7 +280,7 @@ export class MenuService {
 
   public getContent$(menu: Menu) {
     if (menu && !menu.content) {
-      return this.db.object<string>(`content/${menu.id}`).valueChanges;
+      return this.db.object<any>(`content/${menu.id}`).valueChanges();
     } else {
       return empty();
     }
