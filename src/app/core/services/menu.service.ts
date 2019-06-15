@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Menu, Misc } from '../models';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { Observable, forkJoin, combineLatest, empty } from 'rxjs';
+import { Observable, forkJoin, combineLatest, empty, BehaviorSubject } from 'rxjs';
 import { map, filter, take, switchMap, mergeAll } from 'rxjs/operators';
 import { routes } from 'app/+dev-module/dev-module.routes';
 
@@ -19,6 +19,8 @@ export class MenuService {
   public rootMenu$: Observable<Menu[]>;
   public subMenu$: Observable<Array<{ id: string, items: Menu[] }>>;
   public result: any;
+  public navBarReadySubject = new BehaviorSubject<boolean>(false);
+  public navBarReady = this.navBarReadySubject.asObservable();
 
   constructor(private db: AngularFireDatabase) {
     // this.misc$ = this.db.object('misc').valueChanges();
@@ -95,6 +97,9 @@ export class MenuService {
 
     sub$.subscribe();
     // b$.subscribe();
+  }
+  public updateNavBar(navBarStatus: boolean) {
+    this.navBarReadySubject.next(navBarStatus);
   }
 
   public getNavBar$() {

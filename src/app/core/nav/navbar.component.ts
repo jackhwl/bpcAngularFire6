@@ -25,6 +25,7 @@ export class NavComponent implements OnInit {
         this.navBar = menus;
         this.menuSVC.navBar = this.navBar;
         this.onNavbarReady.emit('navbar ready');
+        this.menuSVC.updateNavBar(true);
       });
   }
 

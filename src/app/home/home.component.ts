@@ -21,6 +21,13 @@ export class HomeComponent implements OnInit {
         const menuParam = this.route.snapshot.params['menu'];
         const submenuParam = this.route.snapshot.params['sub'];
 
+        this.menuSVC.navBarReady.subscribe((navBarReady) => {
+            if (navBarReady) {
+              this.menuSVC.setRootContent(menuParam);
+              // this.menuSVC.getNav(menuParam, submenuParam);
+            }
+          }
+        );
         // this.menuSVC.setNavContent(menuParam, submenuParam).pipe(.take(1).subscribe((menu) => {
         //   this.currentMenu = this.menuSVC.currentMenu;
         //   this.currentSubMenu = this.menuSVC.currentSubMenu;
