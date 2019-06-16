@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Menu, Misc } from '../models';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { Observable, combineLatest, empty, BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, combineLatest, of, BehaviorSubject } from 'rxjs';
+import { map  } from 'rxjs/operators';
 
 @Injectable()
 export class MenuService {
@@ -58,33 +58,33 @@ export class MenuService {
     this.navBarReadySubject.next(navBarStatus);
   }
   public updateRoute(navRoute: any) {
-    console.log('navRoute=', navRoute);
+    //console.log('navRoute=', navRoute);
     this.currentMenu = this.getCurrentMenuByName(navRoute.menuRoute);
-    console.log('this.currentMenu=', this.currentMenu);
-    //if (navRoute.subMenuRoute) {
-      this.currentSubMenu = this.getCurrentSubMenuByName(this.currentMenu, navRoute.subMenuRoute);
-    //}
+    //console.log('this.currentMenu=', this.currentMenu);
+    // if (navRoute.subMenuRoute) {
+    this.currentSubMenu = this.getCurrentSubMenuByName(this.currentMenu, navRoute.subMenuRoute);
+    // }
 
-    console.log('this.currentMenu=', this.currentMenu);
-    console.log('this.currentSubMenu=', this.currentSubMenu);
+    //console.log('this.currentMenu=', this.currentMenu);
+    //console.log('this.currentSubMenu=', this.currentSubMenu);
 
-    combineLatest(this.getContent$(this.currentMenu), this.getContent$(this.currentSubMenu))
+    combineLatest(this.getContent$(this.currentSubMenu), this.getContent$(this.currentMenu))
         //  .pipe(
-        //   map(([menuContentObj, subMenuContentObj]) => 
+        //   map(([menuContentObj, subMenuContentObj]) =>
         //     menuContent: menuContentObj.map(m=>m.content)
         //   subMenuContentObj.map(m=>m.content);} ))
-      //.pipe(take(2))
-      .subscribe(([menuContentObj, subMenuContentObj]) => {
+      //.pipe(take(1))
+      .subscribe(([subMenuContentObj, menuContentObj]) => {
           console.log('menuContentObj=', menuContentObj);
           console.log('subMenuContentObj=', subMenuContentObj);
           this.currentMenu.content = menuContentObj.content;
           this.currentSubMenu.content = subMenuContentObj ? subMenuContentObj.content : null;
-          console.log('before this.currentMenu=', this.currentMenu);
+          //console.log('before this.currentMenu=', this.currentMenu);
           this.currentMenu.items = Object.assign([], this.currentMenu.items
             .filter((menu) => menu.id !== this.currentSubMenu.id));
           this.currentMenu.items.push(this.currentSubMenu);
-          console.log('after this.currentMenu=', this.currentMenu);
-          console.log('before this.navBar=', this.navBar);
+          //console.log('after this.currentMenu=', this.currentMenu);
+          //console.log('before this.navBar=', this.navBar);
           this.navBar = Object.assign([], this.navBar
                 .filter((menu) => menu.id !== this.currentMenu.id));
           this.navBar.push(this.currentMenu);
@@ -152,14 +152,14 @@ export class MenuService {
   }
 
   public getMenuByName(menus: Menu[], menuName: string) {
-    console.log('menuName=', menuName);
-    console.log('menus=', menus);
+    //console.log('menuName=', menuName);
+    //console.log('menus=', menus);
     let ab =  menus.find((menu) =>
     menu.name && menu.name.toLowerCase().replace(/ /g, '-') === menuName.toLowerCase());
-    console.log('ab=', ab);
+    //console.log('ab=', ab);
     let cd =  Object.assign({}, ab
             || menus[0]);
-    console.log('cd=', cd);
+    //console.log('cd=', cd);
     return cd;
   }
   public getCurrentMenuByName(routeMenu: string) {
@@ -170,10 +170,12 @@ export class MenuService {
   }
 
   public getContent$(menu: Menu) {
+    console.log('content menu=', menu);
     if (menu && !menu.content) {
+      console.log('content menu content=', menu.content);
       return this.db.object<any>(`content/${menu.id}`).valueChanges();
     } else {
-      return empty();
+      return of(menu.content);
     }
   }
 

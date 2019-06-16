@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit {
       const subMenuParam = this.route.snapshot.params['sub'];
 
       this.menuSVC.navBarReady.subscribe((navBarReady) => {
+        console.log('in home ctor navBarReady=', navBarReady);
         if (navBarReady) {
           this.menuSVC.updateRoute({menuRoute: menuParam, subMenuRoute: subMenuParam});
         }

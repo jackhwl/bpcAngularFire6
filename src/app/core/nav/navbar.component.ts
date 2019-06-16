@@ -33,8 +33,12 @@ export class NavComponent implements OnInit {
     return this.authService.user$;
   }
 
-  public changeRoute(menu) {
+  public changeRoute(menu: Menu) {
     this.router.navigate(['./', menu.name.replace(/ /g, '-')]);
+  }
+
+  public changeSubRoute(menu: Menu, subMenu: Menu) {
+    this.router.navigate(['/', menu.name.replace(/ /g, '-'), subMenu.name.replace(/ /g, '-')]);
   }
 
   public adminRoute() {
@@ -47,10 +51,4 @@ export class NavComponent implements OnInit {
     this.authService.logout();
   }
 
-  public changeSubRoute(menu, subMenu) {
-    this.router.navigate([
-      '/' + menu.name.replace(/ /g, '-'),
-      subMenu.name.replace(/ /g, '-')
-    ]);
-  }
 }
