@@ -9,6 +9,9 @@ template from:
 
 https://demo.studiopress.com/outreach/
 
+header and footer use observable inside view (misc$)
+navbar and home subscribe obserable
+
 
   public setTopMenu(routeMenu: string, routeSubMenu: string = null){
     this.db.list<Menu>('menu').snapshotChanges().pipe(
@@ -24,7 +27,7 @@ https://demo.studiopress.com/outreach/
       // return items.map((item) => item.key);
     });
   }
-  
+
 list query return Promise:
 this.db.list<Blog>('blogPosts', (ref) => ref.orderByChild('title').equalTo(blogTitle))
         .query.once('value')

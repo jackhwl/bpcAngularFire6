@@ -21,7 +21,7 @@ export class FooterComponent implements OnInit {
   }
 
   private getMisc() {
-     this.misc$ = this.menuSVC.getMisc();
+     this.misc$ = this.menuSVC.getMisc$();
   }
 
 }

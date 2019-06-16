@@ -1,4 +1,3 @@
-<!-- <header class="column text-justified" *ngIf="misc$ | async as misc" [innerHTML]="sanitizer.bypassSecurityTrustHtml(misc?.header?.content || '')"></header> -->
 <header class="site-header">
     <div class="wrap">
         <div class="title-area">
@@ -6,4 +5,4 @@
         </div>
     </div>
 </header>
-<bc-nav-bar (onNavbarReady)="navbarReady($event)"></bc-nav-bar>
+<bc-nav-bar></bc-nav-bar>

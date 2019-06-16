@@ -1,95 +1,46 @@
 import { Injectable } from '@angular/core';
-import { Menu, Misc } from '../models';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable, combineLatest, of, BehaviorSubject } from 'rxjs';
-import { map  } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+import { Menu, Misc } from '../models';
 
 @Injectable()
 export class MenuService {
-  // public topMenu1: Observable<Menu[]>;
-  //public topMenu: Menu[];
-  //public subMenu: Menu[];
   public currentMenu: Menu;
   public currentSubMenu: Menu;
-  //public content$: Observable<string>;
-  public misc$: Observable<Misc>;
-  //public menu$: Observable<Menu[]>;
   public navBar: Menu[];
-  public rootMenu$: Observable<Menu[]>;
-  public subMenu$: Observable<Array<{ id: string, items: Menu[] }>>;
-  //public result: any;
+
   public navBarReadySubject = new BehaviorSubject<boolean>(false);
   public navBarReady = this.navBarReadySubject.asObservable();
   public routeChangeSubject = new BehaviorSubject<any>(null);
   public routeChange = this.routeChangeSubject.asObservable();
 
+  private rootMenu$: Observable<Menu[]>;
+  private subMenu$: Observable<Array<{ id: string, items: Menu[] }>>;
+
   constructor(private db: AngularFireDatabase) {
-    // this.misc$ = this.db.object('misc').valueChanges();
-    //this.content$ = this.db.object<string>('content').valueChanges();
-    // this.subMenu$ = this.db.object<Menu>('subMenu').valueChanges();
-    //this.menu$ = db.list<Menu>('menu').valueChanges();
-    // this.topMenu1 = db.list<Menu>('menu').valueChanges();
-    this.misc$ = db.object<Misc>('misc').valueChanges();
-    this.rootMenu$ = this.db.list<Menu>('menu').snapshotChanges().pipe(
-      map((menus) => menus.map((menu) => menu.payload.val() )),
-      map((menus) => menus
-            // .filter((menu) => menu.enable)
-            .sort((m1, m2) => m1.order > m2.order ? 1 : -1))
-    );
-    this.subMenu$ = this.db.list<Menu>('subMenu').snapshotChanges().pipe(
-      map((menus) => menus.map((menu) => ({key: menu.key, ...menu.payload.val()}) )),
-      map((menus) => menus.filter((menu) => menu.items)),
-      map((menus) => menus.map((menu) =>
-                      ({id: menu.key, items: Object.keys(menu.items).map((key) => menu.items[key])
-                        // .filter((ma) => ma.enable)
-                        .sort((m1, m2) => m1.order > m2.order ? 1 : -1)
-                      })
-      )),
-      map((ms) => ms.filter((m) => m.items.length > 0)),
-      // mergeAll()
-    );
-    // //console.log('this.misc$=', this.misc$);
-    // // this.content$ = this.db.doc<string>('content').valueChanges();
-    // // this.subMenu$ = this.db.doc<Menu>('subMenu').valueChanges();
-    //  this.menu$ = this.db.collection<Menu>('menu').valueChanges();
-    //  //console.log('this.menu$=', this.menu$);
+    this.rootMenu$ = this.getRootMenu$();
+    this.subMenu$ = this.getSubMenu$();
   }
+
   public updateNavBar(navBarStatus: boolean) {
     this.navBarReadySubject.next(navBarStatus);
   }
   public updateRoute(navRoute: any) {
-    //console.log('navRoute=', navRoute);
     this.currentMenu = this.getCurrentMenuByName(navRoute.menuRoute);
-    //console.log('this.currentMenu=', this.currentMenu);
-    // if (navRoute.subMenuRoute) {
     this.currentSubMenu = this.getCurrentSubMenuByName(this.currentMenu, navRoute.subMenuRoute);
-    // }
-
-    //console.log('this.currentMenu=', this.currentMenu);
-    //console.log('this.currentSubMenu=', this.currentSubMenu);
 
     combineLatest(this.getContent$(this.currentSubMenu), this.getContent$(this.currentMenu))
-        //  .pipe(
-        //   map(([menuContentObj, subMenuContentObj]) =>
-        //     menuContent: menuContentObj.map(m=>m.content)
-        //   subMenuContentObj.map(m=>m.content);} ))
-      //.pipe(take(1))
       .subscribe(([subMenuContentObj, menuContentObj]) => {
-          console.log('menuContentObj=', menuContentObj);
-          console.log('subMenuContentObj=', subMenuContentObj);
           this.currentMenu.content = menuContentObj.content;
           this.currentSubMenu.content = subMenuContentObj ? subMenuContentObj.content : null;
-          //console.log('before this.currentMenu=', this.currentMenu);
           this.currentMenu.items = Object.assign([], this.currentMenu.items
             .filter((menu) => menu.id !== this.currentSubMenu.id));
           this.currentMenu.items.push(this.currentSubMenu);
-          //console.log('after this.currentMenu=', this.currentMenu);
-          //console.log('before this.navBar=', this.navBar);
           this.navBar = Object.assign([], this.navBar
                 .filter((menu) => menu.id !== this.currentMenu.id));
           this.navBar.push(this.currentMenu);
           this.routeChangeSubject.next(navRoute);
-          console.log('after this.navBar=', this.navBar);
     });
   }
 
@@ -120,67 +71,53 @@ export class MenuService {
                       .map((m) => m.items = []);
                     return ms; })
     );
-    // .subscribe((menus) => {
-    //   this.navBar = menus;
-    //   console.log('observable combineLatest=', menus);
-    //   // .map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
-    //   // return items.map((item) => item.key);
-    // });
-
-    // subMenus.subscribe((menus) => {
-    //   console.log('observable submenus=', menus);
-    //   //.map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
-    //   // return items.map((item) => item.key);
-    // });
-
-    // rootMenus
-    // // .pipe(
-    // //   switchMap((rootMenu) => this.getSubMenu(rootMenu.id))
-    // // )
-    // .subscribe((menus) => {
-    //     console.log('observable finalmenus=', menus);
-    //     // .map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
-    //     // return items.map((item) => item.key);
-    //   });
-
-    // this.getSubMenu('-L5Lm4A3J8Sjw-fPmxXX')
-    // .subscribe((menus) => {
-    //   console.log('observable getSubMenu=', menus);
-    //   //.map(m => m.sort((a, b) => a.order > b.order ? 1 : 0)));
-    //   // return items.map((item) => item.key);
-    // });
   }
 
-  public getMenuByName(menus: Menu[], menuName: string) {
-    //console.log('menuName=', menuName);
-    //console.log('menus=', menus);
-    let ab =  menus.find((menu) =>
-    menu.name && menu.name.toLowerCase().replace(/ /g, '-') === menuName.toLowerCase());
-    //console.log('ab=', ab);
-    let cd =  Object.assign({}, ab
-            || menus[0]);
-    //console.log('cd=', cd);
-    return cd;
-  }
-  public getCurrentMenuByName(routeMenu: string) {
-    return this.currentMenu = this.getMenuByName(this.navBar, routeMenu);
-  }
-  public getCurrentSubMenuByName(currentMenu: Menu, routeSubMenu: string) {
-    return this.currentSubMenu = this.getMenuByName(currentMenu.items, routeSubMenu);
+  public getMisc$() {
+    return this.db.object<Misc>('misc').valueChanges();
   }
 
-  public getContent$(menu: Menu) {
-    console.log('content menu=', menu);
-    if (menu && !menu.content) {
-      console.log('content menu content=', menu.content);
+  private getContent$(menu: Menu) {
+    if (!menu.content) {
       return this.db.object<any>(`content/${menu.id}`).valueChanges();
     } else {
-      return of(menu.content);
+      return of({content: menu.content});
     }
   }
 
-  public getMisc() {
-    return this.misc$;
+  private getMenuByName(menus: Menu[], menuName: string) {
+    return Object.assign({},
+            menus.find((menu) => menu.name
+                && menu.name.toLowerCase().replace(/ /g, '-') === menuName.toLowerCase())
+            || menus[0]);
+  }
+  private getCurrentMenuByName(routeMenu: string) {
+    return this.currentMenu = this.getMenuByName(this.navBar, routeMenu);
+  }
+  private getCurrentSubMenuByName(currentMenu: Menu, routeSubMenu: string) {
+    return this.currentSubMenu = this.getMenuByName(currentMenu.items, routeSubMenu);
+  }
+
+  private getRootMenu$(): Observable<Menu[]> {
+    return this.db.list<Menu>('menu').snapshotChanges().pipe(
+      map((menus) => menus.map((menu) => menu.payload.val())),
+      map((menus) => menus
+      // .filter((menu) => menu.enable)
+          .sort((m1, m2) => m1.order > m2.order ? 1 : -1)));
+  }
+  private getSubMenu$(): Observable<Array<{ id: string; items: Menu[]; }>> {
+    return this.db.list<Menu>('subMenu').snapshotChanges().pipe(
+      map((menus) => menus.map((menu) => ({key: menu.key, ...menu.payload.val()}) )),
+      map((menus) => menus.filter((menu) => menu.items)),
+      map((menus) => menus.map((menu) =>
+                      ({id: menu.key, items: Object.keys(menu.items).map((key) => menu.items[key])
+                        // .filter((ma) => ma.enable)
+                        .sort((m1, m2) => m1.order > m2.order ? 1 : -1)
+                      })
+      )),
+      map((ms) => ms.filter((m) => m.items.length > 0)),
+      // mergeAll()
+    );
   }
 
   // public setNavContent(routeMenu: string, routeSubMenu: string = null) {
