@@ -24,8 +24,8 @@ export const AdminRoutes: Routes = [
   { path: 'menu-list', component: MenuListComponent, canActivate: [AuthGuard] },
   { path: 'sub-menu-list', component: SubMenuListComponent, canActivate: [AuthGuard] },
   { path: 'sub-menu-list/:parentId', component: SubMenuListComponent, canActivate: [AuthGuard]},
-  { path: 'login', component: LoginComponent },
   { path: 'misc-edit/:mode', component: MiscEditComponent, canActivate: [AuthGuard] },
+  { path: 'login', component: LoginComponent },
   // { path: 'signup', component: SignUpComponent },
   // { path: 'menu/:id', component:　MenuEditComponent, canActivate: [AuthGuard] },
   { path: '', component: AdminMenuComponent, canActivate: [AuthGuard] }

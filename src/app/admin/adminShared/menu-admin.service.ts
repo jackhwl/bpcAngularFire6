@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Menu, Misc } from '../../core/models';
+import { MenuService } from '../../core/services';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
@@ -10,7 +11,9 @@ export class MenuAdminService {
   public contents$: Observable<string[]>;
   public subMenu$: Observable<Menu>;
 
-  constructor(private db: AngularFireDatabase, private fb: FormBuilder) {
+  constructor(private db: AngularFireDatabase,
+              private fb: FormBuilder,
+              private menuSVC: MenuService) {
     this.subMenu$ = this.db.object<Menu>('subMenu').valueChanges();
     this.content$ = this.db.object<string>('content').valueChanges();
     this.contents$ = this.db.list<string>('content').valueChanges();

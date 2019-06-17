@@ -13,6 +13,10 @@ header and footer use observable inside view (misc$)
 navbar and home subscribe obserable
 blogs use promise
 
+admin:
+menu-list managing imperative subscription by using unsubscription, 
+and not taking advantage of the power of Rx.
+
 
   public setTopMenu(routeMenu: string, routeSubMenu: string = null){
     this.db.list<Menu>('menu').snapshotChanges().pipe(

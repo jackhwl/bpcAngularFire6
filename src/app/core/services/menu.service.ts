@@ -77,6 +77,28 @@ export class MenuService {
     return this.db.object<Misc>('misc').valueChanges();
   }
 
+  public getRootMenu$(): Observable<Menu[]> {
+    return this.db.list<Menu>('menu').snapshotChanges().pipe(
+      map((menus) => menus.map((menu) => menu.payload.val())),
+      map((menus) => menus
+      // .filter((menu) => menu.enable)
+          .sort((m1, m2) => m1.order > m2.order ? 1 : -1)));
+  }
+  public getSubMenu$(): Observable<Array<{ id: string; items: Menu[]; }>> {
+    return this.db.list<Menu>('subMenu').snapshotChanges().pipe(
+      map((menus) => menus.map((menu) => ({key: menu.key, ...menu.payload.val()}) )),
+      map((menus) => menus.filter((menu) => menu.items)),
+      map((menus) => menus.map((menu) =>
+                      ({id: menu.key, items: Object.keys(menu.items).map((key) => menu.items[key])
+                        // .filter((ma) => ma.enable)
+                        .sort((m1, m2) => m1.order > m2.order ? 1 : -1)
+                      })
+      )),
+      map((ms) => ms.filter((m) => m.items.length > 0)),
+      // mergeAll()
+    );
+  }
+
   private getContent$(menu: Menu) {
     if (!menu.content) {
       return this.db.object<any>(`content/${menu.id}`).valueChanges();
@@ -96,28 +118,6 @@ export class MenuService {
   }
   private getCurrentSubMenuByName(currentMenu: Menu, routeSubMenu: string) {
     return this.currentSubMenu = this.getMenuByName(currentMenu.items, routeSubMenu);
-  }
-
-  private getRootMenu$(): Observable<Menu[]> {
-    return this.db.list<Menu>('menu').snapshotChanges().pipe(
-      map((menus) => menus.map((menu) => menu.payload.val())),
-      map((menus) => menus
-      // .filter((menu) => menu.enable)
-          .sort((m1, m2) => m1.order > m2.order ? 1 : -1)));
-  }
-  private getSubMenu$(): Observable<Array<{ id: string; items: Menu[]; }>> {
-    return this.db.list<Menu>('subMenu').snapshotChanges().pipe(
-      map((menus) => menus.map((menu) => ({key: menu.key, ...menu.payload.val()}) )),
-      map((menus) => menus.filter((menu) => menu.items)),
-      map((menus) => menus.map((menu) =>
-                      ({id: menu.key, items: Object.keys(menu.items).map((key) => menu.items[key])
-                        // .filter((ma) => ma.enable)
-                        .sort((m1, m2) => m1.order > m2.order ? 1 : -1)
-                      })
-      )),
-      map((ms) => ms.filter((m) => m.items.length > 0)),
-      // mergeAll()
-    );
   }
 
   // public setNavContent(routeMenu: string, routeSubMenu: string = null) {

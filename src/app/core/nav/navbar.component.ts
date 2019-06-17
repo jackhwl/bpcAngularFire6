@@ -12,7 +12,8 @@ export class NavComponent implements OnInit {
   public showNav: boolean = false;
   public navBar: Menu[];
   constructor( private authService: AuthService,
-               private menuSVC: MenuService, private router: Router
+               private menuSVC: MenuService,
+               private router: Router
   ) {}
 
   public ngOnInit(): void {
@@ -45,6 +46,7 @@ export class NavComponent implements OnInit {
 
   public logout() {
     this.authService.logout();
+    // this.userSVC.logout();
   }
 
 }
