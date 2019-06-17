@@ -11,6 +11,7 @@ https://demo.studiopress.com/outreach/
 
 header and footer use observable inside view (misc$)
 navbar and home subscribe obserable
+blogs use promise
 
 
   public setTopMenu(routeMenu: string, routeSubMenu: string = null){
