@@ -25,23 +25,26 @@ export class HomeComponent implements OnInit, OnDestroy {
       const menuParam = this.route.snapshot.params['menu'];
       const subMenuParam = this.route.snapshot.params['sub'];
 
-      // this.navBarReadySubscription = this.menuSVC.navBarReady // .pipe(takeWhile(of(true)))
-      //   .subscribe((navBarReady) => {
-      //     if (navBarReady) {
-      //       this.menuSVC.updateRoute0({menuRoute: menuParam, subMenuRoute: subMenuParam});
-      //     }
-      // });
-      // this.navSubscription = this.menuSVC.routeChange.subscribe(() => {
-      //   this.menu = this.menuSVC.currentMenu;
-      //   this.subMenu = this.menuSVC.currentSubMenu;
-      // });
-      this.menuSVC.getMenuContent$({menuRoute: menuParam, subMenuRoute: subMenuParam})
-      .subscribe(([menuContentObj, subMenuContentObj]) =>
-        this.menuSVC.updateRoute(menuContentObj, subMenuContentObj));
-      concat(this.menuSVC.navBarReady,
-          this.menuSVC.getMenuContent$({menuRoute: menuParam, subMenuRoute: subMenuParam}),
-          this.menuSVC.routeChange)
-      .subscribe((ab) => console.log('ab=', ab));
+      this.navBarReadySubscription = this.menuSVC.navBarReady // .pipe(takeWhile(of(true)))
+        .subscribe((navBarReady) => {
+          if (navBarReady) {
+            this.menuSVC.getMenuContent$({menuRoute: menuParam, subMenuRoute: subMenuParam})
+                    .subscribe(([menuContentObj, subMenuContentObj]) =>
+                        this.menuSVC.updateRoute(menuContentObj, subMenuContentObj));
+            // this.menuSVC.updateRoute0({menuRoute: menuParam, subMenuRoute: subMenuParam});
+          }
+      });
+      this.navSubscription = this.menuSVC.routeChange.subscribe(() => {
+        this.menu = this.menuSVC.currentMenu;
+        this.subMenu = this.menuSVC.currentSubMenu;
+      });
+      // this.menuSVC.getMenuContent$({menuRoute: menuParam, subMenuRoute: subMenuParam})
+      //   .subscribe(([menuContentObj, subMenuContentObj]) =>
+      //     this.menuSVC.updateRoute(menuContentObj, subMenuContentObj));
+      // concat(this.menuSVC.getNavBar$().pipe(take(1)),
+      //     this.menuSVC.getMenuContent$({menuRoute: menuParam, subMenuRoute: subMenuParam}),
+      //     this.menuSVC.routeChange)
+      // .subscribe((ab) => console.log('ab=', ab));
     });
   }
 
