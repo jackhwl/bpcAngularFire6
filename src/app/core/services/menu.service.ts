@@ -10,10 +10,10 @@ export class MenuService {
   public currentSubMenu: Menu;
   public navBar: Menu[];
 
-  public navBarReadySubject = new BehaviorSubject<boolean>(null);
+  public navBarReadySubject = new BehaviorSubject<any>(null);
   public navBarReady = this.navBarReadySubject.asObservable();
-  public routeChangeSubject = new BehaviorSubject<any>(null);
-  public routeChange = this.routeChangeSubject.asObservable();
+  public navBarContentSubject = new BehaviorSubject<any>(null);
+  public navBarContent = this.navBarContentSubject.asObservable();
 
   private rootMenu$: Observable<Menu[]>;
   private subMenu$: Observable<Array<{ id: string, items: Menu[] }>>;
@@ -26,7 +26,7 @@ export class MenuService {
   public navBarComplete() {
     this.navBarReadySubject.complete();
   }
-  public updateRoute(menuContentObj, subMenuContentObj) {
+  public updateNavBarContent(menuContentObj, subMenuContentObj) {
     this.currentMenu.content = menuContentObj.content;
     this.currentSubMenu.content = subMenuContentObj ? subMenuContentObj.content : null;
     this.currentMenu.items = Object.assign([], this.currentMenu.items
@@ -35,25 +35,7 @@ export class MenuService {
     this.navBar = Object.assign([], this.navBar
           .filter((menu) => menu.id !== this.currentMenu.id));
     this.navBar.push(this.currentMenu);
-    this.routeChangeSubject.next('navRoute');
-  }
-
-  public updateRoute0(navRoute: any) {
-    this.currentMenu = this.getCurrentMenuByName(navRoute.menuRoute);
-    this.currentSubMenu = this.getCurrentSubMenuByName(this.currentMenu, navRoute.subMenuRoute);
-
-    combineLatest(this.getContent$(this.currentSubMenu), this.getContent$(this.currentMenu))
-      .subscribe(([subMenuContentObj, menuContentObj]) => {
-          this.currentMenu.content = menuContentObj.content;
-          this.currentSubMenu.content = subMenuContentObj ? subMenuContentObj.content : null;
-          this.currentMenu.items = Object.assign([], this.currentMenu.items
-            .filter((menu) => menu.id !== this.currentSubMenu.id));
-          this.currentMenu.items.push(this.currentSubMenu);
-          this.navBar = Object.assign([], this.navBar
-                .filter((menu) => menu.id !== this.currentMenu.id));
-          this.navBar.push(this.currentMenu);
-          this.routeChangeSubject.next(navRoute);
-    });
+    this.navBarContentSubject.complete();
   }
 
   public getMenuContent$(navRoute: any) {

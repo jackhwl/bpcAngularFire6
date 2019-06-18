@@ -29,18 +29,18 @@ export class HomeComponent implements OnInit, OnDestroy {
         .subscribe({complete: () =>
             this.menuSVC.getMenuContent$({menuRoute: menuParam, subMenuRoute: subMenuParam})
                     .subscribe(([menuContentObj, subMenuContentObj]) =>
-                        this.menuSVC.updateRoute(menuContentObj, subMenuContentObj))
+                        this.menuSVC.updateNavBarContent(menuContentObj, subMenuContentObj))
         });
-      this.navSubscription = this.menuSVC.routeChange.subscribe(() => {
+      this.navSubscription = this.menuSVC.navBarContent.subscribe({complete: () => {
         this.menu = this.menuSVC.currentMenu;
         this.subMenu = this.menuSVC.currentSubMenu;
-      });
+      }});
       // this.menuSVC.getMenuContent$({menuRoute: menuParam, subMenuRoute: subMenuParam})
       //   .subscribe(([menuContentObj, subMenuContentObj]) =>
       //     this.menuSVC.updateRoute(menuContentObj, subMenuContentObj));
       // concat(this.menuSVC.getNavBar$().pipe(take(1)),
       //     this.menuSVC.getMenuContent$({menuRoute: menuParam, subMenuRoute: subMenuParam}),
-      //     this.menuSVC.routeChange)
+      //     this.menuSVC.navBarContent)
       // .subscribe((ab) => console.log('ab=', ab));
     });
   }
