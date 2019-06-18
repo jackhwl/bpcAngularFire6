@@ -10,7 +10,7 @@ export class MenuService {
   public currentSubMenu: Menu;
   public navBar: Menu[];
 
-  public navBarReadySubject = new BehaviorSubject<boolean>(false);
+  public navBarReadySubject = new BehaviorSubject<boolean>(null);
   public navBarReady = this.navBarReadySubject.asObservable();
   public routeChangeSubject = new BehaviorSubject<any>(null);
   public routeChange = this.routeChangeSubject.asObservable();
@@ -23,8 +23,8 @@ export class MenuService {
     this.subMenu$ = this.getSubMenu$();
   }
 
-  public updateNavBar(navBarStatus: boolean) {
-    this.navBarReadySubject.next(navBarStatus);
+  public navBarComplete() {
+    this.navBarReadySubject.complete();
   }
   public updateRoute(menuContentObj, subMenuContentObj) {
     this.currentMenu.content = menuContentObj.content;

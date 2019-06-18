@@ -25,15 +25,12 @@ export class HomeComponent implements OnInit, OnDestroy {
       const menuParam = this.route.snapshot.params['menu'];
       const subMenuParam = this.route.snapshot.params['sub'];
 
-      this.navBarReadySubscription = this.menuSVC.navBarReady // .pipe(takeWhile(of(true)))
-        .subscribe((navBarReady) => {
-          if (navBarReady) {
+      this.navBarReadySubscription = this.menuSVC.navBarReady
+        .subscribe({complete: () =>
             this.menuSVC.getMenuContent$({menuRoute: menuParam, subMenuRoute: subMenuParam})
                     .subscribe(([menuContentObj, subMenuContentObj]) =>
-                        this.menuSVC.updateRoute(menuContentObj, subMenuContentObj));
-            // this.menuSVC.updateRoute0({menuRoute: menuParam, subMenuRoute: subMenuParam});
-          }
-      });
+                        this.menuSVC.updateRoute(menuContentObj, subMenuContentObj))
+        });
       this.navSubscription = this.menuSVC.routeChange.subscribe(() => {
         this.menu = this.menuSVC.currentMenu;
         this.subMenu = this.menuSVC.currentSubMenu;
