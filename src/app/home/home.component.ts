@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { Subscription, concat, of } from 'rxjs';
+import { take, takeUntil, skipUntil } from 'rxjs/operators';
 import { MenuService } from '../core/services';
 import { Menu } from '../core/models';
 
@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public menu: Menu;
   public subMenu: Menu;
   private navBarReadySubscription: Subscription;
+  private navSubscription: Subscription;
 
   constructor(private menuSVC: MenuService,
               private route: ActivatedRoute,
@@ -24,16 +25,23 @@ export class HomeComponent implements OnInit, OnDestroy {
       const menuParam = this.route.snapshot.params['menu'];
       const subMenuParam = this.route.snapshot.params['sub'];
 
-      this.navBarReadySubscription = this.menuSVC.navBarReady // .pipe(takeWhile(of(true)))
-        .subscribe((navBarReady) => {
-          if (navBarReady) {
-            this.menuSVC.updateRoute({menuRoute: menuParam, subMenuRoute: subMenuParam});
-          }
-      });
-      this.menuSVC.routeChange.pipe(take(1)).subscribe(() => {
-        this.menu = this.menuSVC.currentMenu;
-        this.subMenu = this.menuSVC.currentSubMenu;
-      });
+      // this.navBarReadySubscription = this.menuSVC.navBarReady // .pipe(takeWhile(of(true)))
+      //   .subscribe((navBarReady) => {
+      //     if (navBarReady) {
+      //       this.menuSVC.updateRoute0({menuRoute: menuParam, subMenuRoute: subMenuParam});
+      //     }
+      // });
+      // this.navSubscription = this.menuSVC.routeChange.subscribe(() => {
+      //   this.menu = this.menuSVC.currentMenu;
+      //   this.subMenu = this.menuSVC.currentSubMenu;
+      // });
+      this.menuSVC.getMenuContent$({menuRoute: menuParam, subMenuRoute: subMenuParam})
+      .subscribe(([menuContentObj, subMenuContentObj]) =>
+        this.menuSVC.updateRoute(menuContentObj, subMenuContentObj));
+      concat(this.menuSVC.navBarReady,
+          this.menuSVC.getMenuContent$({menuRoute: menuParam, subMenuRoute: subMenuParam}),
+          this.menuSVC.routeChange)
+      .subscribe((ab) => console.log('ab=', ab));
     });
   }
 
@@ -43,6 +51,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy() {
     this.navBarReadySubscription.unsubscribe();
+    this.navSubscription.unsubscribe();
   }
 
 }

@@ -26,7 +26,19 @@ export class MenuService {
   public updateNavBar(navBarStatus: boolean) {
     this.navBarReadySubject.next(navBarStatus);
   }
-  public updateRoute(navRoute: any) {
+  public updateRoute(menuContentObj, subMenuContentObj) {
+    this.currentMenu.content = menuContentObj.content;
+    this.currentSubMenu.content = subMenuContentObj ? subMenuContentObj.content : null;
+    this.currentMenu.items = Object.assign([], this.currentMenu.items
+      .filter((menu) => menu.id !== this.currentSubMenu.id));
+    this.currentMenu.items.push(this.currentSubMenu);
+    this.navBar = Object.assign([], this.navBar
+          .filter((menu) => menu.id !== this.currentMenu.id));
+    this.navBar.push(this.currentMenu);
+    this.routeChangeSubject.next('navRoute');
+  }
+
+  public updateRoute0(navRoute: any) {
     this.currentMenu = this.getCurrentMenuByName(navRoute.menuRoute);
     this.currentSubMenu = this.getCurrentSubMenuByName(this.currentMenu, navRoute.subMenuRoute);
 
@@ -42,6 +54,13 @@ export class MenuService {
           this.navBar.push(this.currentMenu);
           this.routeChangeSubject.next(navRoute);
     });
+  }
+
+  public getMenuContent$(navRoute: any) {
+    this.currentMenu = this.getCurrentMenuByName(navRoute.menuRoute);
+    this.currentSubMenu = this.getCurrentSubMenuByName(this.currentMenu, navRoute.subMenuRoute);
+
+    return combineLatest(this.getContent$(this.currentMenu), this.getContent$(this.currentSubMenu));
   }
 
   public getNavBar$() {
