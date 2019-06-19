@@ -27,6 +27,8 @@ export class MenuService {
     this.navBarReadySubject.complete();
   }
   public updateNavBarContent(menuContentObj, subMenuContentObj) {
+    console.log('ccc=', menuContentObj);
+    console.log('ddd=', subMenuContentObj);
     this.currentMenu.content = menuContentObj.content;
     this.currentSubMenu.content = subMenuContentObj ? subMenuContentObj.content : null;
     this.currentMenu.items = Object.assign([], this.currentMenu.items
@@ -39,6 +41,7 @@ export class MenuService {
   }
 
   public getMenuContent$(navRoute: any) {
+    console.log('navRoute=', navRoute);
     this.currentMenu = this.getCurrentMenuByName(navRoute.menuRoute);
     this.currentSubMenu = this.getCurrentSubMenuByName(this.currentMenu, navRoute.subMenuRoute);
 
