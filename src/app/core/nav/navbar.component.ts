@@ -22,7 +22,7 @@ export class NavComponent implements OnInit {
       .subscribe((menus) => {
         this.navBar = menus;
         this.menuSVC.navBar = Object.assign([], this.navBar);
-        this.menuSVC.navBarComplete();
+        this.menuSVC.updateNavBarStatus();
       });
   }
 

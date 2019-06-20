@@ -10,10 +10,8 @@ export class MenuService {
   public currentSubMenu: Menu;
   public navBar: Menu[];
 
-  public navBarReadySubject = new BehaviorSubject<any>(null);
-  public navBarReady = this.navBarReadySubject.asObservable();
-  public navBarContentSubject = new BehaviorSubject<any>(null);
-  public navBarContent = this.navBarContentSubject.asObservable();
+  public navBarStatusSubject = new BehaviorSubject<any>(false);
+  public navBarStatus$ = this.navBarStatusSubject.asObservable();
 
   private rootMenu$: Observable<Menu[]>;
   private subMenu$: Observable<Array<{ id: string, items: Menu[] }>>;
@@ -23,12 +21,10 @@ export class MenuService {
     this.subMenu$ = this.getSubMenu$();
   }
 
-  public navBarComplete() {
-    this.navBarReadySubject.complete();
+  public updateNavBarStatus() {
+    this.navBarStatusSubject.next(true);
   }
   public updateNavBarContent(menuContentObj, subMenuContentObj) {
-    console.log('ccc=', menuContentObj);
-    console.log('ddd=', subMenuContentObj);
     this.currentMenu.content = menuContentObj.content;
     this.currentSubMenu.content = subMenuContentObj ? subMenuContentObj.content : null;
     this.currentMenu.items = Object.assign([], this.currentMenu.items
@@ -37,20 +33,16 @@ export class MenuService {
     this.navBar = Object.assign([], this.navBar
           .filter((menu) => menu.id !== this.currentMenu.id));
     this.navBar.push(this.currentMenu);
-    this.navBarContentSubject.complete();
   }
 
-  public getMenuContent$(navRoute: any) {
-    console.log('navRoute=', navRoute);
-    this.currentMenu = this.getCurrentMenuByName(navRoute.menuRoute);
-    this.currentSubMenu = this.getCurrentSubMenuByName(this.currentMenu, navRoute.subMenuRoute);
+  public getMenuContent$(routeParam: any) {
+    this.currentMenu = this.getCurrentMenuByName(routeParam.menu);
+    this.currentSubMenu = this.getCurrentSubMenuByName(this.currentMenu, routeParam.sub);
 
     return combineLatest(this.getContent$(this.currentMenu), this.getContent$(this.currentSubMenu));
   }
 
   public getNavBar$() {
-    // https://github.com/angular/angularfire2/blob/master/docs/version-5-upgrade.md#50
-
     const enabledRootMenu$ = this.rootMenu$.pipe(
       map((menus) => menus
           .filter((menu) => menu.enable)
