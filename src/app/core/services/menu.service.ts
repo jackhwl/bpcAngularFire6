@@ -35,9 +35,9 @@ export class MenuService {
     this.navBar.push(this.currentMenu);
   }
 
-  public getMenuContent$(routeParam: any) {
-    this.currentMenu = this.getCurrentMenuByName(routeParam.menu);
-    this.currentSubMenu = this.getCurrentSubMenuByName(this.currentMenu, routeParam.sub);
+  public getMenuContent$(routeMenu: string, routeSubMenu: string) {
+    this.currentMenu = this.getCurrentMenuByName(routeMenu);
+    this.currentSubMenu = this.getCurrentSubMenuByName(this.currentMenu, routeSubMenu);
 
     return combineLatest(this.getContent$(this.currentMenu), this.getContent$(this.currentSubMenu));
   }
