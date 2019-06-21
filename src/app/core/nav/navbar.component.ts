@@ -23,7 +23,8 @@ export class NavComponent implements OnInit {
         this.navBar = menus;
         this.menuSVC.navBar = Object.assign([], this.navBar);
         this.menuSVC.updateNavBarStatus();
-      });
+      },
+      (error) => console.log(error));
   }
 
   public getUser() {

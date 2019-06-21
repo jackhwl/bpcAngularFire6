@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable, combineLatest, of, BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, concatMap } from 'rxjs/operators';
 import { Menu, Misc } from '../models';
 
 @Injectable()
@@ -66,6 +66,33 @@ export class MenuService {
       map((ms) => { ms.filter((m) => !m.items)
                       .map((m) => m.items = []);
                     return ms; })
+    );
+  }
+  public getNavBar2$() {
+    const enabledRootMenu$ = this.rootMenu$.pipe(
+      map((menus) => menus
+          .filter((menu) => menu.enable)
+    ));
+    const enabledSubMenu$ = this.subMenu$.pipe(
+      map((menus) => menus
+          .map((menu) => ({
+              id: menu.id,
+              items: menu.items
+                .filter((m) => m.enable)
+          }))
+    ));
+
+    return combineLatest(enabledRootMenu$, enabledSubMenu$).pipe(
+      map(([menus, submenus]) =>
+              menus.map((menu) => { submenus.filter((s) => s.id === menu.id)
+                            .map((s) => menu.items = s.items);
+                                    return menu;
+                  })
+      ),
+      concatMap((ms) => { ms.filter((m) => !m.items)
+                      .map((m) => m.items = []);
+                          return ms; })
+
     );
   }
 
@@ -285,7 +312,6 @@ export class MenuService {
   //     });
   //   }
   // }
-
 
   // public getMenus() {
   //   // this.setTopNav('home');
