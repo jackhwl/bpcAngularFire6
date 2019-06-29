@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable, combineLatest, of, BehaviorSubject } from 'rxjs';
-import { map, concatMap } from 'rxjs/operators';
+import { map, filter, concatMap } from 'rxjs/operators';
 import { Menu, Misc } from '../models';
 
 @Injectable()
@@ -14,11 +14,14 @@ export class MenuService {
   public navBarStatus$ = this.navBarStatusSubject.asObservable();
 
   private rootMenu$: Observable<Menu[]>;
+  private rootMenu2$: Observable<Menu>;
   private subMenu$: Observable<Array<{ id: string, items: Menu[] }>>;
 
   constructor(private db: AngularFireDatabase) {
     this.rootMenu$ = this.getRootMenu$();
     this.subMenu$ = this.getSubMenu$();
+    this.rootMenu2$ = this.getRootMenu2$();
+    //this.subMenu2$ = this.getSubMenu$();
   }
 
   public updateNavBarStatus() {
@@ -69,10 +72,9 @@ export class MenuService {
     );
   }
   public getNavBar2$() {
-    const enabledRootMenu$ = this.rootMenu$.pipe(
-      map((menus) => menus
-          .filter((menu) => menu.enable)
-    ));
+    const enabledRootMenu$ = this.rootMenu2$.pipe(
+      filter((menu) => menu.enable)
+    );
     const enabledSubMenu$ = this.subMenu$.pipe(
       map((menus) => menus
           .map((menu) => ({
@@ -106,6 +108,11 @@ export class MenuService {
       map((menus) => menus
       // .filter((menu) => menu.enable)
           .sort((m1, m2) => m1.order > m2.order ? 1 : -1)));
+  }
+  public getRootMenu2$(): Observable<Menu> {
+    return this.db.object<Menu>('menu').snapshotChanges().pipe(
+      map((menu) => menu.payload.val()),
+    );
   }
   public getSubMenu$(): Observable<Array<{ id: string; items: Menu[]; }>> {
     return this.db.list<Menu>('subMenu').snapshotChanges().pipe(

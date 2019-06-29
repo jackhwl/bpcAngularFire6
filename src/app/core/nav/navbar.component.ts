@@ -25,6 +25,9 @@ export class NavComponent implements OnInit {
         this.menuSVC.updateNavBarStatus();
       },
       (error) => console.log(error));
+
+    this.menuSVC.getRootMenu2$()
+    .subscribe((menu) => console.log(menu));
   }
 
   public getUser() {
