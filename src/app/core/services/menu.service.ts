@@ -98,7 +98,13 @@ export class MenuService {
   public getMisc$() {
     return this.db.object<Misc>('misc').valueChanges();
   }
-
+  get RootMenu$(): Observable<Menu[]> {
+    return this.db.list<Menu>('menu').snapshotChanges().pipe(
+      map((menus) => menus.map((menu) => menu.payload.val())),
+      map((menus) => menus
+      // .filter((menu) => menu.enable)
+          .sort((m1, m2) => m1.order > m2.order ? 1 : -1)));
+  }
   public getRootMenu$(): Observable<Menu[]> {
     return this.db.list<Menu>('menu').snapshotChanges().pipe(
       map((menus) => menus.map((menu) => menu.payload.val())),

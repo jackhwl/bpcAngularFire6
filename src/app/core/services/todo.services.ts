@@ -1,8 +1,38 @@
 // https://coryrylan.com/blog/angular-observable-data-services
+// map filter scan mergeMap switchMap combineLatest concat do
+// // Wrong:
+//   Observable.interval(10000)
+//     .switchMap(() => this.http.get(url))
+//     .catch(err => Observable.empty())
+//     .subscribe(data=> render(data))
+
+// // Right:
+// When handling errors, you probably want your catch inside of a merge operation.
+// Observable.interval(10000)
+//   .switchMap(() =>
+//     this.http.get(url)
+//       .catch(err => Observable.empty())
+//       .retry(....)
+//   )
+//   .subscribe(data=> render(data))
+// takeUntil take first takeWhile switch switchMap
+
+// subscription rule of thumb:
+//    more than two is probably too many
+// rxjs rxjs/operators rxjs/testing rxjs/webSocket rxjs/ajax
+// rxjs
+      // Types: Observable, Subject, BehaviorSubject, etc.
+      // Creation methods: fromEvent, timer, interval, delay, concat, etc.
+      // Schedulers: asapScheduler, asyncScheduler, etc.
+      // Helpers: pipe, noop, identity, etc.
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, fromEvent, interval, asapScheduler, asyncScheduler } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { renderComponent } from '@angular/core/src/render3';
+import { elementClassProp } from '@angular/core/src/render3/instructions';
+import { pipe } from '@angular/core/src/render3/pipe';
 
 export interface Todo {
   id: number | string;

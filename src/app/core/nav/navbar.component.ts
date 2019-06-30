@@ -26,8 +26,8 @@ export class NavComponent implements OnInit {
       },
       (error) => console.log(error));
 
-    this.menuSVC.getRootMenu$()
-    .subscribe((menu) => console.log('menu=', menu));
+    this.menuSVC.RootMenu$
+      .subscribe((menu) => console.log('menu=', menu));
   }
 
   public getUser() {
