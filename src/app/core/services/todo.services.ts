@@ -25,6 +25,9 @@
       // Creation methods: fromEvent, timer, interval, delay, concat, etc.
       // Schedulers: asapScheduler, asyncScheduler, etc.
       // Helpers: pipe, noop, identity, etc.
+// https://www.youtube.com/watch?v=B-nFj2o03i8
+// https://www.youtube.com/watch?v=XKfhGntZROQ
+// https://www.ng-conf.org/livestream/
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';

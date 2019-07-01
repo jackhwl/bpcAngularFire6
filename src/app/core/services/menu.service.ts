@@ -17,7 +17,7 @@ export class MenuService {
   private subMenu$: Observable<Array<{ id: string, items: Menu[] }>>;
 
   constructor(private db: AngularFireDatabase) {
-    this.rootMenu$ = this.getRootMenu$();
+    this.rootMenu$ = this.RootMenu$;
     this.subMenu$ = this.getSubMenu$();
   }
 
@@ -58,14 +58,19 @@ export class MenuService {
 
     return combineLatest(enabledRootMenu$, enabledSubMenu$).pipe(
       map(([menus, submenus]) =>
-              menus.map((menu) => { submenus.filter((s) => s.id === menu.id)
-                            .map((s) => menu.items = s.items);
-                                    return menu;
-                  })
+        menus.map((menu) => {
+          submenus
+            .filter((s) => s.id === menu.id)
+            .map((s) => menu.items = s.items);
+          return menu;
+        })
       ),
-      map((ms) => { ms.filter((m) => !m.items)
-                      .map((m) => m.items = []);
-                    return ms; })
+      map((ms) => {
+        ms
+          .filter((m) => !m.items)
+          .map((m) => m.items = []);
+        return ms;
+      })
     );
   }
   public getNavBar2$() {
